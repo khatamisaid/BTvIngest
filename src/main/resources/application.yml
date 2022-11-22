@@ -1,0 +1,95 @@
+spring:
+   profiles:
+      active: dev 
+---
+spring:
+  config:
+    activate:
+      on-profile: production
+  application:
+    name: Testing
+  datasource:
+      url: jdbc:mysql://192.168.100.90/testin
+      username: root
+      password: 
+      driverClassName: com.mysql.cj.jdbc.Driver
+  jpa: 
+      database: default
+      hibernate: 
+         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+         ddl-auto: none
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+  web:
+    resources:
+      static-locations: file:src/main/resources/static/
+      cache:
+        period: 0
+server:
+  port: 8082
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  application:
+    name: Testing
+  datasource:
+      url: jdbc:mysql://localhost:3306/testin
+      username: root
+      password: 
+      driverClassName: com.mysql.cj.jdbc.Driver
+  jpa: 
+      database: default
+      hibernate: 
+         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+         ddl-auto: none
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+  resources:
+    static-locations: file:src/main/resources/static/
+    cache:
+      period: 0
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
+server:
+  port: 8082
+URL:
+  FILE: C:\\video
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  application:
+    name: Testing
+  datasource:
+      url: jdbc:mysql://${IP_ADDRESS}:${PORT}/${DB_NAME}
+      username: root
+      password: 
+      driverClassName: com.mysql.cj.jdbc.Driver
+  jpa: 
+      database: default
+      hibernate: 
+         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+         ddl-auto: none
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    prefix: file:src/main/resources/templates/
+  web:
+    resources:
+      static-locations: file:src/main/resources/static/
+      cache:
+        period: 0
+server:
+  port: 8082
