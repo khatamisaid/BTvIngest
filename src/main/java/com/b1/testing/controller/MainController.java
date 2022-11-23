@@ -100,7 +100,7 @@ public class MainController {
         dbIngest.setLokLiputan(lok_liputan);
         dbIngest.setNoTape(no_tape);
         dbIngest.setReporter(reporter);
-        dbIngest.setTimLiputan(lok_liputan);
+        dbIngest.setTimLiputan(tim_liputan);
         dbIngestRepository.save(dbIngest);
         data.put("icon", "success");
         data.put("message", "data berhasil di insert");

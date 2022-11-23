@@ -18,13 +18,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
     />
+    <!-- DataTables -->
     <link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" />
-    <!-- <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
-      crossorigin="anonymous"
-    /> -->
     <style>
       .bd-example-modal-lg .modal-dialog {
         display: table;
@@ -42,211 +37,183 @@
   </head>
 
   <body>
-    <header class="masthead">
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-          <a class="navbar-brand" href="#!"
-            ><img
-              class="img-fluid me-2"
-              th:src="@{/images/BTV.svg}"
-              alt=""
-              style="width: 80px"
-          /></a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link"
-                  ><button
-                    class="action submit btn btn-sm btn-outline-success float-end"
-                    data-toggle="modal"
-                    data-target="#modalform"
-                  >
-                    Materi
-                  </button></a
-                >
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <div class="container">
-      <div class="card">
-        <div class="card-header">DATA</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table
-              id="dt-responsive"
-              class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
-              role="grid"
-              aria-describedby="myTable2_info"
+    <div class="d-flex flex-column">
+      <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+          <div class="container">
+            <a class="navbar-brand" href="#!"
+              ><img
+                class="img-fluid me-2"
+                th:src="@{/images/BTV.svg}"
+                alt=""
+                style="width: 80px"
+            /></a>
+            <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
             >
-              <!-- thead -->
-              <thead>
-                <tr role="row">
-                  <th>#</th>
-                  <th>judul</th>
-                  <th>reporter</th>
-                  <th>deskripsi</th>
-                  <th>action</th>
-                </tr>
-              </thead>
-              <!-- /thead -->
-              <tbody></tbody>
-            </table>
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a class="nav-link"
+                    ><button
+                      class="action submit btn btn-sm btn-outline-success float-end"
+                      data-toggle="modal"
+                      data-target="#modalform"
+                    >
+                      Materi
+                    </button></a
+                  >
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-      </div>
-    </div>
-    <!-- Footer-->
-    <footer class="py-5 bg-dark">
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Team IT 2022</p>
-      </div>
-    </footer>
-
-    <div class="modal fade" id="modalview" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog container d-flex justify-content-center">
-        <div class="modal-content" style="min-width: 720px !important">
-          <div class="modal-body">
-            <div class="narik">
-              <div class="container d-flex justify-content-center">
-                <div class="col-11 col-offset-2">
-                  <div class="card-header">Detail Ingest</div>
-
-                  <div class="container justify-content-center">
-                    <!-- MUNCULIN DETAILS INGEST -->
-                  </div>
-                </div>
-              </div>
+        </nav>
+      </header>
+      <div class="container my-5 vh-100">
+        <div class="card">
+          <div class="card-header">DATA</div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table
+                id="dt-responsive"
+                class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
+                role="grid"
+                aria-describedby="myTable2_info"
+              >
+                <!-- thead -->
+                <thead>
+                  <tr role="row">
+                    <th>#</th>
+                    <th>judul</th>
+                    <th>reporter</th>
+                    <th>deskripsi</th>
+                    <th>action</th>
+                  </tr>
+                </thead>
+                <!-- /thead -->
+                <tbody></tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
+      <!-- Footer-->
+      <footer class="py-4 bg-dark fixed-bottom">
+        <div class="container">
+          <p class="m-0 text-center text-white">
+            Copyright &copy; Team IT 2022
+          </p>
+        </div>
+      </footer>
     </div>
 
     <div class="modal fade" id="modalform" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog container d-flex justify-content-center">
+      <div class="modal-dialog modal-lg">
         <div class="modal-content" style="min-width: 720px !important">
+          <div class="modal-header">
+            <h5 class="modal-title">INPUT DATA MATERI</h5>
+            <button
+              type="button btn-close"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
           <div class="modal-body">
-            <div class="narik">
-              <div class="container d-flex justify-content-center">
-                <div class="col-11 col-offset-2">
-                  <div class="card-header">ISI DATA</div>
-                  <form
-                    id="formMateri"
-                    action="#"
-                    enctype="multipart/form-data"
+            <form id="formMateri" action="#" enctype="multipart/form-data">
+              <div class="card-body">
+                <div class="form-group">
+                  <label>Judul</label>
+                  <input
+                    type="text"
+                    name="judul"
+                    id="judul"
+                    class="form-control"
+                    required="true"
+                  />
+                </div>
+                <div class="form-group">
+                  <label>No Tape</label>
+                  <input
+                    type="text"
+                    name="no_tape"
+                    id="no_tape"
+                    class="form-control"
+                    required="true"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="reporter" class="form-label">Reporter</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="reporter"
+                    name="reporter"
+                    placeholder="Nama Reporter"
+                    value=""
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="tim_liputan" class="form-label"
+                    >Tim Liputan</label
                   >
-                    <div class="card-body">
-                      <div class="mb-3">
-                        <label>judul</label>
-                        <input
-                          type="text"
-                          name="judul"
-                          id="judul"
-                          class="form-control"
-                          required="true"
-                        />
-                        <p class="text-danger" id="err_judul"></p>
-                      </div>
-                      <div class="mb-3">
-                        <label>no tape</label>
-                        <input
-                          type="text"
-                          name="no_tape"
-                          id="no_tape"
-                          class="form-control"
-                          required="true"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label for="reporter" class="form-label"
-                          >reporter</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="reporter"
-                          name="reporter"
-                          placeholder="Nama Reporter"
-                          value=""
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label for="tim_liputan" class="form-label"
-                          >Tim Liputan</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="tim_liputan"
-                          name="tim_liputan"
-                          placeholder="Team Liputan"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label for="lok_liputan" class="form-label"
-                          >Lokasi Liputan</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="lok_liputan"
-                          name="lok_liputan"
-                          placeholder="Lokasi Liputan"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label for="deskripsi" class="form-label"
-                          >deksripsi</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="deskripsi"
-                          name="deskripsi"
-                          placeholder="deskripsi Liputan"
-                        />
-                      </div>
-                      <div class="mb-3">
-                        <label for="file" class="form-label"
-                          >Upload Files</label
-                        >
-                        <input
-                          type="file"
-                          class="form-control"
-                          name="file"
-                          id="file"
-                          accept="video/mp4,video/x-m4v,video/*"
-                        />
-                      </div>
-                      <div class="col-12">
-                        <input
-                          type="button"
-                          id="nambah"
-                          value="Tambah Data"
-                          class="btn btn-primary"
-                          name="falidasi"
-                        />
-                      </div>
-                    </div>
-                  </form>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="tim_liputan"
+                    name="tim_liputan"
+                    placeholder="Team Liputan"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="lok_liputan" class="form-label"
+                    >Lokasi Liputan</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="lok_liputan"
+                    name="lok_liputan"
+                    placeholder="Lokasi Liputan"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="deskripsi" class="form-label">Deksripsi</label>
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    id="deskripsi"
+                    name="deskripsi"
+                    placeholder="deskripsi Liputan"
+                  ></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="file" class="form-label">Upload Files</label>
+                  <input
+                    type="file"
+                    class="form-control"
+                    name="file"
+                    id="file"
+                    accept="video/mp4,video/x-m4v,video/*"
+                  />
                 </div>
               </div>
-            </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="nambah" class="btn btn-primary">
+              Tambah Data
+            </button>
           </div>
         </div>
       </div>
@@ -273,6 +240,38 @@
                 Your browser does not support HTML video.
               </video>
             </div>
+            <div class="form-group">
+              <label for="detailJudul">Judul</label>
+              <input type="text" class="form-control" id="detailJudul" />
+            </div>
+            <div class="form-group">
+              <label for="detailTimLiputan">Tim Liputan</label>
+              <input type="text" class="form-control" id="detailTimLiputan" />
+            </div>
+            <div class="form-group">
+              <label for="detailReporter">Reporter</label>
+              <input type="text" class="form-control" id="detailReporter" />
+            </div>
+            <div class="form-group">
+              <label for="detailLokasiLiputan">Lokasi Liputan</label>
+              <input
+                type="text"
+                class="form-control"
+                id="detailLokasiLiputan"
+              />
+            </div>
+            <div class="form-group">
+              <label for="detailNoTape">No Tape</label>
+              <input type="text" class="form-control" id="detailNoTape" />
+            </div>
+            <div class="form-group">
+              <label for="detailDeskripsi">Deskripsi</label>
+              <textarea
+                type="text"
+                class="form-control"
+                id="detailDeskripsi"
+              ></textarea>
+            </div>
           </div>
         </div>
       </div>
@@ -292,7 +291,6 @@
       </div>
     </div>
     <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script>
-    <!-- <script type="text/javascript" th:src="@{/js/tools.js}"></script> -->
     <script
       th:src="@{/js/popper.min.js}"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -381,7 +379,7 @@
           stateSave: false,
           serverSide: true,
           processing: true,
-          lengthMenu: [5, 15, 50],
+          lengthMenu: [5, 10,],
           ajax: function (data, callback, settings) {
             var page = Math.ceil(
               settings._iDisplayStart / settings._iDisplayLength
@@ -424,8 +422,17 @@
           var extension = materi.files.split(".");
           extension = extension[extension.length - 1];
           var video = materi.files.replace(`.${extension}`, "");
-          $("#videoDetail source").attr("src", `/video/stream/${extension}/${video}`);
+          $("#videoDetail source").attr(
+            "src",
+            `/video/stream/${extension}/${video}`
+          );
           $("#videoDetail")[0].load();
+          $("#detailJudul").val(materi.judul);
+          $("#detailTimLiputan").val(materi.timLiputan);
+          $("#detailReporter").val(materi.reporter);
+          $("#detailLokasiLiputan").val(materi.lokLiputan);
+          $("#detailNoTape").val(materi.noTape);
+          $("#detailDeskripsi").text(materi.deskripsi);
         });
       }
       function deleteById(id) {

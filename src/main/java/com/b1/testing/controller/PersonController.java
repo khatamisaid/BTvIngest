@@ -1,0 +1,74 @@
+package com.b1.testing.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.b1.testing.entity.Person;
+import com.b1.testing.repository.PersonRepository;
+
+@Controller
+@RequestMapping(value = "/person")
+public class PersonController {
+    @Autowired
+    private PersonRepository personRepository;
+
+    @Autowired
+    private PasswordEncoder encoder;
+
+    @RequestMapping(value = "/all", method = RequestMethod.GET)
+    public ResponseEntity<Map> all() {
+        Map data = new HashMap<>();
+        data.put("data", personRepository.findAll());
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/by", method = RequestMethod.GET)
+    public ResponseEntity<Map> by(@RequestParam Integer id) {
+        Map data = new HashMap<>();
+        data.put("data", personRepository.findById(id));
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/post", method = RequestMethod.POST)
+    public ResponseEntity<Map> post(@RequestBody Person person) {
+        Map data = new HashMap<>();
+        person.setPassword(encoder.encode(person.getPassword()));
+        personRepository.save(person);
+        data.put("message", "Sukses Insert Person");
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/put", method = RequestMethod.PUT)
+    public ResponseEntity<Map> put(@RequestBody Person person) {
+        Map data = new HashMap<>();
+        if (!personRepository.existsById(person.getIdPerson())) {
+            data.put("message", "Data Tidak ada");
+            return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+        }
+        personRepository.save(person);
+        data.put("message", "Sukses Insert Person");
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/del", method = RequestMethod.DELETE)
+    public ResponseEntity<Map> delById(@RequestParam Integer id) {
+        Map data = new HashMap<>();
+        if (!personRepository.existsById(id)) {
+            data.put("message", "Data Tidak ada");
+            return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+        }
+        personRepository.deleteById(id);
+        data.put("message", "Sukses Menghapus Person");
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+}
