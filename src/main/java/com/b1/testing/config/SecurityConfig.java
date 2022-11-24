@@ -29,8 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/images/**")
                 .antMatchers("/img/**")
                 .antMatchers("/js/**")
-                .antMatchers("/json/**")
-                .antMatchers("/looper/**");
+                .antMatchers("/json/**");
     }
 
     @Override
@@ -49,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
-                .antMatchers("/login", "/role/**", "/person/**").permitAll()
+                .antMatchers("/login", "/register", "/role/**", "/person/**").permitAll()
                 .antMatchers("/").authenticated()
                 .and()
                 .formLogin()

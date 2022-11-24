@@ -43,7 +43,7 @@ public class Person extends DateAudit{
     @Column(name = "email")
     private String email;
 
-    @JoinColumn(name = "id_role", referencedColumnName = "id_role", insertable = false, updatable = false)
+    @JoinColumn(name = "id_role", referencedColumnName = "id_role", insertable = true, updatable = true)
     @ManyToOne
     private Role role;
 }

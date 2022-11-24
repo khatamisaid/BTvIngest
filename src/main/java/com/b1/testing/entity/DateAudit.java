@@ -20,15 +20,9 @@ public abstract class DateAudit implements Serializable {
     @Column(name = "created_at", nullable = false, updatable = false)
     private Date createdAt;
 
-    @Column(name = "created_by", nullable = true, updatable = false)
-    private String createdBy;
-
     @LastModifiedDate
     @Column(name = "updated_at", nullable = true, updatable = false)
     private Date updatedAt;
-
-    @Column(name = "updated_by", nullable = true, updatable = false)
-    private String updatedBy;
 
     @PrePersist
     protected void prePersist() {

@@ -1,18 +1,15 @@
 package com.b1.testing.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -23,24 +20,30 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "role")
+@Table(name = "log")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Role extends DateAudit {
+public class Log extends DateAudit{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_role")
-    private Integer idRole;
+    @Column(name = "id_log")
+    private Long idLog;
 
-    @Column(name = "role_name")
-    private String roleName;
+    @Size(max = 255)
+    @Column(name = "action")
+    private String action;
 
-    @Column(name = "description")
-    private String description;
+    @Size(max = 2147483647)
+    @Column(name = "json")
+    private String json;
+
+    @JoinColumn(name = "id_person", referencedColumnName = "id_person", insertable = false, updatable = false)
+    @ManyToOne
+    private Person person;
 }

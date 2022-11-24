@@ -63,7 +63,7 @@ spring:
 server:
   port: 8082
 URL:
-  FILE: C:\\video
+  FILE: D:\\Transcoder\\MEDIA_IN\\MEDIA_INBOX
 ---
 spring:
   config:

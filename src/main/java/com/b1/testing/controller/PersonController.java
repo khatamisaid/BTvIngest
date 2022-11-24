@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.b1.testing.entity.Person;
 import com.b1.testing.repository.PersonRepository;
+import com.b1.testing.repository.RoleRepository;
+import com.b1.testing.viewmodel.PersonViewModel;
 
 @Controller
 @RequestMapping(value = "/person")
 public class PersonController {
     @Autowired
     private PersonRepository personRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -40,10 +45,10 @@ public class PersonController {
     }
 
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public ResponseEntity<Map> post(@RequestBody Person person) {
+    public ResponseEntity<Map> post(@RequestBody PersonViewModel person) {
         Map data = new HashMap<>();
-        person.setPassword(encoder.encode(person.getPassword()));
-        personRepository.save(person);
+        Person personTemp = new Person(0, person.getUsername(), encoder.encode(person.getPassword()), person.getEmail(), roleRepository.findById(person.getRole()).get());        
+        personRepository.save(personTemp);
         data.put("message", "Sukses Insert Person");
         return new ResponseEntity<>(data, HttpStatus.OK);
     }

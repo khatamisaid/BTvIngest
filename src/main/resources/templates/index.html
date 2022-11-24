@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <link rel="shortcut icon" sizes="16x16" th:href="@{/images/BTV.ico}" />
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
     <!-- Bootstrap 5 CSS -->
     <link
       rel="stylesheet"
@@ -36,84 +37,109 @@
     <title>Ingest</title>
   </head>
 
-  <body>
-    <div class="d-flex flex-column">
-      <header>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-          <div class="container">
-            <a class="navbar-brand" href="#!"
-              ><img
-                class="img-fluid me-2"
-                th:src="@{/images/BTV.svg}"
-                alt=""
-                style="width: 80px"
-            /></a>
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link"
-                    ><button
-                      class="action submit btn btn-sm btn-outline-success float-end"
-                      data-toggle="modal"
-                      data-target="#modalform"
-                    >
-                      Materi
-                    </button></a
+  <body style="background-color: #efefef">
+    <header>
+      <nav class="navbar navbar-expand-lg navbargra">
+        <div class="container">
+          <a class="navbar-brand" href="#!"
+            ><img
+              class="img-fluid me-2"
+              th:src="@{/images/BTV.svg}"
+              alt=""
+              style="width: 80px"
+          /></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  style="color: white"
+                  th:text="${session.username}"
+                ></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"
+                  ><button
+                    class="action submit btn btn-sm btn-primary float-end"
+                    data-toggle="modal"
+                    href="#modalform"
                   >
-                </li>
-              </ul>
-            </div>
+                    Materi
+                  </button></a
+                >
+              </li>
+
+              <!-- <li class="nav-item" th:if="${isAdmin}">
+                <a class="nav-link"
+                  ><button
+                    class="action submit btn btn-sm btn-success float-end"
+                    data-toggle="modal"
+                    href="#modalManagementUser"
+                  >
+                    Management User
+                  </button></a
+                >
+              </li> -->
+
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}"
+                  ><button
+                    class="action submit btn btn-sm btn-danger float-end"
+                  >
+                    Logout
+                  </button></a
+                >
+              </li>
+            </ul>
           </div>
-        </nav>
-      </header>
-      <div class="container my-5 vh-100">
-        <div class="card">
-          <div class="card-header">DATA</div>
-          <div class="card-body">
-            <div class="table-responsive">
-              <table
-                id="dt-responsive"
-                class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
-                role="grid"
-                aria-describedby="myTable2_info"
-              >
-                <!-- thead -->
-                <thead>
-                  <tr role="row">
-                    <th>#</th>
-                    <th>judul</th>
-                    <th>reporter</th>
-                    <th>deskripsi</th>
-                    <th>action</th>
-                  </tr>
-                </thead>
-                <!-- /thead -->
-                <tbody></tbody>
-              </table>
-            </div>
+        </div>
+      </nav>
+    </header>
+    <div class="container my-5 vh-100">
+      <div class="card">
+        <div class="card-header">DATA</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="tableMateri"
+              class="table custom-table dt-responsive"
+              role="grid"
+              aria-describedby="myTable2_info"
+            >
+              <!-- thead -->
+              <thead>
+                <tr role="row">
+                  <th>#</th>
+                  <th>judul</th>
+                  <th>reporter</th>
+                  <th>deskripsi</th>
+                  <th th:if="${isAdmin}">action</th>
+                </tr>
+              </thead>
+              <!-- /thead -->
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </div>
-      <!-- Footer-->
-      <footer class="py-4 bg-dark fixed-bottom">
-        <div class="container">
-          <p class="m-0 text-center text-white">
-            Copyright &copy; Team IT 2022
-          </p>
-        </div>
-      </footer>
     </div>
+    <!-- Footer-->
+    <footer class="py-4 bg-dark fixed-bottom">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Team IT 2022</p>
+      </div>
+    </footer>
 
     <div class="modal fade" id="modalform" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -215,6 +241,168 @@
               Tambah Data
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="modal fade"
+      id="modalManagementUser"
+      tabindex="-1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="min-width: 720px !important">
+          <div class="modal-header">
+            <h5 class="modal-title">Management User</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content" id="ex2-content">
+              <div
+                class="tab-pane fade show active"
+                id="ex3-tabs-1"
+                role="tabpanel"
+                aria-labelledby="ex3-tab-1"
+              >
+                <form id="formMateri" action="#" enctype="multipart/form-data">
+                  <div class="card-body">
+                    <div class="form-group">
+                      <label>Username</label>
+                      <input
+                        type="text"
+                        name="username"
+                        id="username"
+                        class="form-control"
+                        required="true"
+                        placeholder="Username"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        class="form-control"
+                        required="true"
+                        placeholder="Email"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label>Password</label>
+                      <div class="input-group mb-3">
+                        <input
+                          id="password"
+                          type="password"
+                          class="form-control"
+                          placeholder="Password"
+                          aria-label="password"
+                          aria-describedby="basic-addon1"
+                        />
+                        <span
+                          toggle="#password"
+                          style="cursor: pointer"
+                          class="input-group-text toggle-password"
+                          id="basic-addon1"
+                          ><i class="fa fa-eye"></i
+                        ></span>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label>Role</label>
+                      <select
+                        type="text"
+                        name="role"
+                        id="role"
+                        class="form-control"
+                        required="true"
+                        placeholder="Email"
+                      >
+                        <option value="" selected disabled>
+                          --Pilih Role--
+                        </option>
+                        <option value="1">Administrator</option>
+                        <option value="2">User</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="d-flex justify-content-center">
+                    <button
+                      type="button"
+                      id="tambahUser"
+                      class="btn btn-primary"
+                    >
+                      Tambah User
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <div
+                class="tab-pane fade"
+                id="ex3-tabs-2"
+                role="tabpanel"
+                aria-labelledby="ex3-tab-2"
+              >
+                <div class="table-responsive">
+                  <table
+                    id="tableUser"
+                    class="table custom-table dt-responsive"
+                    role="grid"
+                    aria-describedby="myTable2_info"
+                  >
+                    <!-- thead -->
+                    <thead>
+                      <tr role="row">
+                        <th>#</th>
+                        <th>username</th>
+                        <th>email</th>
+                      </tr>
+                    </thead>
+                    <!-- /thead -->
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <!-- Tabs content -->
+          </div>
+          <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+            <li class="nav-item" role="presentation">
+              <a
+                class="nav-link active"
+                id="ex3-tab-1"
+                data-toggle="tab"
+                href="#ex3-tabs-1"
+                role="tab"
+                aria-controls="ex3-tabs-1"
+                aria-selected="true"
+                >Tambah User</a
+              >
+            </li>
+            <li class="nav-item" role="presentation">
+              <a
+                class="nav-link"
+                id="ex3-tab-2"
+                data-toggle="tab"
+                href="#ex3-tabs-2"
+                role="tab"
+                aria-controls="ex3-tabs-2"
+                aria-selected="false"
+                >Lihat User</a
+              >
+            </li>
+          </ul>
+          <!-- Tabs navs -->
         </div>
       </div>
     </div>
@@ -346,7 +534,7 @@
               timer: 1500,
             }).then((result) => {
               $("#modalLoading").modal("toggle");
-              table.ajax.reload();
+              tableMateri.ajax.reload();
             });
           })
           .catch(function (response) {
@@ -359,14 +547,14 @@
               timer: 1500,
             }).then((result) => {
               $("#modalLoading").modal("toggle");
-              table.ajax.reload();
+              tableMateri.ajax.reload();
             });
           });
       });
       /*]]>*/
-      var table;
+      var tableMateri;
       function showTable() {
-        table = $("#dt-responsive").DataTable({
+        tableMateri = $("#tableMateri").DataTable({
           dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
           language: {
             zeroRecords: "Data Tidak Ada",
@@ -379,31 +567,39 @@
           stateSave: false,
           serverSide: true,
           processing: true,
-          lengthMenu: [5, 10,],
+          ordering: false,
+          lengthMenu: [5, 10],
           ajax: function (data, callback, settings) {
             var page = Math.ceil(
               settings._iDisplayStart / settings._iDisplayLength
             );
             var url = `/findAll?start=${page}&length=${data.length}`;
             $.get(url, function (response) {
+              var isAdmin = /*[[${isAdmin}]]*/ null;
               var out = [];
               response.data.content.forEach(function (materi, i) {
-                var action = `<div class="d-flex justify-content-around"><a id="buttonViewDocList"
-                                                                  name="buttonViewPageList"
-                                                                  title="Detail" data-toggle="modal" data-target="#modalDetail"
-                                                                  onclick="getById(${materi.id})" 
-                                                                  class="btn btn-sm btn-icon btn-secondary text-white"><i class="fa fa-eye"></i></a><a id="btnConfirmDelete"
-                                                                   onclick="deleteById(${materi.id})" 
-                                                                   class="btn btn-sm btn-icon btn-secondary" 
-                                                                   id="btnConfirmDelete"
-                                                                   title="Hapus"><i class="fa fa-trash text-white"></i></a><div>`;
-                out.push([
-                  "",
-                  materi.judul,
-                  materi.reporter,
-                  materi.deskripsi,
-                  action,
-                ]);
+                if (isAdmin) {
+                  var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="getById(${materi.id})">
+                    View
+                  </button> 
+                  <button type="button" class="btn btn-danger del" onclick="deleteById(${materi.id})" >
+                    Delete
+                  </button>`;
+                  out.push([
+                    "",
+                    materi.judul,
+                    materi.reporter,
+                    materi.deskripsi,
+                    action,
+                  ]);
+                } else {
+                  out.push([
+                    "",
+                    materi.judul,
+                    materi.reporter,
+                    materi.deskripsi,
+                  ]);
+                }
               });
               callback({
                 recordsTotal: response.data.totalElements,
@@ -456,13 +652,22 @@
                   showConfirmButton: false,
                   timer: 1500,
                 }).then((result) => {
-                  table.ajax.reload();
+                  tableMateri.ajax.reload();
                 });
               },
             });
           }
         });
       }
+      $(".toggle-password").click(function () {
+        $(".toggle-password i").toggleClass("fa-eye fa-eye-slash");
+        var input = $($(this).attr("toggle"));
+        if (input.attr("type") === "password") {
+          input.attr("type", "text");
+        } else {
+          input.attr("type", "password");
+        }
+      });
     </script>
   </body>
   <!-- Core theme JS-->
