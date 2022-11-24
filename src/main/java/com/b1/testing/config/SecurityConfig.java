@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -48,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
-                .antMatchers("/login", "/register", "/insertRole", "/role/**", "/person/**").permitAll()
-                .antMatchers("/").authenticated()
+                .antMatchers("/login", "/register", "/insertRole", "/role/**", "/person/**", "/postMateri").permitAll()
+                .antMatchers("/", "/findAll", "/find", "/materi").authenticated()
                 .and()
                 .formLogin()
                 .failureUrl("/login?error")
