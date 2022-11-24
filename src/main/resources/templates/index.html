@@ -630,8 +630,7 @@
       function getById(id) {
         $.get(`/find?id=${id}`, function (res) {
           var materi = res.data;
-          var extension = materi.files.split(".");
-          extension = extension[extension.length - 1];
+          var extension = materi.transcodeExtension;
           var video = materi.files.replace(`.${extension}`, "");
           $("#videoDetail source").attr(
             "src",

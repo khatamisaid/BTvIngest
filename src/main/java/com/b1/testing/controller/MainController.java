@@ -88,9 +88,11 @@ public class MainController {
             @RequestParam String deskripsi, @RequestParam MultipartFile file) {
         Map data = new HashMap<>();
         String namafile = "";
+        String originalExtension = "";
         try {
             String[] arrSplit = file.getOriginalFilename().split("\\.");
-            namafile = judul + "." + arrSplit[arrSplit.length - 1] ;
+            originalExtension = arrSplit[arrSplit.length - 1];
+            namafile = judul + "." +  originalExtension;
             file.transferTo(new File(env.getProperty("URL.FILE") + "/" +namafile));
         } catch (IOException | NullPointerException e) {
             data.put("icon", "error");
@@ -105,7 +107,10 @@ public class MainController {
         dbIngest.setNoTape(no_tape);
         dbIngest.setReporter(reporter);
         dbIngest.setTimLiputan(tim_liputan);
+        dbIngest.setTranscodeExtension("mp4");
+        dbIngest.setOriginalExtension(originalExtension);
         dbIngestRepository.save(dbIngest);
+
         data.put("icon", "success");
         data.put("message", "data berhasil di insert");
         return new ResponseEntity<>(data, HttpStatus.OK);

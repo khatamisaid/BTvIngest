@@ -50,6 +50,12 @@ public class DbIngest extends DateAudit{
     @Column(name = "no_tape")
     private Integer noTape;
 
+    @Column(name = "original_extension")
+    private String originalExtension;
+
+    @Column(name = "transcode_extension")
+    private String transcodeExtension;
+
     @Column(name = "files")
     private String files;
 }
