@@ -634,12 +634,12 @@
       function getById(id) {
         $.get(`/find?id=${id}`, function (res) {
           var materi = res.data;
-          var extension = materi.transcodeExtension;
-          var video = materi.files.replace(`.${extension}`, "");
-          console.log("extension: "+extension + "video: "+video)
+          var originalExtension = materi.originalExtension;
+          var transcodeExtension = materi.transcodeExtension;
+          var video = materi.files.replace(`.${originalExtension}`, "");
           $("#videoDetail source").attr(
             "src",
-            `/video/stream/${extension}/${video}`
+            `/video/stream/${transcodeExtension}/${video}`
           );
           $("#videoDetail")[0].load();
           $("#detailJudul").val(materi.judul);
