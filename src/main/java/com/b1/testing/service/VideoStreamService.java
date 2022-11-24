@@ -118,6 +118,7 @@ public class VideoStreamService {
     private String getFilePath() {
         // URL url = this.getClass().getResource(VIDEO);
         // assert url != null;
+        System.out.println(environment.getProperty("URL.FILE_PRIEVIEW"));
         return new File(environment.getProperty("URL.FILE_PRIEVIEW")).getAbsolutePath();
     }
 
