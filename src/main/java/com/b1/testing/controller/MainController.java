@@ -93,7 +93,7 @@ public class MainController {
             String[] arrSplit = file.getOriginalFilename().split("\\.");
             originalExtension = arrSplit[arrSplit.length - 1];
             namafile = judul + "." +  originalExtension;
-            file.transferTo(new File(env.getProperty("URL.FILE") + "/" +namafile));
+            file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" +namafile));
         } catch (IOException | NullPointerException e) {
             data.put("icon", "error");
             data.put("message", e.getMessage());

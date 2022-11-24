@@ -558,7 +558,6 @@
             });
           })
           .catch(function (obj) {
-            console.log(obj.response.data.icon)
             $("#modalLoading").modal("toggle");
             Swal.fire({
               position: "center",
@@ -567,7 +566,6 @@
               showConfirmButton: false,
               timer: 1500,
             }).then((result) => {
-              $("#modalLoading").modal("toggle");
               tableMateri.ajax.reload();
             });
           });
