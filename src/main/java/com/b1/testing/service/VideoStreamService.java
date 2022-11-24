@@ -3,6 +3,8 @@ package com.b1.testing.service;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import static com.b1.testing.constants.ApplicationConstants.*;
@@ -17,6 +19,9 @@ import java.util.Optional;
 @Service
 public class VideoStreamService {
     private final Logger logger = LoggerFactory.getLogger(VideoStreamService.class);
+
+    @Autowired
+    private Environment environment;
 
     /**
      * Prepare the content.
@@ -113,7 +118,7 @@ public class VideoStreamService {
     private String getFilePath() {
         // URL url = this.getClass().getResource(VIDEO);
         // assert url != null;
-        return new File("C:\\video").getAbsolutePath();
+        return new File(environment.getProperty("URL.FILE_PRIEVIEW")).getAbsolutePath();
     }
 
     /**
