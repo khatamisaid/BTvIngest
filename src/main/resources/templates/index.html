@@ -636,6 +636,7 @@
           var materi = res.data;
           var extension = materi.transcodeExtension;
           var video = materi.files.replace(`.${extension}`, "");
+          console.log("extension: "+extension + "video: "+video)
           $("#videoDetail source").attr(
             "src",
             `/video/stream/${extension}/${video}`
