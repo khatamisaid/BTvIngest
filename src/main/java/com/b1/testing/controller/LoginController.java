@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.b1.testing.entity.Person;
+import com.b1.testing.entity.Role;
 import com.b1.testing.repository.PersonRepository;
 import com.b1.testing.repository.RoleRepository;
 
@@ -44,6 +45,15 @@ public class LoginController {
         Map data = new HashMap<>();
         personRepository.save(new Person(0, "said", encoder.encode("said123"), "khatamisaid@gmail.com",
                 roleRepository.findById(1).get()));
+        data.put("message", "Berhasil create user");
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/insertRole", method = RequestMethod.GET)
+    public ResponseEntity<Map> insertRole(Model model) {
+        Map data = new HashMap<>();
+        roleRepository.save(new Role(0, "Administrator", "Hak Akses Menyeluruh"));
+        roleRepository.save(new Role(0, "User", "Hak Akses Dibatasi"));
         data.put("message", "Berhasil create user");
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
