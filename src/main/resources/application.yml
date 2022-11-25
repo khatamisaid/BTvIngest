@@ -65,6 +65,8 @@ server:
 URL:
   FILE_IN: D:\\Transcoder\\MEDIA_IN\\MEDIA_INBOX
   FILE_PRIEVIEW: D:\\Transcoder\\H264_OUT
+  DOWNLOAD_HI_RES: D:\\Transcoder\\MEDIA_OUT
+  DOWNLOAD_LOW_RES: D:\\Transcoder\\MEDIA_OUT
 ---
 spring:
   config:
@@ -100,3 +102,5 @@ server:
 URL:
   FILE_IN: C:\\video
   FILE_PRIEVIEW: C:\\video
+  DOWNLOAD_HI_RES: D:\\Transcoder\\MEDIA_OUT
+  DOWNLOAD_LOW_RES: D:\\Transcoder\\MEDIA_OUT
