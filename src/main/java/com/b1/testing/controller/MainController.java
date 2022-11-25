@@ -75,7 +75,7 @@ public class MainController {
     @GetMapping(value = "/download/{namafile}")
     @ResponseBody
     public ResponseEntity<byte[]> download(@PathVariable(required = true) String namafile) throws IOException {
-        File file = new File(env.getProperty("URL.DOWNLOAD_HI_RES") + "/" + namafile);
+        File file = new File(env.getProperty("URL.DOWNLOAD_HI_RES") + "/" + namafile + ".mxf");
         byte[] fileContent = null;
         try{
             fileContent = Files.readAllBytes(file.toPath());

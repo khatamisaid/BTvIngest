@@ -102,5 +102,5 @@ server:
 URL:
   FILE_IN: C:\\video
   FILE_PRIEVIEW: C:\\video
-  DOWNLOAD_HI_RES: D:\\Transcoder\\MEDIA_OUT
-  DOWNLOAD_LOW_RES: D:\\Transcoder\\MEDIA_OUT
+  DOWNLOAD_HI_RES: C:\\video
+  DOWNLOAD_LOW_RES: C:\\video
