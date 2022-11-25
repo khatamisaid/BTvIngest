@@ -82,7 +82,7 @@ public class MainController {
         }catch(IOException e){
             throw new IOException(e.getMessage());
         }
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + namafile + "\"").body(fileContent);
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + namafile + ".mxf" + "\"").body(fileContent);
     }
 
     @DeleteMapping(value = "/materi")
