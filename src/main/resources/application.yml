@@ -51,9 +51,9 @@ spring:
     cache: false
     mode: HTML
     encoding: UTF-8
-    prefix: file:src/main/resources/templates/
+    prefix: classpath:/templates/
   resources:
-    static-locations: file:src/main/resources/static/
+    static-locations: classpath:/static/
     cache:
       period: 0
   servlet:
@@ -69,11 +69,11 @@ URL:
 spring:
   config:
     activate:
-      on-profile: docker
+      on-profile: testing
   application:
     name: Testing
   datasource:
-      url: jdbc:mysql://${IP_ADDRESS}:${PORT}/${DB_NAME}
+      url: jdbc:mysql://localhost:3306/ingestdb
       username: root
       password: 
       driverClassName: com.mysql.cj.jdbc.Driver
@@ -81,16 +81,22 @@ spring:
       database: default
       hibernate: 
          dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-         ddl-auto: none
+         ddl-auto: update
   thymeleaf:
     cache: false
     mode: HTML
     encoding: UTF-8
-    prefix: file:src/main/resources/templates/
-  web:
-    resources:
-      static-locations: file:src/main/resources/static/
-      cache:
-        period: 0
+    prefix: classpath:/templates/
+  resources:
+    static-locations: classpath:/static/
+    cache:
+      period: 0
+  servlet:
+    multipart:
+      max-file-size: -1
+      max-request-size: -1
 server:
   port: 8082
+URL:
+  FILE_IN: C:\\video
+  FILE_PRIEVIEW: C:\\video

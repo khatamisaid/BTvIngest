@@ -15,8 +15,8 @@ public class AplikasiTestingApplication {
 	}
 
 	@Bean
-    public PasswordEncoder passwordEncoder() {
-        return new PasswordEncode();
-    }
+	public PasswordEncoder passwordEncoder() {
+		return new PasswordEncode();
+	}
 
 }

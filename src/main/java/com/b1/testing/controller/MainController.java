@@ -1,7 +1,9 @@
 package com.b1.testing.controller;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -66,6 +70,19 @@ public class MainController {
         }
         data.put("data", dbIngestRepository.findById(id).get());
         return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/download/{namafile}")
+    @ResponseBody
+    public ResponseEntity<byte[]> download(@PathVariable(required = true) String namafile) throws IOException {
+        File file = new File(env.getProperty("URL.FILE_PRIEVIEW") + "/" + namafile);
+        byte[] fileContent = null;
+        try{
+            fileContent = Files.readAllBytes(file.toPath());
+        }catch(IOException e){
+            throw new IOException(e.getMessage());
+        }
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + namafile + "\"").body(fileContent);
     }
 
     @DeleteMapping(value = "/materi")

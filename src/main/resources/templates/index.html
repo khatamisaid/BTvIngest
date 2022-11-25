@@ -85,7 +85,7 @@
                 >
               </li>
 
-              <!-- <li class="nav-item" th:if="${isAdmin}">
+              <li class="nav-item" th:if="${isAdmin}">
                 <a class="nav-link"
                   ><button
                     class="action submit btn btn-sm btn-success float-end"
@@ -95,7 +95,7 @@
                     Management User
                   </button></a
                 >
-              </li> -->
+              </li>
 
               <li class="nav-item">
                 <a class="nav-link" th:href="@{/logout}"
@@ -112,7 +112,7 @@
       </nav>
     </header>
     <div class="container my-5 vh-100">
-      <div class="card">
+      <div class="card" th:if="${!isAdmin}">
         <div class="card-header">DATA</div>
         <div class="card-body">
           <div class="table-responsive">
@@ -129,12 +129,20 @@
                   <th>judul</th>
                   <th>reporter</th>
                   <th>deskripsi</th>
-                  <th th:if="${isAdmin}">action</th>
+                  <th th:if="${session.role != 'Administrator'}">action</th>
                 </tr>
               </thead>
               <!-- /thead -->
               <tbody></tbody>
             </table>
+          </div>
+        </div>
+      </div>
+      <div class="card h-50" th:unless="${!isAdmin}">
+        <div class="card-header"></div>
+        <div class="card-body">
+          <div class="d-flex justify-content-center">
+            <h2 th:text="'Selamat Datang '+${session.username}"></h2>
           </div>
         </div>
       </div>
@@ -466,6 +474,9 @@
               ></textarea>
             </div>
           </div>
+          <div class="modal-footer">
+            <button id="downloadVideo" class="btn btn-primary">Download Video</button>
+          </div>
         </div>
       </div>
     </div>
@@ -589,18 +600,19 @@
           ordering: false,
           lengthMenu: [5, 10],
           ajax: function (data, callback, settings) {
+            var role = /*[[${session.role}]]*/ "";
+            console.log(role);
             var page = Math.ceil(
               settings._iDisplayStart / settings._iDisplayLength
             );
             var url = `/findAll?start=${page}&length=${data.length}`;
             $.get(url, function (response) {
-              var isAdmin = /*[[${isAdmin}]]*/ null;
               var out = [];
               response.data.content.forEach(function (materi, i) {
-                if (isAdmin) {
+                if (role != "Administrator") {
                   var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="getById(${materi.id})">
                     View
-                  </button> 
+                  </button>
                   <button type="button" class="btn btn-danger del" onclick="deleteById(${materi.id})" >
                     Delete
                   </button>`;
@@ -610,13 +622,6 @@
                     materi.reporter,
                     materi.deskripsi,
                     action,
-                  ]);
-                } else {
-                  out.push([
-                    "",
-                    materi.judul,
-                    materi.reporter,
-                    materi.deskripsi,
                   ]);
                 }
               });
@@ -648,8 +653,14 @@
           $("#detailLokasiLiputan").val(materi.lokLiputan);
           $("#detailNoTape").val(materi.noTape);
           $("#detailDeskripsi").text(materi.deskripsi);
+          $("#downloadVideo").val(video + "." +transcodeExtension);
         });
       }
+
+      $("#downloadVideo").on('click',function(){
+        window.location.href = `/download/${this.value}`;
+      })
+
       function deleteById(id) {
         Swal.fire({
           title: "Yakin ingin menghapus Materi?",
