@@ -23,39 +23,12 @@ import com.b1.testing.repository.RoleRepository;
 @Controller
 public class LoginController {
 
-    @Autowired
-    private PersonRepository personRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private PasswordEncoder encoder;
-
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model) throws Exception {
         if (isAuthenticated()) {
             return "redirect:/";
         }
         return "login";
-    }
-
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public ResponseEntity<Map> register(Model model) {
-        Map data = new HashMap<>();
-        personRepository.save(new Person(0, "said", encoder.encode("said123"), "khatamisaid@gmail.com",
-                roleRepository.findById(1).get()));
-        data.put("message", "Berhasil create user");
-        return new ResponseEntity<>(data, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/insertRole", method = RequestMethod.GET)
-    public ResponseEntity<Map> insertRole(Model model) {
-        Map data = new HashMap<>();
-        roleRepository.save(new Role(0, "Administrator", "Hak Akses Menyeluruh"));
-        roleRepository.save(new Role(0, "User", "Hak Akses Dibatasi"));
-        data.put("message", "Berhasil create role");
-        return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     private boolean isAuthenticated() {

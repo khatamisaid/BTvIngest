@@ -62,11 +62,15 @@ spring:
       max-request-size: -1
 server:
   port: 8082
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
 URL:
-  FILE_IN: D:\\Transcoder\\MEDIA_IN\\MEDIA_INBOX
-  FILE_PRIEVIEW: D:\\Transcoder\\H264_OUT
-  DOWNLOAD_HI_RES: D:\\Transcoder\\MEDIA_OUT
-  DOWNLOAD_LOW_RES: D:\\Transcoder\\MEDIA_OUT
+  FILE_IN: E:\\Transcoder\\MEDIA_IN\\MEDIA_INBOX
+  FILE_PRIEVIEW: E:\\Transcoder\\H264_OUT
+  DOWNLOAD_HI_RES: E:\\Transcoder\\MEDIA_OUT
+  DOWNLOAD_LOW_RES: E:\\Transcoder\\MEDIA_OUT
 ---
 spring:
   config:
@@ -99,6 +103,10 @@ spring:
       max-request-size: -1
 server:
   port: 8082
+  error:
+    whitelabel:
+      enabled: false
+    path: /error
 URL:
   FILE_IN: C:\\video
   FILE_PRIEVIEW: C:\\video

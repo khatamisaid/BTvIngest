@@ -39,11 +39,10 @@ public class Log extends DateAudit{
     @Column(name = "action")
     private String action;
 
-    @Size(max = 2147483647)
-    @Column(name = "json")
+    @Column(name = "json", columnDefinition = "TEXT")
     private String json;
 
-    @JoinColumn(name = "id_person", referencedColumnName = "id_person", insertable = false, updatable = false)
+    @JoinColumn(name = "id_person", referencedColumnName = "id_person", insertable = true, updatable = true)
     @ManyToOne
     private Person person;
 }
