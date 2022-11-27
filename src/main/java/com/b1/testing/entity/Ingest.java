@@ -24,13 +24,13 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class DbIngest extends DateAudit{
+public class Ingest extends DateAudit{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id")
-    private Integer id;
+    @Column(name = "id_ingest")
+    private Integer idIngest;
     
     @Column(name = "judul")
     private String judul;

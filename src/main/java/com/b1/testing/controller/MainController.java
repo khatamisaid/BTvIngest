@@ -30,16 +30,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-import com.b1.testing.entity.DbIngest;
+import com.b1.testing.entity.Ingest;
 import com.b1.testing.entity.Log;
 import com.b1.testing.entity.Person;
 import com.b1.testing.entity.Role;
-import com.b1.testing.repository.DbIngestRepository;
+import com.b1.testing.repository.IngestRepository;
 import com.b1.testing.repository.LogRepository;
 import com.b1.testing.repository.PersonRepository;
 import com.b1.testing.repository.RoleRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class MainController {
@@ -48,7 +47,7 @@ public class MainController {
     private Environment env;
 
     @Autowired
-    private DbIngestRepository dbIngestRepository;
+    private IngestRepository dbIngestRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -75,7 +74,7 @@ public class MainController {
             @RequestParam(defaultValue = "5") Integer length) {
         Map data = new HashMap<>();
         Pageable pageable = PageRequest.of(start, length);
-        Page<DbIngest> dataPaging = dbIngestRepository.findAll(pageable);
+        Page<Ingest> dataPaging = dbIngestRepository.findAll(pageable);
         data.put("data", dataPaging);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -137,7 +136,7 @@ public class MainController {
             data.put("message", e.getMessage());
             return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
         }
-        DbIngest dbIngest = new DbIngest();
+        Ingest dbIngest = new Ingest();
         dbIngest.setDeskripsi(deskripsi);
         dbIngest.setFiles(namafile);
         dbIngest.setJudul(judul);
@@ -148,10 +147,8 @@ public class MainController {
         dbIngest.setTranscodeExtension("mp4");
         dbIngest.setOriginalExtension(originalExtension);
         dbIngestRepository.save(dbIngest);
-        String json = new ObjectMapper().writeValueAsString(dbIngest);
-        System.out.println(json);
         Person person = personRepository.findById(Integer.parseInt(httpSession.getAttribute("id").toString())).get();
-        logRepository.save(new Log(null, "upload", json, person));
+        logRepository.save(new Log(null, "upload", person, dbIngest));
         data.put("icon", "success");
         data.put("message", "data berhasil di insert");
         return new ResponseEntity<>(data, HttpStatus.OK);

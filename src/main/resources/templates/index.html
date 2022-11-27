@@ -634,13 +634,13 @@
           var url = `/log?start=${page}&length=${data.length}`;
           $.get(url, function (response) {
             var out = [];
-            console.log(response);
             response.data.content.forEach(function (log, i) {
               out.push([
                 "",
                 log.person.username,
                 log.action,
-                log.createdAt
+                log.createdAt,
+                log.ingest.files
               ]);
             });
             callback({
