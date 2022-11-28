@@ -1,6 +1,7 @@
 package com.b1.testing.entity;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -39,11 +40,11 @@ public class Log extends DateAudit{
     @Column(name = "action")
     private String action;
 
-    @JoinColumn(name = "id_person", referencedColumnName = "id_person", insertable = true, updatable = true)
-    @ManyToOne
-    private Person person;
+    @Size(max = 255)
+    @Column(name = "username")
+    private String username;
 
-    @JoinColumn(name = "id_ingest", referencedColumnName = "id_ingest", insertable = true, updatable = true)
-    @ManyToOne
-    private Ingest ingest;
+    @Size(max = 255)
+    @Column(name = "data")
+    private String data;
 }

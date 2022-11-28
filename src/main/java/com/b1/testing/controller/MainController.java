@@ -14,6 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -39,6 +40,7 @@ import com.b1.testing.repository.LogRepository;
 import com.b1.testing.repository.PersonRepository;
 import com.b1.testing.repository.RoleRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class MainController {
@@ -86,22 +88,28 @@ public class MainController {
             data.put("message", "Data Tidak Ditemukan");
             return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
         }
-        data.put("data", dbIngestRepository.findById(id).get());
+        Ingest ingest = dbIngestRepository.findById(id).get();
+        data.put("data", ingest);
+        logRepository
+                .save(new Log(null, "priview", httpSession.getAttribute("username").toString(), ingest.getFiles()));
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @GetMapping(value = "/download/{namafile}")
     @ResponseBody
     public ResponseEntity<byte[]> download(@PathVariable(required = true) String namafile) throws IOException {
-        File file = new File(env.getProperty("URL.DOWNLOAD_HI_RES") + "/" + namafile + ".mxf");
+        String fileName = namafile + env.getProperty("EXTENSION.FILE_DOWNLOAD");
+        File file = new File(env.getProperty("URL.DOWNLOAD_HI_RES") + "/" + fileName);
         byte[] fileContent = null;
         try {
             fileContent = Files.readAllBytes(file.toPath());
         } catch (IOException e) {
             throw new IOException(e.getMessage());
         }
+        logRepository
+                .save(new Log(null, "download", httpSession.getAttribute("username").toString(), fileName));
         return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + namafile + ".mxf" + "\"")
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(fileContent);
     }
 
@@ -147,8 +155,7 @@ public class MainController {
         dbIngest.setTranscodeExtension("mp4");
         dbIngest.setOriginalExtension(originalExtension);
         dbIngestRepository.save(dbIngest);
-        Person person = personRepository.findById(Integer.parseInt(httpSession.getAttribute("id").toString())).get();
-        logRepository.save(new Log(null, "upload", person, dbIngest));
+        logRepository.save(new Log(null, "upload", httpSession.getAttribute("username").toString(), namafile));
         data.put("icon", "success");
         data.put("message", "data berhasil di insert");
         return new ResponseEntity<>(data, HttpStatus.OK);
@@ -158,7 +165,7 @@ public class MainController {
     public ResponseEntity<Map> log(@RequestParam(defaultValue = "0") Integer start,
             @RequestParam(defaultValue = "5") Integer length) {
         Map data = new HashMap<>();
-        Pageable pageable = PageRequest.of(start, length);
+        Pageable pageable = PageRequest.of(start, length, Sort.by("createdAt").descending());
         Page<Log> dataPaging = logRepository.findAll(pageable);
         data.put("data", dataPaging);
         return new ResponseEntity<>(data, HttpStatus.OK);

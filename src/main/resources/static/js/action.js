@@ -1,5 +1,4 @@
 $(".tabs").click(function(){
-    
     $(".tabs").removeClass("active");
     $(".tabs h6").removeClass("font-weight-bold");    
     $(".tabs h6").addClass("text-muted");    
@@ -27,3 +26,22 @@ $(".tabs").click(function(){
         }
     });
 });
+
+function validate(evt) {
+    var theEvent = evt || window.event;
+
+    // Handle paste
+    if (theEvent.type === 'paste') {
+        key = event.clipboardData.getData('text/plain');
+    } else {
+        // Handle key press
+        var key = theEvent.keyCode || theEvent.which;
+        key = String.fromCharCode(key);
+    }
+    var regex = /^\d+$/;
+    if (!regex.test(key)) {
+        theEvent.returnValue = false;
+        if (theEvent.preventDefault)
+            theEvent.preventDefault();
+    }
+}
