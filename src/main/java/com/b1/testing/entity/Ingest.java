@@ -17,7 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "dbingest")
+@Table(name = "ingest")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter

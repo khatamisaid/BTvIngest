@@ -38,7 +38,6 @@ public class CmdRunner implements CommandLineRunner {
         roleRepository.save(editorRole);
         roleRepository.save(uploaderRole);
         roleRepository.save(libraryRole);
-
         personRepository
                 .save(new Person(1, "Administrator", encoder.encode("admin123"), "admin@it-berita1.com", adminRole));
         personRepository
