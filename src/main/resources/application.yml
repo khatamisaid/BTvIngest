@@ -67,8 +67,8 @@ server:
       enabled: false
     path: /error
 URL:
-  FILE_IN: D:\\Transcoder\\MEDIA_IN\\MEDIA_INBOX
-  FILE_PRIEVIEW: D:\\Transcoder\\H264_OUT
+  FILE_IN: D:\\media_in
+  FILE_PRIEVIEW: D:\\media_in
   DOWNLOAD_HI_RES: D:\\Transcoder\\MEDIA_OUT
   DOWNLOAD_LOW_RES: D:\\Transcoder\\MEDIA_OUT
 EXTENSION:
