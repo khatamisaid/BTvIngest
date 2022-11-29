@@ -67,9 +67,9 @@ server:
       enabled: false
     path: /error
 URL:
-  FILE_IN: D:\\Transcoder\\MEDIA_IN\\MEDIA_INBOX
-  FILE_PRIEVIEW: D:\\Transcoder\\H264_OUT
-  DOWNLOAD_HI_RES: D:\\Transcoder\\MEDIA_OUT
+  FILE_IN: \\192.168.6.30\\media_in\\inbox
+  FILE_PRIEVIEW: \\192.168.6.30\\h264_out
+  DOWNLOAD_HI_RES: \\192.168.6.30\\media_out
   DOWNLOAD_LOW_RES: D:\\Transcoder\\MEDIA_OUT
 EXTENSION:
   FILE_DOWNLOAD: .mxf  
