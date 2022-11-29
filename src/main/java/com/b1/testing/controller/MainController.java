@@ -3,6 +3,8 @@ package com.b1.testing.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -132,12 +134,14 @@ public class MainController {
             @RequestParam String reporter, @RequestParam String tim_liputan, @RequestParam String lok_liputan,
             @RequestParam String deskripsi, @RequestParam MultipartFile file) throws JsonProcessingException {
         Map data = new HashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
+        String ddMMyyyy = sdf.format(new Date());
         String namafile = "";
         String originalExtension = "";
         try {
             String[] arrSplit = file.getOriginalFilename().split("\\.");
             originalExtension = arrSplit[arrSplit.length - 1];
-            namafile = judul + "." + originalExtension;
+            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "." + originalExtension;
             file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
         } catch (IOException | NullPointerException e) {
             data.put("icon", "error");
