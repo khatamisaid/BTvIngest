@@ -81,7 +81,7 @@
     </nav>
   </header>
   <div class="container my-5 vh-100">
-    <div class="card" th:if="${session.role != 'Administrator'}">
+    <div class="card kotak_tabel kotak_form" th:if="${session.role != 'Administrator'}">
       <div class="card-header">DATA</div>
       <div class="card-body">
         <div class="table-responsive">
@@ -156,7 +156,7 @@
     </div>
   </div>
   <!-- Footer-->
-  <footer class="py-4 bg-dark fixed-bottom">
+  <footer class="py-4 bg-dark fixed-bottom" th:style="'background-image:url('+@{/images/images3.png}+');'">
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; Team IT 2022</p>
     </div>
