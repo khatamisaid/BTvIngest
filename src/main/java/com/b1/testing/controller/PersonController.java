@@ -67,7 +67,7 @@ public class PersonController {
         }
         Person personTemp = new Person(0, person.getUsername(), encoder.encode(person.getPassword()), person.getEmail(),
                 roleRepository.findById(person.getRole()).get());
-        // personRepository.save(personTemp);
+        personRepository.save(personTemp);
         data.put("icon", "success");
         data.put("message", "Sukses Insert Person");
         return new ResponseEntity<>(data, HttpStatus.OK);
