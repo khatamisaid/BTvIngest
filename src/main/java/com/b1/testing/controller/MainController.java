@@ -35,14 +35,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.b1.testing.entity.Ingest;
 import com.b1.testing.entity.Log;
-import com.b1.testing.entity.Person;
 import com.b1.testing.entity.Role;
 import com.b1.testing.repository.IngestRepository;
 import com.b1.testing.repository.LogRepository;
 import com.b1.testing.repository.PersonRepository;
 import com.b1.testing.repository.RoleRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class MainController {

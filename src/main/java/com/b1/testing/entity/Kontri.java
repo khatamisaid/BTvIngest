@@ -7,7 +7,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -18,30 +17,45 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "log")
+@Table(name = "kontri")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Log extends DateAudit{
+public class Kontri extends DateAudit{
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_log")
-    private Long idLog;
+    @Column(name = "id_kontri")
+    private Integer idKontri;
 
-    @Size(max = 255)
-    @Column(name = "action")
-    private String action;
+    @Column(name = "judul")
+    private String judul;
 
-    @Size(max = 255)
-    @Column(name = "username")
-    private String username;
+    @Column(name = "tim_liputan")
+    private String timLiputan;
 
-    @Size(max = 255)
-    @Column(name = "data")
-    private String data;
+    @Column(name = "reporter")
+    private String reporter;
+
+    @Column(name = "lok_liputan")
+    private String lokLiputan;
+
+    @Column(name = "deskripsi")
+    private String deskripsi;
+
+    @Column(name = "no_tape")
+    private Integer noTape;
+
+    @Column(name = "original_extension")
+    private String originalExtension;
+
+    @Column(name = "transcode_extension")
+    private String transcodeExtension;
+
+    @Column(name = "files")
+    private String files;
 }
