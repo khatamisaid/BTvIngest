@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+    <link rel="stylesheet" href="../mobile/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../mobile/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="../mobile/css/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <title>Ingest</title>
+</head>
+
+<body style="background-color: #efefef;">
+    <div class="container justify-content-center">
+        <div class="kotak_login kotak_form" style="margin: 50px auto;">
+            
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#upform">Upload</a></li>
+                <li><a data-toggle="tab" href="#logf">Log Upload</a></li>
+              </ul>
+
+
+              <div class="tab-content">
+
+              <div class="tab-pane fade in active" id="upform">
+            <div class="card-header">ISI DATA</div>
+                    <form action="" id="regForm" method="post" enctype="multipart/form-data">
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label>judul</label>
+                                <input type="text" name="judul" id="judul" class="form-control" required="true">
+                                <p class="text-danger" id="err_judul"></p>
+                            </div>
+                            
+                            
+                            <div class="mb-3">
+                                <label for="reporter" class="form-label">reporter</label>
+                                <div class="row ml-1">
+                                <input type="text" style="width: 80%;" class="form-control col-sm-10 mr-3" id="reporter" name="reporter" placeholder="Nama Reporter" value="">
+                                <button class="btn btn-success col-sm-3" style="width: 12%;">+</button>    
+                                <!-- jika tambah tim maka akan keluar dropdown dengan pilihan (camera person, VJ, reporter) dan keluar input nama -->
+                            </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="lok_liputan" class="form-label">Lokasi Liputan</label>
+                                <input type="text" class="form-control" id="lok_liputan" name="lok_liputan" placeholder="Lokasi Liputan" value=" ">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="file" class="form-label">Upload Files</label>
+                                <input type="file" class="form-control" name="file" id="file">
+                                </div>
+
+                                <div class="mb-3">
+                                <label for="deskripsi" class="form-label">deksripsi file</label>
+                                <input type="text" class="form-control" id="deskripsi" name="deskripsi" placeholder="deskripsi Liputan" value=" ">
+                            </div>
+                            <div class="mb-3">
+                                <button class="btn btn-success float-right mb-3">Tambah File</button>    
+                            </div>
+                            
+
+                            <div class="mb-3">
+                                <input style="width: 100%;" type="submit" id="nambah" value="Tambah Data" class="btn btn-primary" name="falidasi" />
+                                
+                            </div>
+                            </div>
+                        
+
+                    </form>
+
+                    
+            </div>
+
+            <div class="tab-pane fade" id="logf">
+                <div class="card-header">
+                    Log
+                </div>
+                <form action="" id="logForm" method="post" enctype="multipart/form-data">
+                    <div class="card-body">
+                        TEST
+                    </div>
+
+                </form>
+            </div>
+        
+
+        </div>
+    </div>
+
+</body>
+
+</html>

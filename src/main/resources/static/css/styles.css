@@ -78,7 +78,7 @@
   width: 350px;
   background: white;
   /*meletakkan form ke tengah*/
-  margin: 80px auto;
+  margin: 0px auto 80px;
   padding: 30px 20px;
 }
 
@@ -86,7 +86,7 @@
   width: 100%;
   background: white;
   /*meletakkan form ke tengah*/
-  margin: 80px auto;
+  margin: 0px auto 80px;
   padding: 30px 20px;
 }
 

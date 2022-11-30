@@ -67,7 +67,7 @@ server:
       enabled: false
     path: /error
 URL:
-  FILE_IN: \\192.168.6.30\\media_in\\inbox
+  FILE_IN: \\192.168.10.82\\preview
   FILE_PRIEVIEW: \\192.168.6.30\\h264_out
   DOWNLOAD_HI_RES: \\192.168.6.30\\media_out
   DOWNLOAD_LOW_RES: D:\\Transcoder\\MEDIA_OUT

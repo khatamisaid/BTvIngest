@@ -17,6 +17,7 @@
 
 <body th:style="'background-image:url('+@{/images/images1.png}+');background-size: cover;'">
   <div class="container">
+    <img style="width: 300px; display: block; margin: 5% auto 0px;" th:src="@{/images/B_UNIVERSE_LOGO_COLOR.png}">
     <div class="justify-content-center kotak_login kotak_form">
       <h1 style="color: white; text-align: center">Login</h1>
       <form th:action="@{/login}" th:method="post" enctype="multipart/form-data"
@@ -43,8 +44,7 @@
         </div>
       </form>
     </div>
-    <img style="width: 300px; display: block; margin-left: auto; margin-right: auto;" th:src="@{/images/B_UNIVERSE_LOGO_COLOR.png}">
-
+    
   </div>
   <!-- <script type="text/javascript" th:src="@{/js/jquery-3.3.1.min.js}"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
