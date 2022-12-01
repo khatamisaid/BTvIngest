@@ -3,6 +3,7 @@ package com.b1.testing.controller;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +12,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.data.domain.Page;
@@ -36,11 +38,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import com.b1.testing.entity.Ingest;
 import com.b1.testing.entity.Log;
 import com.b1.testing.entity.Role;
+import com.b1.testing.entity.Video;
 import com.b1.testing.repository.IngestRepository;
 import com.b1.testing.repository.LogRepository;
 import com.b1.testing.repository.PersonRepository;
 import com.b1.testing.repository.RoleRepository;
+import com.b1.testing.repository.VideoRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class MainController {
@@ -49,13 +54,16 @@ public class MainController {
     private Environment env;
 
     @Autowired
-    private IngestRepository dbIngestRepository;
+    private IngestRepository ingestRepository;
 
     @Autowired
     private RoleRepository roleRepository;
 
     @Autowired
     private LogRepository logRepository;
+
+    @Autowired
+    private VideoRepository videoRepository;
 
     @Autowired
     private PersonRepository personRepository;
@@ -68,6 +76,9 @@ public class MainController {
         List<Role> roles = roleRepository.findAll();
         roles.remove(0);
         model.addAttribute("roles", roles);
+        if (httpSession.getAttribute("role").toString().equalsIgnoreCase("kontri")) {
+            return "indexUserKontri";
+        }
         return "index";
     }
 
@@ -76,22 +87,25 @@ public class MainController {
             @RequestParam(defaultValue = "5") Integer length) {
         Map data = new HashMap<>();
         Pageable pageable = PageRequest.of(start, length);
-        Page<Ingest> dataPaging = dbIngestRepository.findAll(pageable);
+        Page<Ingest> dataPaging = ingestRepository.findAll(pageable);
         data.put("data", dataPaging);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
     @GetMapping(value = "/find")
-    public ResponseEntity<Map> find(@RequestParam(required = true) Integer id) {
+    public ResponseEntity<Map> find(@RequestParam(required = true) Integer id) throws JsonProcessingException {
         Map data = new HashMap<>();
-        if (!dbIngestRepository.existsById(id)) {
+        if (!ingestRepository.existsById(id)) {
             data.put("message", "Data Tidak Ditemukan");
             return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
         }
-        Ingest ingest = dbIngestRepository.findById(id).get();
+        Ingest ingest = ingestRepository.findById(id).get();
         data.put("data", ingest);
+        ObjectMapper mapper = new ObjectMapper();
+
         logRepository
-                .save(new Log(null, "priview", httpSession.getAttribute("username").toString(), ingest.getFiles()));
+                .save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
+                        mapper.writeValueAsString(ingest.getListVideo())));
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -116,11 +130,11 @@ public class MainController {
     @DeleteMapping(value = "/materi")
     public ResponseEntity<Map> deleteMateri(@RequestParam(required = true) Integer id) {
         Map data = new HashMap<>();
-        if (!dbIngestRepository.existsById(id)) {
+        if (!ingestRepository.existsById(id)) {
             data.put("message", "Data Tidak Ditemukan");
             return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
         }
-        dbIngestRepository.deleteById(id);
+        ingestRepository.deleteById(id);
         data.put("message", "Data Materi Berhasil di hapus");
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
@@ -130,34 +144,51 @@ public class MainController {
     @ResponseBody
     public ResponseEntity<Map> postMateri(@RequestParam String judul, @RequestParam Integer no_tape,
             @RequestParam String reporter, @RequestParam String tim_liputan, @RequestParam String lok_liputan,
-            @RequestParam String deskripsi, @RequestParam MultipartFile file) throws JsonProcessingException {
+            @RequestParam String deskripsi, @RequestParam List<MultipartFile> files)
+            throws JsonProcessingException {
         Map data = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
         String ddMMyyyy = sdf.format(new Date());
         String namafile = "";
         String originalExtension = "";
-        try {
-            String[] arrSplit = file.getOriginalFilename().split("\\.");
-            originalExtension = arrSplit[arrSplit.length - 1];
-            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "." + originalExtension;
-            file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
-        } catch (IOException | NullPointerException e) {
-            data.put("icon", "error");
-            data.put("message", e.getMessage());
-            return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
-        }
         Ingest dbIngest = new Ingest();
         dbIngest.setDeskripsi(deskripsi);
-        dbIngest.setFiles(namafile);
         dbIngest.setJudul(judul);
         dbIngest.setLokLiputan(lok_liputan);
         dbIngest.setNoTape(no_tape);
         dbIngest.setReporter(reporter);
         dbIngest.setTimLiputan(tim_liputan);
-        dbIngest.setTranscodeExtension("mp4");
-        dbIngest.setOriginalExtension(originalExtension);
-        dbIngestRepository.save(dbIngest);
-        logRepository.save(new Log(null, "upload", httpSession.getAttribute("username").toString(), namafile));
+        ingestRepository.save(dbIngest);
+        for (int i = 0; i < files.size(); i++) {
+            try {
+                String[] arrSplit = files.get(i).getOriginalFilename().split("\\.");
+                originalExtension = arrSplit[arrSplit.length - 1];
+                namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "_" + (++i)
+                        + "."
+                        + originalExtension;
+                        String base64Folder = Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes()).toString();
+                String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
+                        + base64Folder;
+                File dir = new File(fullPathFile);
+                if (!dir.exists())dir.mkdirs();
+                files.get(i).transferTo(new File(fullPathFile + "/" + namafile));
+                Video video = new Video();
+                video.setIdIngest(dbIngest.getIdIngest());
+                video.setIpLocation("192.168.100.90");
+                video.setFilename(namafile);
+                video.setPath(base64Folder);
+                video.setOriginalExtension(originalExtension);
+                video.setTranscodeExtension("mp4");
+                videoRepository.save(video);
+            } catch (IOException | NullPointerException e) {
+                data.put("icon", "error");
+                data.put("message", e.getMessage());
+                return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+            }
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        logRepository.save(new Log(null, "upload", httpSession.getAttribute("username").toString(),
+                mapper.writeValueAsString(dbIngest.getListVideo())));
         data.put("icon", "success");
         data.put("message", "data berhasil di insert");
         return new ResponseEntity<>(data, HttpStatus.OK);

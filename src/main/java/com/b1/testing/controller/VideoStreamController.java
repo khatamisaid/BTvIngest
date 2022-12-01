@@ -14,10 +14,11 @@ public class VideoStreamController {
     @Autowired
     private VideoStreamService videoStreamService;
 
-    @RequestMapping(value = "/stream/{fileType}/{fileName}", method = RequestMethod.GET)
+    @RequestMapping(value = "/stream/{fileType}/{path}/{fileName}", method = RequestMethod.GET)
     public Mono<ResponseEntity<byte[]>> streamVideo(@RequestHeader(value = "Range", required = false) String httpRangeList,
                                                     @PathVariable("fileType") String fileType,
+                                                    @PathVariable("path") String path,
                                                     @PathVariable("fileName") String fileName) {
-        return Mono.just(videoStreamService.prepareContent(fileName, fileType, httpRangeList));
+        return Mono.just(videoStreamService.prepareContent(path, fileName, fileType, httpRangeList));
     }
 }

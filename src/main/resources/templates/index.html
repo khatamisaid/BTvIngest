@@ -42,125 +42,206 @@
     <title>Ingest</title>
   </head>
 
-<body style="background-color: #efefef">
-  <header>
-    <nav class="navbar navbar-expand-lg" th:style="'background-image:url('+@{/images/images2.png}+');background-size:cover;'">
-      <div class="container">
-        <a class="navbar-brand" href="#!"><img class="img-fluid me-2" th:src="@{/images/BTV.svg}" alt=""
-            style="width: 80px" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" style="color: white" th:text="${session.username}"></a>
-            </li>
-            <li class="nav-item" th:if="${session.role == 'Uploader' || session.role == 'Library'}">
-              <a class="nav-link"><button class="action submit btn btn-sm btn-primary float-end" data-toggle="modal"
-                  href="#modalform">
-                  Materi
-                </button></a>
-            </li>
-            <li class="nav-item" th:if="${session.role == 'Administrator'}">
-              <a class="nav-link"><button class="action submit btn btn-sm btn-success float-end" data-toggle="modal"
-                  href="#modalManagementUser">
-                  Management User
-                </button></a>
-            </li>
+  <body style="background-color: #efefef">
+    <header>
+      <nav
+        class="navbar navbar-expand-lg"
+        th:style="'background-image:url('+@{/images/images2.png}+');background-size:cover;'"
+      >
+        <div class="container">
+          <a class="navbar-brand" href="#!"
+            ><img
+              class="img-fluid me-2"
+              th:src="@{/images/BTV.svg}"
+              alt=""
+              style="width: 80px"
+          /></a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  class="nav-link"
+                  style="color: white"
+                  th:text="${session.username}"
+                ></a>
+              </li>
+              <li
+                class="nav-item"
+                th:if="${session.role == 'Uploader' || session.role == 'Library'}"
+              >
+                <a class="nav-link"
+                  ><button
+                    class="action submit btn btn-sm btn-primary float-end"
+                    data-toggle="modal"
+                    href="#modalform"
+                  >
+                    Materi
+                  </button></a
+                >
+              </li>
+              <li class="nav-item" th:if="${session.role == 'Administrator'}">
+                <a class="nav-link"
+                  ><button
+                    class="action submit btn btn-sm btn-success float-end"
+                    data-toggle="modal"
+                    href="#modalManagementUser"
+                  >
+                    Management User
+                  </button></a
+                >
+              </li>
 
-            <li class="nav-item">
-              <a class="nav-link" th:href="@{/logout}"><button class="action submit btn btn-sm btn-danger float-end">
-                  Logout
-                </button></a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-  <div class="container my-5 vh-100">
-    <div class="card kotak_tabel kotak_form" th:if="${session.role != 'Administrator'}">
-      <div class="card-header">DATA</div>
-      <div class="card-body">
-        <div class="table-responsive">
-          <table id="tableMateri" class="table custom-table dt-responsive" role="grid" aria-describedby="myTable2_info">
-            <!-- thead -->
-            <thead>
-              <tr role="row">
-                <th>#</th>
-                <th>judul</th>
-                <th>reporter</th>
-                <th>deskripsi</th>
-                <th th:if="${session.role != 'Administrator'}">action</th>
-              </tr>
-            </thead>
-            <!-- /thead -->
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <div class="card" th:unless="${session.role != 'Administrator'}">
-      <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
-        <li class="nav-item" role="presentation">
-          <a class="nav-link active" id="ex3-tab-1" data-toggle="tab" href="#ex3-tabs-1" role="tab"
-            aria-controls="ex3-tabs-1" aria-selected="true">Lihat User</a>
-        </li>
-        <li class="nav-item" role="presentation">
-          <a class="nav-link" id="ex3-tab-2" data-toggle="tab" href="#ex3-tabs-2" role="tab" aria-controls="ex3-tabs-2"
-            aria-selected="false">Log Aktivitas User</a>
-        </li>
-      </ul>
-      <!-- Tabs navs -->
-      <div class="card-body">
-        <div class="tab-content" id="ex2-content">
-          <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
-            <div class="table-responsive">
-              <table id="tablePerson" class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline" role="grid"
-                aria-describedby="myTable2_info">
-                <!-- thead -->
-                <thead>
-                  <tr role="row">
-                    <th>#</th>
-                    <th>username</th>
-                    <th>email</th>
-                  </tr>
-                </thead>
-                <!-- /thead -->
-                <tbody></tbody>
-              </table>
-            </div>
+              <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}"
+                  ><button
+                    class="action submit btn btn-sm btn-danger float-end"
+                  >
+                    Logout
+                  </button></a
+                >
+              </li>
+            </ul>
           </div>
-          <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
-            <div class="table-responsive">
-              <table id="tableLogAktivitas" class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline" role="grid"
-                aria-describedby="myTable2_info">
-                <!-- thead -->
-                <thead>
-                  <tr role="row">
-                    <th>#</th>
-                    <th>username</th>
-                    <th>aktivitas</th>
-                    <th>waktu aktivitas dilakukan</th>
-                  </tr>
-                </thead>
-                <!-- /thead -->
-                <tbody></tbody>
-              </table>
-            </div>
+        </div>
+      </nav>
+    </header>
+    <div class="container my-5 vh-100">
+      <div
+        class="card kotak_tabel kotak_form"
+        th:if="${session.role != 'Administrator'}"
+      >
+        <div class="card-header">DATA</div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table
+              id="tableMateri"
+              class="table custom-table dt-responsive"
+              role="grid"
+              aria-describedby="myTable2_info"
+            >
+              <!-- thead -->
+              <thead>
+                <tr role="row">
+                  <th>#</th>
+                  <th>judul</th>
+                  <th>reporter</th>
+                  <th>deskripsi</th>
+                  <th th:if="${session.role != 'Administrator'}">action</th>
+                </tr>
+              </thead>
+              <!-- /thead -->
+              <tbody></tbody>
+            </table>
           </div>
         </div>
       </div>
+      <div class="card" th:unless="${session.role != 'Administrator'}">
+        <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+          <li class="nav-item" role="presentation">
+            <a
+              class="nav-link active"
+              id="ex3-tab-1"
+              data-toggle="tab"
+              href="#ex3-tabs-1"
+              role="tab"
+              aria-controls="ex3-tabs-1"
+              aria-selected="true"
+              >Lihat User</a
+            >
+          </li>
+          <li class="nav-item" role="presentation">
+            <a
+              class="nav-link"
+              id="ex3-tab-2"
+              data-toggle="tab"
+              href="#ex3-tabs-2"
+              role="tab"
+              aria-controls="ex3-tabs-2"
+              aria-selected="false"
+              >Log Aktivitas User</a
+            >
+          </li>
+        </ul>
+        <!-- Tabs navs -->
+        <div class="card-body">
+          <div class="tab-content" id="ex2-content">
+            <div
+              class="tab-pane fade show active"
+              id="ex3-tabs-1"
+              role="tabpanel"
+              aria-labelledby="ex3-tab-1"
+            >
+              <div class="table-responsive">
+                <table
+                  id="tablePerson"
+                  class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
+                  role="grid"
+                  aria-describedby="myTable2_info"
+                >
+                  <!-- thead -->
+                  <thead>
+                    <tr role="row">
+                      <th>#</th>
+                      <th>username</th>
+                      <th>email</th>
+                    </tr>
+                  </thead>
+                  <!-- /thead -->
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="ex3-tabs-2"
+              role="tabpanel"
+              aria-labelledby="ex3-tab-2"
+            >
+              <div class="table-responsive">
+                <table
+                  id="tableLogAktivitas"
+                  class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
+                  role="grid"
+                  aria-describedby="myTable2_info"
+                >
+                  <!-- thead -->
+                  <thead>
+                    <tr role="row">
+                      <th>#</th>
+                      <th>username</th>
+                      <th>aktivitas</th>
+                      <th>waktu aktivitas dilakukan</th>
+                    </tr>
+                  </thead>
+                  <!-- /thead -->
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <!-- Footer-->
-  <footer class="py-4 bg-dark fixed-bottom" th:style="'background-image:url('+@{/images/images3.png}+');background-size:cover;'">
-    <div class="container">
-      <p class="m-0 text-center text-white">Copyright &copy; Team IT 2022</p>
-    </div>
-  </footer>
+    <!-- Footer-->
+    <footer
+      class="py-4 bg-dark fixed-bottom"
+      th:style="'background-image:url('+@{/images/images3.png}+');background-size:cover;'"
+    >
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; Team IT 2022</p>
+      </div>
+    </footer>
 
     <div class="modal fade" id="modalform" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg">
@@ -253,6 +334,7 @@
                     name="file"
                     id="file"
                     accept="video/mp4,video/x-m4v,video/*"
+                    multiple
                   />
                 </div>
               </div>
@@ -423,7 +505,10 @@
               ></textarea>
             </div>
           </div>
-          <div class="modal-footer" th:if="${session.role == 'Editor' or session.role == 'Library'}">
+          <div
+            class="modal-footer"
+            th:if="${session.role == 'Editor' or session.role == 'Library'}"
+          >
             <button id="downloadVideo" class="btn btn-primary">
               Download Video
             </button>
@@ -482,10 +567,7 @@
       type="text/javascript"
       th:src="@{/js/jquery.dataTables.min.js}"
     ></script>
-    <script
-      type="text/javascript"
-      th:src="@{/js/action.js}"
-    ></script>
+    <script type="text/javascript" th:src="@{/js/action.js}"></script>
     <script th:inline="javascript">
       /*<![CDATA[*/
       $(document).ready(function () {
@@ -518,8 +600,13 @@
           "#deskripsi"
         ).val()}`;
         var bodyFormData = new FormData();
-        var photo = $("#file").prop("files");
-        bodyFormData.append("file", photo[0]);
+        let photo = $("#file").prop("files");
+        var listPhoto = [];
+        Array.from(photo).forEach((file) => {
+          console.log(file);
+          listPhoto.push(file);
+        });
+        bodyFormData.append("files", listPhoto);
         axios({
           method: "post",
           url: url,
@@ -607,12 +694,14 @@
       function getById(id) {
         $.get(`/find?id=${id}`, function (res) {
           var materi = res.data;
-          var originalExtension = materi.originalExtension;
-          var transcodeExtension = materi.transcodeExtension;
-          var video = materi.files.replace(`.${originalExtension}`, "");
+          var originalExtension = listVideo[0].originalExtension;
+          var transcodeExtension = listVideo[0].transcodeExtension;
+          var listVideo = materi.listVideo;
+          var video = listVideo[0].files.replace(`.${originalExtension}`, "");
+          var path = listVideo[0].path;
           $("#videoDetail source").attr(
             "src",
-            `/video/stream/${transcodeExtension}/${video}`
+            `/video/stream/${transcodeExtension}/${path}/${video}`
           );
           $("#videoDetail")[0].load();
           $("#detailJudul").val(materi.judul);

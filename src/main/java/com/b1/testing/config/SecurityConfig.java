@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/person/**", "/role/**").hasAuthority("Administrator")
                 .antMatchers("/video/**").hasAnyAuthority("Produser", "Editor", "Uploader", "Library")
+                // .antMatchers("/kontri/**").hasAnyAuthority("Kontri")
                 .antMatchers("/**").authenticated()
                 .and()
                 .formLogin()

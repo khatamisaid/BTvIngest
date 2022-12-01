@@ -1,11 +1,16 @@
 package com.b1.testing.entity;
 
+import java.util.List;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -44,18 +49,13 @@ public class Kontri extends DateAudit{
     @Column(name = "lok_liputan")
     private String lokLiputan;
 
-    @Column(name = "deskripsi")
+    @Column(name = "deskripsi", columnDefinition = "TEXT")
     private String deskripsi;
 
     @Column(name = "no_tape")
     private Integer noTape;
 
-    @Column(name = "original_extension")
-    private String originalExtension;
-
-    @Column(name = "transcode_extension")
-    private String transcodeExtension;
-
-    @Column(name = "files")
-    private String files;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_kontri", referencedColumnName = "id_kontri")
+    private List<Video> listVideo;
 }

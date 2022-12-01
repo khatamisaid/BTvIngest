@@ -1,16 +1,11 @@
 package com.b1.testing.entity;
 
-import java.util.List;
-
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -22,40 +17,39 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "ingest")
+@Table(name = "video")
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class Ingest extends DateAudit{
+public class Video {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Column(name = "id_video")
+    private Integer idVideo;
+
     @Column(name = "id_ingest")
     private Integer idIngest;
-    
-    @Column(name = "judul")
-    private String judul;
 
-    @Column(name = "tim_liputan")
-    private String timLiputan;
+    @Column(name = "id_kontri")  
+    private Integer idKontri;
 
-    @Column(name = "reporter")
-    private String reporter;
+    @Column(name = "ip_location")
+    private String ipLocation;
 
-    @Column(name = "lok_liputan")
-    private String lokLiputan;
+    @Column(name = "path")
+    private String path;
 
-    @Column(name = "deskripsi", columnDefinition = "TEXT")
-    private String deskripsi;
+    @Column(name = "filename")
+    private String filename;
 
-    @Column(name = "no_tape")
-    private Integer noTape;
+    @Column(name = "transcode_extension")
+    private String transcodeExtension;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id_ingest", referencedColumnName = "id_ingest")
-    private List<Video> listVideo;
+    @Column(name = "original_extension")
+    private String originalExtension;
 }

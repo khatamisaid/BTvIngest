@@ -41,7 +41,6 @@ public class Log extends DateAudit{
     @Column(name = "username")
     private String username;
 
-    @Size(max = 255)
-    @Column(name = "data")
+    @Column(name = "data", columnDefinition = "TEXT")
     private String data;
 }
