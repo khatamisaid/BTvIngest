@@ -141,7 +141,6 @@ public class VideoStreamService {
      * @return Long.
      */
     private Long sizeFromFile(Path path) {
-        System.out.println(path.toString());
         try {
             return Files.size(path);
         } catch (IOException ioException) {
