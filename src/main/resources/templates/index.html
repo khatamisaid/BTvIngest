@@ -569,12 +569,12 @@
         ).val()}`;
         var bodyFormData = new FormData();
         let photo = $("#file").prop("files");
-        var listPhoto = [];
-        Array.from(photo).forEach((file) => {
-          console.log(file);
-          listPhoto.push(file);
-        });
-        bodyFormData.append("files", listPhoto);
+        // var listPhoto = [];
+        // Array.from(photo).forEach((file) => {
+        //   console.log(file);
+        //   listPhoto.push(file);
+        // });
+        bodyFormData.append("files", photo[0]);
         axios({
           method: "post",
           url: url,
@@ -662,14 +662,14 @@
       function getById(id) {
         $.get(`/find?id=${id}`, function (res) {
           var materi = res.data;
+          var listVideo = materi.listVideo;
           var originalExtension = listVideo[0].originalExtension;
           var transcodeExtension = listVideo[0].transcodeExtension;
-          var listVideo = materi.listVideo;
-          var video = listVideo[0].files.replace(`.${originalExtension}`, "");
+          var video = listVideo[0].filename.replace(`.${originalExtension}`, "");
           var path = listVideo[0].path;
           $("#videoDetail source").attr(
             "src",
-            `/video/stream/${transcodeExtension}/${path}/${video}`
+            `/video/stream/${transcodeExtension}/${encodeURI(path)}/${video}`
           );
           $("#videoDetail")[0].load();
           $("#detailJudul").val(materi.judul);

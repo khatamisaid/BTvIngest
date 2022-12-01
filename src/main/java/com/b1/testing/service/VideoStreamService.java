@@ -38,7 +38,7 @@ public class VideoStreamService {
             final String fileKey = fileName + "." + fileType;
             long rangeStart = 0;
             long rangeEnd = CHUNK_SIZE;
-            final Long fileSize = getFileSize(path, fileKey);
+            final Long fileSize = getFileSize(fileKey, path);
             if (range == null) {
                 return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
                         .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
@@ -141,6 +141,7 @@ public class VideoStreamService {
      * @return Long.
      */
     private Long sizeFromFile(Path path) {
+        System.out.println(path.toString());
         try {
             return Files.size(path);
         } catch (IOException ioException) {

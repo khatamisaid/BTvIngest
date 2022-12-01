@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -57,7 +58,8 @@ public class KontriController {
     @ResponseBody
     public ResponseEntity<Map> postMateri(@RequestParam String judul,
             @RequestParam String reporter, @RequestParam String lok_liputan,
-            @RequestParam String deskripsi, @RequestParam MultipartFile[] files) throws IllegalStateException, JsonProcessingException {
+            @RequestParam String deskripsi, @RequestPart("files") MultipartFile files)
+            throws IllegalStateException, JsonProcessingException {
         Map data = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
         String ddMMyyyy = sdf.format(new Date());
@@ -69,32 +71,34 @@ public class KontriController {
         kontri.setLokLiputan(lok_liputan);
         kontri.setReporter(reporter);
         kontriRepository.save(kontri);
-        System.out.println(files[0].getOriginalFilename());
-        for (int i = 0; i < files.length; i++) {
-            try {
-                String[] arrSplit = files[i].getOriginalFilename().split("\\.");
-                originalExtension = arrSplit[arrSplit.length - 1];
-                namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + lok_liputan + "_" + (++i)
-                        + "."
-                        + originalExtension;
-                String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
-                        + Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes());
-                File dir = new File(fullPathFile);
-                if (!dir.exists()) dir.mkdirs();
-                files[i].transferTo(new File(fullPathFile + "/" + namafile));
-                Video video = new Video();
-                video.setIdKontri(kontri.getIdKontri());
-                video.setIpLocation("192.168.100.90");
-                video.setFilename(namafile);
-                video.setOriginalExtension(originalExtension);
-                video.setTranscodeExtension("mp4");
-                videoRepository.save(video);
-            } catch (IOException | NullPointerException e) {
-                data.put("icon", "error");
-                data.put("message", e.getMessage());
-                return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
-            }
+        try {
+            String[] arrSplit = files.getOriginalFilename().split("\\.");
+            originalExtension = arrSplit[arrSplit.length - 1];
+            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + lok_liputan + "_"
+                    + "."
+                    + originalExtension;
+            String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
+                    + Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes());
+            File dir = new File(fullPathFile);
+            if (!dir.exists())
+                dir.mkdirs();
+            files.transferTo(new File(fullPathFile + "/" + namafile));
+            Video video = new Video();
+            video.setIdKontri(kontri.getIdKontri());
+            video.setIpLocation("192.168.100.90");
+            video.setFilename(namafile);
+            video.setOriginalExtension(originalExtension);
+            video.setTranscodeExtension("mp4");
+            videoRepository.save(video);
+        } catch (IOException | NullPointerException e) {
+            data.put("icon", "error");
+            data.put("message", e.getMessage());
+            return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
         }
+        // System.out.println(files[0].getOriginalFilename());
+        // for (int i = 0; i < files.length; i++) {
+
+        // }
         ObjectMapper mapper = new ObjectMapper();
         logRepository.save(new Log(null, "upload", httpSession.getAttribute("username").toString(),
                 mapper.writeValueAsString(kontri.getListVideo())));

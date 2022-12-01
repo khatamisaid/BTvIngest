@@ -75,6 +75,10 @@ EXTENSION:
   FILE_DOWNLOAD: .mxf  
 ---
 spring:
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
   config:
     activate:
       on-profile: testing

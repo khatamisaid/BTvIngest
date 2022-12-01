@@ -122,7 +122,6 @@
                     name="file"
                     id="file"
                     accept="video/mp4,video/x-m4v,video/*"
-                    multiple
                   />
                 </div>
                 <div class="form-group">
@@ -231,13 +230,13 @@
         ).val()}`;
         var bodyFormData = new FormData();
         var photo = $("#file").prop("files");
-        var listPhoto = [];
-        Array.from(photo).forEach((file) => {
-          console.log(file);
-          listPhoto.push(file);
-        });
-        console.log(listPhoto);
-        bodyFormData.append("files", listPhoto);
+        // var listPhoto = [];
+        // Array.from(photo).forEach((file) => {
+        //   console.log(file);
+        //   listPhoto.push(file);
+        // });
+        // console.log(listPhoto);
+        bodyFormData.append("files", photo[0]);
         axios({
           method: "post",
           url: url,

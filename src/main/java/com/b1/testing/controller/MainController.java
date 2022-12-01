@@ -144,7 +144,7 @@ public class MainController {
     @ResponseBody
     public ResponseEntity<Map> postMateri(@RequestParam String judul, @RequestParam Integer no_tape,
             @RequestParam String reporter, @RequestParam String tim_liputan, @RequestParam String lok_liputan,
-            @RequestParam String deskripsi, @RequestParam List<MultipartFile> files)
+            @RequestParam String deskripsi, @RequestParam MultipartFile files)
             throws JsonProcessingException {
         Map data = new HashMap<>();
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyy");
@@ -159,32 +159,32 @@ public class MainController {
         dbIngest.setReporter(reporter);
         dbIngest.setTimLiputan(tim_liputan);
         ingestRepository.save(dbIngest);
-        for (int i = 0; i < files.size(); i++) {
-            try {
-                String[] arrSplit = files.get(i).getOriginalFilename().split("\\.");
-                originalExtension = arrSplit[arrSplit.length - 1];
-                namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "_" + (++i)
-                        + "."
-                        + originalExtension;
-                        String base64Folder = Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes()).toString();
-                String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
-                        + base64Folder;
-                File dir = new File(fullPathFile);
-                if (!dir.exists())dir.mkdirs();
-                files.get(i).transferTo(new File(fullPathFile + "/" + namafile));
-                Video video = new Video();
-                video.setIdIngest(dbIngest.getIdIngest());
-                video.setIpLocation("192.168.100.90");
-                video.setFilename(namafile);
-                video.setPath(base64Folder);
-                video.setOriginalExtension(originalExtension);
-                video.setTranscodeExtension("mp4");
-                videoRepository.save(video);
-            } catch (IOException | NullPointerException e) {
-                data.put("icon", "error");
-                data.put("message", e.getMessage());
-                return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
-            }
+        try {
+            String[] arrSplit = files.getOriginalFilename().split("\\.");
+            originalExtension = arrSplit[arrSplit.length - 1];
+            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "_"
+                    + "."
+                    + originalExtension;
+            String base64Folder = Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes())
+                    .toString();
+            String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
+                    + base64Folder;
+            File dir = new File(fullPathFile);
+            if (!dir.exists())
+                dir.mkdirs();
+            files.transferTo(new File(fullPathFile + "/" + namafile));
+            Video video = new Video();
+            video.setIdIngest(dbIngest.getIdIngest());
+            video.setIpLocation("192.168.100.90");
+            video.setFilename(namafile);
+            video.setPath(base64Folder);
+            video.setOriginalExtension(originalExtension);
+            video.setTranscodeExtension("mp4");
+            videoRepository.save(video);
+        } catch (IOException | NullPointerException e) {
+            data.put("icon", "error");
+            data.put("message", e.getMessage());
+            return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
         }
         ObjectMapper mapper = new ObjectMapper();
         logRepository.save(new Log(null, "upload", httpSession.getAttribute("username").toString(),
