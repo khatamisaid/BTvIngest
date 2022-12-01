@@ -13,12 +13,12 @@
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
     />
-    <!-- <link
+     <link
       rel="stylesheet"
       th:href="@{/css/bootstrap.min.css}"
       integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
       crossorigin="anonymous"
-    /> -->
+    /> 
     <!-- Font Awesome 5 -->
     <link
       rel="stylesheet"
@@ -48,10 +48,10 @@
       <div class="container">
         <a class="navbar-brand" href="#!"><img class="img-fluid me-2" th:src="@{/images/BTV.svg}" alt=""
             style="width: 80px" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation"><span
+                        class="navbar-toggler-icon"><i class="fas fa-bars ms-1"></i></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -162,9 +162,9 @@
     </div>
   </footer>
 
-    <div class="modal fade" id="modalform" tabindex="-1" aria-hidden="true">
+    <div class="modal fade vh-100" id="modalform" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="min-width: 720px !important">
+        <div class="modal-content" >
           <div class="modal-header">
             <h5 class="modal-title">INPUT DATA MATERI</h5>
             <button
@@ -273,8 +273,8 @@
       tabindex="-1"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content" style="min-width: 720px !important">
+      <div class="modal-dialog modal-lg vh-100">
+        <div class="modal-content" >
           <div class="modal-header">
             <h5 class="modal-title">Management User</h5>
             <button
@@ -369,9 +369,9 @@
       </div>
     </div>
 
-    <div class="modal fade" id="modalDetail" tabindex="-1" aria-hidden="true">
+    <div class="modal fade vh-100" id="modalDetail" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-lg d-flex justify-content-center">
-        <div class="modal-content" style="min-width: 720px !important">
+        <div class="modal-content" >
           <div class="modal-header">
             <h5 class="modal-title">Detail Materi</h5>
             <button
@@ -385,7 +385,7 @@
           </div>
           <div class="modal-body">
             <div class="d-flex justify-content-center">
-              <video id="videoDetail" width="400" height="400" controls>
+              <video id="videoDetail" width="100%" controls>
                 <source src="" type="video/mp4" />
                 Your browser does not support HTML video.
               </video>
