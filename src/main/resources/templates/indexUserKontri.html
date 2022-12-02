@@ -42,7 +42,7 @@
   </head>
 
   <body style="background-color: #efefef">
-    <div class="container justify-content-center">
+    <div class="container justify-content-center kotak_form">
       <div class="card" style="margin: 50px auto">
         <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
           <li class="nav-item" role="presentation">
@@ -105,6 +105,25 @@
                   />
                 </div>
                 <div class="form-group">
+                  <label>Tambah tim liputan</label>
+                  <select
+                    type="text"
+                    name="role"
+                    id="role"
+                    class="form-control"
+                    required="true"
+                    placeholder="Email"
+                  >
+                    <option value="" selected disabled>--Pilih--</option>
+                    <option
+                      th:each="role : ${roles}"
+                      th:value="${role.idRole}"
+                      th:text="${role.roleName}"
+                    ></option>
+                  </select>
+                </div>
+                
+                <div class="form-group">
                   <label>Lokasi Liputan</label>
                   <input
                     type="text"
@@ -114,7 +133,7 @@
                     required="true"
                   />
                 </div>
-                <div class="form-group">
+                <div class="form-group file_container">
                   <label for="file" class="form-label">Upload Files</label>
                   <input
                     type="file"
@@ -123,7 +142,18 @@
                     id="file"
                     accept="video/mp4,video/x-m4v,video/*"
                   />
+                  
+                  <input 
+                    type="text"
+                    class="form-control"
+                    name="caption"
+                    id="caption"
+                    placeholder="caption file"
+                  />
+                  <p style="clear:both; margin-top: 3px;"><button class="add btn btn-success float-end" type="button" title='Add new file'><span class='glyphicon glyphicon-plus'></span> Add New File</button></p>
+                  
                 </div>
+
                 <div class="form-group">
                   <label for="deskripsi" class="form-label">Deksripsi</label>
                   <textarea
@@ -220,7 +250,11 @@
         }
         $("#display_count").text(words);
       });
-      $("#nambah").on("click", function () {
+      $(".add").click(function(){
+        $(".file_container").append("<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input type='file' name='file' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>");});
+        $('.file_container').on('click', '.delete_', function() {
+          $(this).parents('.pp').remove();});
+        $("#nambah").on("click", function () {
         $("#modalform").modal("toggle");
         $("#modalLoading").modal("toggle");
         var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$(
