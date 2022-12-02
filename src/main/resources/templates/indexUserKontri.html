@@ -95,24 +95,6 @@
                   />
                 </div>
                 <div class="form-group">
-                  <label>Role</label>
-                  <select
-                    type="text"
-                    name="role"
-                    id="role"
-                    class="form-control"
-                    required="true"
-                    placeholder="Email"
-                  >
-                    <option value="" selected disabled>--Pilih Role--</option>
-                    <option
-                      th:each="role : ${roles}"
-                      th:value="${role.idRole}"
-                      th:text="${role.roleName}"
-                    ></option>
-                  </select>
-                </div>
-                <!-- <div class="form-group">
                   <label>Reporter</label>
                   <input
                     type="text"
@@ -121,7 +103,26 @@
                     class="form-control"
                     required="true"
                   />
-                </div> -->
+                </div>
+                <div class="form-group">
+                  <label>Tambah tim liputan</label>
+                  <select
+                    type="text"
+                    name="role"
+                    id="role"
+                    class="form-control"
+                    required="true"
+                    placeholder="Email"
+                  >
+                    <option value="" selected disabled>--Pilih--</option>
+                    <option
+                      th:each="role : ${roles}"
+                      th:value="${role.idRole}"
+                      th:text="${role.roleName}"
+                    ></option>
+                  </select>
+                </div>
+                
                 <div class="form-group">
                   <label>Lokasi Liputan</label>
                   <input
