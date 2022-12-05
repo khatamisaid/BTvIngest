@@ -42,7 +42,7 @@
   </head>
 
   <body style="background-color: #efefef">
-    <div class="container justify-content-center ">
+    <div class="container justify-content-center">
       <div class="card kotak_tabel" style="margin: 50px auto">
         <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
           <li class="nav-item" role="presentation">
@@ -103,26 +103,48 @@
                     class="form-control"
                     required="true"
                   />
-                  <div class="d-flex justify-content-end">
-                    <button class="btn btn-primary" onclick="showTimLiputan()">+ Tambah Tim Liputan</button>
+                  <div
+                    class="d-flex justify-content-end"
+                    style="margin-top: 3px"
+                  >
+                    <button class="btn btn-primary" onclick="showTimLiputan()">
+                      + Tambah Tim Liputan
+                    </button>
                   </div>
                 </div>
-                <div class="form-group" style="display: none;" id="sectionTimLiputan">
+                <div
+                  class="form-group"
+                  style="display: none"
+                  id="sectionTimLiputan"
+                >
                   <label>Tim Liputan</label>
                   <div class="input-group">
                     <input
                       type="text"
                       class="form-control"
                       aria-label="Text input with dropdown button"
+                      placeholder="Masukan nama"
                     />
                     <div class="input-group-append">
-                      <select class="custom-select" name="role_tim_liputan[]" id="role_tim_liputan">
+                      <select
+                        class="custom-select"
+                        name="role_tim_liputan[]"
+                        id="role_tim_liputan"
+                      >
                         <option value="1">Camera Person</option>
                         <option value="2">VJ</option>
                         <option value="3">Reporter</option>
                       </select>
                     </div>
                   </div>
+                  <button
+                    type="button"
+                    class="delete_ btn btn-danger float-end"
+                    title="Delete file"
+                    style="margin-top: 3px"
+                  >
+                    <span class="glyphicon glyphicon-remove"></span> Hapus
+                  </button>
                 </div>
 
                 <div class="form-group">
@@ -140,7 +162,7 @@
                   <input
                     type="file"
                     class="form-control"
-                    name="file"
+                    name="file[]"
                     id="file"
                     accept="video/mp4,video/x-m4v,video/*"
                   />
@@ -254,7 +276,6 @@
       /*<![CDATA[*/
       $("#deskripsi").on("keyup", function () {
         var words = 0;
-
         if (this.value.match(/\S+/g) != null) {
           words = this.value.match(/\S+/g).length;
         }
@@ -262,29 +283,35 @@
       });
       $(".add").click(function () {
         $(".file_container").append(
-          "<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input type='file' name='file' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>"
+          "<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input accept='video/mp4,video/x-m4v,video/*' type='file' name='file[]' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>"
         );
       });
       $(".file_container").on("click", ".delete_", function () {
         $(this).parents(".pp").remove();
       });
       $("#nambah").on("click", function () {
+        var inputFile = document.getElementsByName("file[]");
+        listVideo = [];
+        for (var i = 0; i < inputFile.length; i++) {
+          var a = inputFile[i].files[0];
+          listVideo.push(a);
+        }
         $("#modalform").modal("toggle");
         $("#modalLoading").modal("toggle");
-        var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$(
-          "#reporter"
-        ).val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$(
-          "#deskripsi"
-        ).val()}`;
+        // var url = `/kontri/postVideo`;
+        var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$("#reporter").val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$("#deskripsi").val()}`;
+        // var body = {
+        //   judul: $("#judul").val(),
+        //   reporter: $("#reporter").val(),
+        //   lok_liputan: $("#lok_liputan").val(),
+        //   deskripsi: $("#deskripsi").val(),
+        // };
         var bodyFormData = new FormData();
-        var photo = $("#file").prop("files");
-        // var listPhoto = [];
-        // Array.from(photo).forEach((file) => {
-        //   console.log(file);
-        //   listPhoto.push(file);
-        // });
-        // console.log(listPhoto);
-        bodyFormData.append("files", photo[0]);
+        listVideo.forEach(video => {
+          bodyFormData.append("files", video);
+        });
+        // bodyFormData.append("files", listVideo);
+        // bodyFormData.append("request", body);
         axios({
           method: "post",
           url: url,
@@ -316,8 +343,14 @@
             });
           });
       });
-      function showTimLiputan(){
-        $("#sectionTimLiputan").show();
+      function showTimLiputan() {
+        if ($("#sectionTimLiputan").css("display") == "none") {
+          console.log("hidden");
+          $("#sectionTimLiputan").show();
+          return;
+        }
+        console.log("show");
+        return;
       }
       /*]]>*/
     </script>

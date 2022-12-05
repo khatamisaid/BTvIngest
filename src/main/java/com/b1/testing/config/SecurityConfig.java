@@ -47,7 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .headers().frameOptions().sameOrigin().and()
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers("/login", "/kontri/**").permitAll()
                 .antMatchers("/person/**", "/role/**").hasAuthority("Administrator")
                 .antMatchers("/video/**").hasAnyAuthority("Produser", "Editor", "Uploader", "Library")
                 // .antMatchers("/kontri/**").hasAnyAuthority("Kontri")
