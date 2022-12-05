@@ -127,7 +127,7 @@ public class KontriController {
         kontri.setReporter(reporter);
         kontriRepository.save(kontri);
         try {
-            // ftpClientConnection.uploadFile(files[i], namafile);
+            //ftpClientConnection.uploadFile(files[i], namafile);
             Arrays.asList(files)
                     .forEach(file -> saveVideo(kontri, file));
         } catch (NullPointerException e) {
