@@ -103,26 +103,28 @@
                     class="form-control"
                     required="true"
                   />
+                  <div class="d-flex justify-content-end">
+                    <button class="btn btn-primary" onclick="showTimLiputan()">+ Tambah Tim Liputan</button>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label>Tambah tim liputan</label>
-                  <select
-                    type="text"
-                    name="role"
-                    id="role"
-                    class="form-control"
-                    required="true"
-                    placeholder="Email"
-                  >
-                    <option value="" selected disabled>--Pilih--</option>
-                    <option
-                      th:each="role : ${roles}"
-                      th:value="${role.idRole}"
-                      th:text="${role.roleName}"
-                    ></option>
-                  </select>
+                <div class="form-group" style="display: none;" id="sectionTimLiputan">
+                  <label>Tim Liputan</label>
+                  <div class="input-group">
+                    <input
+                      type="text"
+                      class="form-control"
+                      aria-label="Text input with dropdown button"
+                    />
+                    <div class="input-group-append">
+                      <select class="custom-select" name="role_tim_liputan[]" id="role_tim_liputan">
+                        <option value="1">Camera Person</option>
+                        <option value="2">VJ</option>
+                        <option value="3">Reporter</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
-                
+
                 <div class="form-group">
                   <label>Lokasi Liputan</label>
                   <input
@@ -142,16 +144,24 @@
                     id="file"
                     accept="video/mp4,video/x-m4v,video/*"
                   />
-                  
-                  <input 
+
+                  <input
                     type="text"
                     class="form-control"
                     name="caption"
                     id="caption"
                     placeholder="caption file"
                   />
-                  <p style="clear:both; margin-top: 3px;"><button class="add btn btn-success float-end" type="button" title='Add new file'><span class='glyphicon glyphicon-plus'></span> Add New File</button></p>
-                  
+                  <p style="clear: both; margin-top: 3px">
+                    <button
+                      class="add btn btn-success float-end"
+                      type="button"
+                      title="Add new file"
+                    >
+                      <span class="glyphicon glyphicon-plus"></span> Add New
+                      File
+                    </button>
+                  </p>
                 </div>
 
                 <div class="form-group">
@@ -250,11 +260,15 @@
         }
         $("#display_count").text(words);
       });
-      $(".add").click(function(){
-        $(".file_container").append("<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input type='file' name='file' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>");});
-        $('.file_container').on('click', '.delete_', function() {
-          $(this).parents('.pp').remove();});
-        $("#nambah").on("click", function () {
+      $(".add").click(function () {
+        $(".file_container").append(
+          "<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input type='file' name='file' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>"
+        );
+      });
+      $(".file_container").on("click", ".delete_", function () {
+        $(this).parents(".pp").remove();
+      });
+      $("#nambah").on("click", function () {
         $("#modalform").modal("toggle");
         $("#modalLoading").modal("toggle");
         var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$(
@@ -302,6 +316,9 @@
             });
           });
       });
+      function showTimLiputan(){
+        $("#sectionTimLiputan").show();
+      }
       /*]]>*/
     </script>
   </body>

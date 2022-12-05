@@ -85,7 +85,7 @@ public class KontriController {
             namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + lok_liputan
                     + "."
                     + originalExtension;
-                    ftpClientConnection.uploadFile(files, "/kontri/" + namafile);
+                    ftpClientConnection.uploadFile(files, namafile);
             // String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
             //         + Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes());
             // File dir = new File(fullPathFile);
