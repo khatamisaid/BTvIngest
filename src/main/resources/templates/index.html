@@ -45,9 +45,9 @@
 <body style="background-color: #efefef">
   <header>
     <nav class="navbar navbar-expand-lg" th:style="'background-image:url('+@{/images/images2.png}+');background-size:cover;'">
-      <div class="container">
-        <a class="navbar-brand" href="#!"><img class="img-fluid me-2" th:src="@{/images/BTV.svg}" alt=""
-            style="width: 80px" /></a>
+      
+        <a class="navbar-brand" href="#!"><img class="img-fluid" th:src="@{/images/BTV.svg}" alt=""
+            style="width: 80px; margin:auto 20px" /></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -81,7 +81,7 @@
               </li>
             </ul>
           </div>
-        </div>
+        
       </nav>
     </header>
     <div class="container my-5 vh-100">
@@ -89,7 +89,15 @@
         class="card kotak_tabel kotak_form"
         th:if="${session.role != 'Administrator'}"
       >
-        <div class="card-header">DATA</div>
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="Search">
+        <div class="input-group-append">
+          <button class="btn btn-secondary" type="button">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </div>
+        <div class="card-header mt-3">DATA</div>
         <div class="card-body">
           <div class="table-responsive">
             <table
@@ -461,7 +469,12 @@
                 <source src="" type="video/mp4" />
                 Your browser does not support HTML video.
               </video>
+              
             </div>
+            
+            
+              
+           
             <div class="form-group">
               <label for="detailJudul">Judul</label>
               <input type="text" class="form-control" id="detailJudul" />
@@ -482,10 +495,10 @@
                 id="detailLokasiLiputan"
               />
             </div>
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="detailNoTape">No Tape</label>
               <input type="text" class="form-control" id="detailNoTape" />
-            </div>
+            </div> -->
             <div class="form-group">
               <label for="detailDeskripsi">Deskripsi</label>
               <textarea
