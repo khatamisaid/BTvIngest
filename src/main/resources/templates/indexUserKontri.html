@@ -260,6 +260,15 @@
         }
         $("#display_count").text(words);
       });
+      function reset() {
+        $("#judul").val('');
+        $("#reporter").val('');
+        $("#lok_liputan").val('');
+        // Yang files belum bisa reset
+        $("#sectionTimLiputan").val('');
+        $("#caption").val('');
+        $("#deskripsi").val('');
+    }
       $(".add").click(function () {
         $(".file_container").append(
           "<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input type='file' name='file' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>"
@@ -276,6 +285,7 @@
         ).val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$(
           "#deskripsi"
         ).val()}`;
+        reset();
         var bodyFormData = new FormData();
         var photo = $("#file").prop("files");
         // var listPhoto = [];
@@ -316,6 +326,7 @@
             });
           });
       });
+
       function showTimLiputan(){
         $("#sectionTimLiputan").show();
       }
