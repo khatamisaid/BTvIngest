@@ -203,13 +203,4 @@ public class MainController {
         data.put("data", dataPaging);
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
-
-    @RequestMapping(value = "/insertRole", method = RequestMethod.GET)
-    public ResponseEntity<Map> insertRole(Model model) {
-        Map data = new HashMap<>();
-        roleRepository.save(new Role(0, "Administrator", "Hak Akses Menyeluruh"));
-        roleRepository.save(new Role(0, "User", "Hak Akses Dibatasi"));
-        data.put("message", "Berhasil create role");
-        return new ResponseEntity<>(data, HttpStatus.OK);
-    }
 }

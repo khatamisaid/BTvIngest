@@ -20,6 +20,8 @@ import com.b1.testing.entity.Video;
 import com.b1.testing.repository.KontriRepository;
 import com.b1.testing.repository.LogRepository;
 import com.b1.testing.repository.VideoRepository;
+import com.b1.testing.util.FTPClientConnection;
+import com.b1.testing.util.FileManager;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -53,6 +55,12 @@ public class KontriController {
     @Autowired
     private HttpSession httpSession;
 
+    @Autowired
+    private FileManager fileManager;
+
+    @Autowired
+    private FTPClientConnection ftpClientConnection;
+
     @RequestMapping(value = "/post", consumes = {
             MediaType.MULTIPART_FORM_DATA_VALUE }, produces = APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @ResponseBody
@@ -74,23 +82,24 @@ public class KontriController {
         try {
             String[] arrSplit = files.getOriginalFilename().split("\\.");
             originalExtension = arrSplit[arrSplit.length - 1];
-            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + lok_liputan + "_"
+            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + lok_liputan
                     + "."
                     + originalExtension;
-            String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
-                    + Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes());
-            File dir = new File(fullPathFile);
-            if (!dir.exists())
-                dir.mkdirs();
-            files.transferTo(new File(fullPathFile + "/" + namafile));
+                    ftpClientConnection.uploadFile(files, "/kontri/" + namafile);
+            // String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
+            //         + Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes());
+            // File dir = new File(fullPathFile);
+            // if (!dir.exists())
+            //     dir.mkdirs();
+            // files.transferTo(new File(fullPathFile + "/" + namafile));
             Video video = new Video();
             video.setIdKontri(kontri.getIdKontri());
-            video.setIpLocation("192.168.100.90");
+            video.setIpLocation(env.getProperty("FTP.REMOTE_HOST"));
             video.setFilename(namafile);
             video.setOriginalExtension(originalExtension);
             video.setTranscodeExtension("mp4");
             videoRepository.save(video);
-        } catch (IOException | NullPointerException e) {
+        } catch (NullPointerException e) {
             data.put("icon", "error");
             data.put("message", e.getMessage());
             return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
