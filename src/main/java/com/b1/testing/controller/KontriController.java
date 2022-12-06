@@ -98,7 +98,8 @@ public class KontriController {
                 + "."
                 + originalExtension;
         try {
-            file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
+            ftpClientConnection.uploadFile(file, namafile);
+            //file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdKontri(kontri.getIdKontri());
             video.setIpLocation(env.getProperty("FTP.REMOTE_HOST"));
@@ -106,7 +107,7 @@ public class KontriController {
             video.setOriginalExtension(originalExtension);
             video.setTranscodeExtension("mp4");
             videoRepository.save(video);
-        } catch (IOException e) {
+        } catch (NullPointerException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -127,7 +128,7 @@ public class KontriController {
         kontri.setReporter(reporter);
         kontriRepository.save(kontri);
         try {
-            //ftpClientConnection.uploadFile(files[i], namafile);
+            
             Arrays.asList(files)
                     .forEach(file -> saveVideo(kontri, file));
         } catch (NullPointerException e) {
@@ -135,10 +136,10 @@ public class KontriController {
             data.put("message", e.getMessage());
             return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
         }
-        // ObjectMapper mapper = new ObjectMapper();
-        // logRepository.save(new Log(null, "upload",
-        // httpSession.getAttribute("username").toString(),
-        // mapper.writeValueAsString(kontri.getListVideo())));
+        //  ObjectMapper mapper = new ObjectMapper();
+        //  logRepository.save(new Log(null, "upload",
+        //  httpSession.getAttribute("username").toString(),
+        //  mapper.writeValueAsString(kontri.getListVideo())));
         data.put("icon", "success");
         data.put("message", "data berhasil di insert");
         return new ResponseEntity<>(data, HttpStatus.OK);
