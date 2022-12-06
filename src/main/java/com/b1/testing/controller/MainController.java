@@ -165,19 +165,18 @@ public class MainController {
             namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "_"
                     + "."
                     + originalExtension;
-            String base64Folder = Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes())
-                    .toString();
-            String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
-                    + base64Folder;
-            File dir = new File(fullPathFile);
-            if (!dir.exists())
-                dir.mkdirs();
+            // String base64Folder = Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes())
+            //         .toString();
+            String fullPathFile = env.getProperty("URL.FILE_IN");
+            // File dir = new File(fullPathFile);
+            // if (!dir.exists())
+            //     dir.mkdirs();
             files.transferTo(new File(fullPathFile + "/" + namafile));
             Video video = new Video();
             video.setIdIngest(dbIngest.getIdIngest());
             video.setIpLocation("192.168.100.90");
             video.setFilename(namafile);
-            video.setPath(base64Folder);
+            video.setPath(fullPathFile);
             video.setOriginalExtension(originalExtension);
             video.setTranscodeExtension("mp4");
             videoRepository.save(video);
