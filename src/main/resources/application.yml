@@ -17,7 +17,7 @@ spring:
       database: default
       hibernate: 
          dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-         ddl-auto: none
+         ddl-auto: update
   thymeleaf:
     cache: false
     mode: HTML
