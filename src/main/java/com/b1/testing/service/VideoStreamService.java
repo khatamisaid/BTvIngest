@@ -32,13 +32,13 @@ public class VideoStreamService {
      * @param range    String.
      * @return ResponseEntity.
      */
-    public ResponseEntity<byte[]> prepareContent(final String path, final String fileName, final String fileType, final String range) {
+    public ResponseEntity<byte[]> prepareContent(final String fileName, final String fileType, final String range) {
 
         try {
             final String fileKey = fileName + "." + fileType;
             long rangeStart = 0;
             long rangeEnd = CHUNK_SIZE;
-            final Long fileSize = getFileSize(fileKey, path);
+            final Long fileSize = getFileSize(fileKey);
             if (range == null) {
                 return ResponseEntity.status(HttpStatus.PARTIAL_CONTENT)
                         .header(CONTENT_TYPE, VIDEO_CONTENT + fileType)
@@ -46,7 +46,7 @@ public class VideoStreamService {
                         .header(CONTENT_LENGTH, String.valueOf(rangeEnd))
                         .header(CONTENT_RANGE, BYTES + " " + rangeStart + "-" + rangeEnd + "/" + fileSize)
                         .header(CONTENT_LENGTH, String.valueOf(fileSize))
-                        .body(readByteRangeNew(path, fileKey, rangeStart, rangeEnd)); // Read the object and convert it as
+                        .body(readByteRangeNew(fileKey, rangeStart, rangeEnd)); // Read the object and convert it as
                                                                                 // bytes
             }
             String[] ranges = range.split("-");
@@ -58,7 +58,7 @@ public class VideoStreamService {
             }
 
             rangeEnd = Math.min(rangeEnd, fileSize - 1);
-            final byte[] data = readByteRangeNew(path, fileKey, rangeStart, rangeEnd);
+            final byte[] data = readByteRangeNew(fileKey, rangeStart, rangeEnd);
             final String contentLength = String.valueOf((rangeEnd - rangeStart) + 1);
             HttpStatus httpStatus = HttpStatus.PARTIAL_CONTENT;
             if (rangeEnd >= fileSize) {
@@ -86,16 +86,16 @@ public class VideoStreamService {
      * @return byte array.
      * @throws IOException exception.
      */
-    public byte[] readByteRangeNew(String folderName, String filename, long start, long end) throws IOException {
-        Path path = Paths.get(getFilePath(folderName), filename);
+    public byte[] readByteRangeNew(String filename, long start, long end) throws IOException {
+        Path path = Paths.get(getFilePath(), filename);
         byte[] data = Files.readAllBytes(path);
         byte[] result = new byte[(int) (end - start) + 1];
         System.arraycopy(data, (int) start, result, 0, (int) (end - start) + 1);
         return result;
     }
 
-    public byte[] readByteRange(String folderName, String filename, long start, long end) throws IOException {
-        Path path = Paths.get(getFilePath(folderName), filename);
+    public byte[] readByteRange(String filename, long start, long end) throws IOException {
+        Path path = Paths.get(getFilePath(), filename);
         try (InputStream inputStream = (Files.newInputStream(path));
                 ByteArrayOutputStream bufferedOutputStream = new ByteArrayOutputStream()) {
             byte[] data = new byte[BYTE_RANGE];
@@ -115,10 +115,10 @@ public class VideoStreamService {
      *
      * @return String.
      */
-    private String getFilePath(String path) {
+    private String getFilePath() {
         // URL url = this.getClass().getResource(VIDEO);
         // assert url != null;
-        return new File(environment.getProperty("URL.FILE_PRIEVIEW") + "/" + path).getAbsolutePath();
+        return new File(environment.getProperty("URL.FILE_PRIEVIEW")).getAbsolutePath();
     }
 
     /**
@@ -127,9 +127,9 @@ public class VideoStreamService {
      * @param fileName String.
      * @return Long.
      */
-    public Long getFileSize(String fileName, String path) {
+    public Long getFileSize(String fileName) {
         return Optional.ofNullable(fileName)
-                .map(file -> Paths.get(getFilePath(path), file))
+                .map(file -> Paths.get(getFilePath(), file))
                 .map(this::sizeFromFile)
                 .orElse(0L);
     }

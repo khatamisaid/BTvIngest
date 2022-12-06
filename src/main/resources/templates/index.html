@@ -713,11 +713,12 @@
           var originalExtension = listVideo[0].originalExtension;
           var transcodeExtension = listVideo[0].transcodeExtension;
           var video = listVideo[0].filename.replace(`.${originalExtension}`, "");
-          var path = listVideo[0].path;
+          // var path = listVideo[0].path;
           $("#videoDetail source").attr(
             "src",
-            `/video/stream/${transcodeExtension}/${encodeURI(path)}/${video}`
+            `/video/stream/${transcodeExtension}/${video}`
           );
+          // `/video/stream/${transcodeExtension}/${encodeURI(path)}/${video}`
           $("#videoDetail")[0].load();
           $("#detailJudul").val(materi.judul);
           $("#detailTimLiputan").val(materi.timLiputan);
