@@ -114,10 +114,15 @@ server:
       enabled: false
     path: /error
 URL:
-  FILE_IN: \\192.168.6.30\\media_in\\inbox
-  FILE_PRIEVIEW: \\192.168.6.30\\h264_out
-  DOWNLOAD_HI_RES: \\192.168.6.30\\media_out
-  DOWNLOAD_LOW_RES: \\192.168.6.30\\media_out
+  FILE_IN: C:\\video
+  FILE_PRIEVIEW: C:\\video
+  DOWNLOAD_HI_RES: C:\\video
+  DOWNLOAD_LOW_RES: C:\\video
+# URL:
+#   FILE_IN: \\192.168.6.30\\media_in\\inbox
+#   FILE_PRIEVIEW: \\192.168.6.30\\h264_out
+#   DOWNLOAD_HI_RES: \\192.168.6.30\\media_out
+#   DOWNLOAD_LOW_RES: \\192.168.6.30\\media_out
 EXTENSION:
   FILE_DOWNLOAD: .mxf
 FTP:
