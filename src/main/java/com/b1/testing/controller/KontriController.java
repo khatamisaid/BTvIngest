@@ -98,8 +98,8 @@ public class KontriController {
                 + "."
                 + originalExtension;
         try {
-            ftpClientConnection.uploadFile(file, namafile);
-            //file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
+            // ftpClientConnection.uploadFile(file, namafile);
+            file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdKontri(kontri.getIdKontri());
             video.setIpLocation(env.getProperty("FTP.REMOTE_HOST"));
@@ -107,7 +107,7 @@ public class KontriController {
             video.setOriginalExtension(originalExtension);
             video.setTranscodeExtension("mp4");
             videoRepository.save(video);
-        } catch (NullPointerException e) {
+        } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -120,7 +120,6 @@ public class KontriController {
             @RequestParam String deskripsi, @RequestPart("files") MultipartFile[] files)
             throws IllegalStateException {
         Map data = new HashMap<>();
-
         Kontri kontri = new Kontri();
         kontri.setDeskripsi(deskripsi);
         kontri.setJudul(judul);
@@ -128,7 +127,6 @@ public class KontriController {
         kontri.setReporter(reporter);
         kontriRepository.save(kontri);
         try {
-            
             Arrays.asList(files)
                     .forEach(file -> saveVideo(kontri, file));
         } catch (NullPointerException e) {

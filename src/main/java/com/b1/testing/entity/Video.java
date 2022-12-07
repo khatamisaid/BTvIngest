@@ -41,11 +41,14 @@ public class Video {
     @Column(name = "ip_location")
     private String ipLocation;
 
-    @Column(name = "path")
-    private String path;
+    @Column(name = "foldername")
+    private String foldername;
 
     @Column(name = "filename")
     private String filename;
+
+    @Column(name = "caption", columnDefinition = "TEXT")
+    private String caption;
 
     @Column(name = "transcode_extension")
     private String transcodeExtension;

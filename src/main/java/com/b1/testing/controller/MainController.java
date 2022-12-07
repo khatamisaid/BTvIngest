@@ -36,10 +36,12 @@ import org.springframework.web.multipart.MultipartFile;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 import com.b1.testing.entity.Ingest;
+import com.b1.testing.entity.Kontri;
 import com.b1.testing.entity.Log;
 import com.b1.testing.entity.Role;
 import com.b1.testing.entity.Video;
 import com.b1.testing.repository.IngestRepository;
+import com.b1.testing.repository.KontriRepository;
 import com.b1.testing.repository.LogRepository;
 import com.b1.testing.repository.PersonRepository;
 import com.b1.testing.repository.RoleRepository;
@@ -55,6 +57,9 @@ public class MainController {
 
     @Autowired
     private IngestRepository ingestRepository;
+
+    @Autowired
+    private KontriRepository kontriRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -82,30 +87,48 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping(value = "/findAll")
-    public ResponseEntity<Map> findAll(@RequestParam(defaultValue = "0") Integer start,
+    @GetMapping(value = "/findAll/{path}")
+    public ResponseEntity<Map> findAll(@PathVariable(required = true) String path, @RequestParam(defaultValue = "0") Integer start,
             @RequestParam(defaultValue = "5") Integer length) {
         Map data = new HashMap<>();
-        Pageable pageable = PageRequest.of(start, length);
-        Page<Ingest> dataPaging = ingestRepository.findAll(pageable);
-        data.put("data", dataPaging);
+        if(path.equalsIgnoreCase("ingest")){
+            Pageable pageable = PageRequest.of(start, length);
+            Page<Ingest> dataPaging = ingestRepository.findAll(pageable);
+            data.put("data", dataPaging);
+        }else if(path.equalsIgnoreCase("kontri")){
+            Pageable pageable = PageRequest.of(start, length);
+            Page<Kontri> dataPaging = kontriRepository.findAll(pageable);
+            data.put("data", dataPaging);
+        }
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/find")
-    public ResponseEntity<Map> find(@RequestParam(required = true) Integer id) throws JsonProcessingException {
+    @GetMapping(value = "/find/{path}")
+    public ResponseEntity<Map> find(@PathVariable(required = true) String path, @RequestParam(required = true) Integer id) throws JsonProcessingException {
         Map data = new HashMap<>();
-        if (!ingestRepository.existsById(id)) {
-            data.put("message", "Data Tidak Ditemukan");
-            return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+        if(path.equalsIgnoreCase("ingest")){
+            if (!ingestRepository.existsById(id)) {
+                data.put("message", "Data Tidak Ditemukan");
+                return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+            }
+            Ingest ingest = ingestRepository.findById(id).get();
+            data.put("data", ingest);
+            ObjectMapper mapper = new ObjectMapper();
+            logRepository
+                    .save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
+                            mapper.writeValueAsString(ingest.getListVideo())));
+        }else if(path.equalsIgnoreCase("kontri")){
+            if (!kontriRepository.existsById(id)) {
+                data.put("message", "Data Tidak Ditemukan");
+                return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+            }
+            Kontri kontri = kontriRepository.findById(id).get();
+            data.put("data", kontri);
+            ObjectMapper mapper = new ObjectMapper();
+            logRepository
+                    .save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
+                            mapper.writeValueAsString(kontri.getListVideo())));
         }
-        Ingest ingest = ingestRepository.findById(id).get();
-        data.put("data", ingest);
-        ObjectMapper mapper = new ObjectMapper();
-
-        logRepository
-                .save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
-                        mapper.writeValueAsString(ingest.getListVideo())));
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -177,7 +200,7 @@ public class MainController {
             video.setIdIngest(dbIngest.getIdIngest());
             video.setIpLocation("192.168.100.90");
             video.setFilename(namafile);
-            video.setPath(null);
+            video.setFoldername(null);
             video.setOriginalExtension(originalExtension);
             video.setTranscodeExtension("mp4");
             videoRepository.save(video);

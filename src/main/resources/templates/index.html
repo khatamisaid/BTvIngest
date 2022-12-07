@@ -1,317 +1,265 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <link rel="shortcut icon" sizes="16x16" th:href="@{/images/BTV.ico}" />
-    <!-- Bootstrap 5 CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-     <link
-      rel="stylesheet"
-      th:href="@{/css/bootstrap.min.css}"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    /> 
-    <!-- Font Awesome 5 -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    />
-    <!-- DataTables -->
-    <link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" />
-    <style>
-      .bd-example-modal-lg .modal-dialog {
-        display: table;
-        position: relative;
-        margin: 0 auto;
-        top: calc(50% - 24px);
-      }
 
-      .bd-example-modal-lg .modal-dialog .modal-content {
-        background-color: transparent;
-        border: none;
-      }
-    </style>
-    <title>Ingest</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <link rel="shortcut icon" sizes="16x16" th:href="@{/images/BTV.ico}" />
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <!-- Font Awesome 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+  <!-- DataTables -->
+  <link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" />
+  <style>
+    .bd-example-modal-lg .modal-dialog {
+      display: table;
+      position: relative;
+      margin: 0 auto;
+      top: calc(50% - 24px);
+    }
+
+    .bd-example-modal-lg .modal-dialog .modal-content {
+      background-color: transparent;
+      border: none;
+    }
+  </style>
+  <title>Ingest</title>
+</head>
 
 <body style="background-color: #efefef">
   <header>
-    <nav class="navbar navbar-expand-lg" th:style="'background-image:url('+@{/images/images2.png}+');background-size:cover;'">
-      
-        <a class="navbar-brand" href="#!"><img class="img-fluid" th:src="@{/images/BTV.svg}" alt=""
-            style="width: 80px; margin:auto 20px" /></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" style="color: white" th:text="${session.username}"></a>
-            </li>
-            <li class="nav-item" th:if="${session.role == 'Uploader' || session.role == 'Library'}">
-              <a class="nav-link"><button class="action submit btn btn-sm btn-primary float-end" data-toggle="modal"
-                  href="#modalform">
-                  Materi
-                </button></a>
-            </li>
-            <li class="nav-item" th:if="${session.role == 'Administrator'}">
-              <a class="nav-link"><button class="action submit btn btn-sm btn-success float-end" data-toggle="modal"
-                  href="#modalManagementUser">
-                  Management User
-                </button></a>
-            </li>
+    <nav class="navbar navbar-expand-lg"
+      th:style="'background-image:url('+@{/images/images2.png}+');background-size:cover;'">
 
-              <li class="nav-item">
-                <a class="nav-link" th:href="@{/logout}"
-                  ><button
-                    class="action submit btn btn-sm btn-danger float-end"
-                  >
-                    Logout
-                  </button></a
-                >
-              </li>
-            </ul>
-          </div>
-        
-      </nav>
-    </header>
-    <div class="container my-5 vh-100">
-      <div
-        class="card kotak_tabel kotak_form"
-        th:if="${session.role != 'Administrator'}"
-      >
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search">
-        <div class="input-group-append">
-          <button class="btn btn-secondary" type="button">
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
-      </div>
-        <div class="card-header mt-3">DATA</div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table
-              id="tableMateri"
-              class="table custom-table dt-responsive"
-              role="grid"
-              aria-describedby="myTable2_info"
-            >
-              <!-- thead -->
-              <thead>
-                <tr role="row">
-                  <th>#</th>
-                  <th>judul</th>
-                  <th>reporter</th>
-                  <th>deskripsi</th>
-                  <th th:if="${session.role != 'Administrator'}">action</th>
-                </tr>
-              </thead>
-              <!-- /thead -->
-              <tbody></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class="card" th:unless="${session.role != 'Administrator'}">
-        <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link active"
-              id="ex3-tab-1"
-              data-toggle="tab"
-              href="#ex3-tabs-1"
-              role="tab"
-              aria-controls="ex3-tabs-1"
-              aria-selected="true"
-              >Lihat User</a
-            >
+      <a class="navbar-brand" href="#!"><img class="img-fluid" th:src="@{/images/BTV.svg}" alt=""
+          style="width: 80px; margin:auto 20px" /></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" style="color: white" th:text="${session.username}"></a>
           </li>
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link"
-              id="ex3-tab-2"
-              data-toggle="tab"
-              href="#ex3-tabs-2"
-              role="tab"
-              aria-controls="ex3-tabs-2"
-              aria-selected="false"
-              >Log Aktivitas User</a
-            >
+          <li class="nav-item" th:if="${session.role == 'Uploader' || session.role == 'Library'}">
+            <a class="nav-link"><button class="action submit btn btn-sm btn-primary float-end" data-toggle="modal"
+                href="#modalform">
+                Materi
+              </button></a>
+          </li>
+          <li class="nav-item" th:if="${session.role == 'Administrator'}">
+            <a class="nav-link"><button class="action submit btn btn-sm btn-success float-end" data-toggle="modal"
+                href="#modalManagementUser">
+                Management User
+              </button></a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" th:href="@{/logout}"><button class="action submit btn btn-sm btn-danger float-end">
+                Logout
+              </button></a>
           </li>
         </ul>
-        <!-- Tabs navs -->
-        <div class="card-body">
-          <div class="tab-content" id="ex2-content">
-            <div
-              class="tab-pane fade show active"
-              id="ex3-tabs-1"
-              role="tabpanel"
-              aria-labelledby="ex3-tab-1"
-            >
-              <div class="table-responsive">
-                <table
-                  id="tablePerson"
-                  class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
-                  role="grid"
-                  aria-describedby="myTable2_info"
-                >
-                  <!-- thead -->
-                  <thead>
-                    <tr role="row">
-                      <th>#</th>
-                      <th>username</th>
-                      <th>email</th>
-                    </tr>
-                  </thead>
-                  <!-- /thead -->
-                  <tbody></tbody>
-                </table>
-              </div>
+      </div>
+
+    </nav>
+  </header>
+  <div class="container my-5 vh-100" th:if="${session.role != 'Administrator'}">
+    <div class="card kotak_tabel kotak_form">
+      <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a onclick="tabIngestClicked()" class="nav-link active" id="ex3-tab-1" data-toggle="tab" href="#ex3-tabs-1" role="tab"
+            aria-controls="ex3-tabs-1" aria-selected="true">Ingest</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a onclick="tabKontriClicked()" class="nav-link" id="ex3-tab-2" data-toggle="tab" href="#ex3-tabs-2" role="tab" aria-controls="ex3-tabs-2"
+            aria-selected="false">Kontri</a>
+        </li>
+      </ul>
+      <!-- Tabs navs -->
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
+          <div class="input-group">
+            <input id="searchIngest" type="text" class="form-control" placeholder="Search">
+            <!-- <select class="form-control" name="columnIngest" id="columnIngest">
+              <option value="" selected disabled>-- Cari Berdasarkan --</option>
+              <option value="1">judul</option>
+              <option value="2">reporter</option>
+              <option value="3">deskripsi</option>
+            </select> -->
+            <div class="input-group-append">
+              <button id="btnSearchIngest" class="btn btn-secondary" type="button">
+                <i class="fa fa-search"></i>
+              </button>
             </div>
-            <div
-              class="tab-pane fade"
-              id="ex3-tabs-2"
-              role="tabpanel"
-              aria-labelledby="ex3-tab-2"
-            >
-              <div class="table-responsive">
-                <table
-                  id="tableLogAktivitas"
-                  class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
-                  role="grid"
-                  aria-describedby="myTable2_info"
-                >
-                  <!-- thead -->
-                  <thead>
-                    <tr role="row">
-                      <th>#</th>
-                      <th>username</th>
-                      <th>aktivitas</th>
-                      <th>waktu aktivitas dilakukan</th>
-                    </tr>
-                  </thead>
-                  <!-- /thead -->
-                  <tbody></tbody>
-                </table>
-              </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="tableIngest" class="table custom-table dt-responsive" role="grid"
+                aria-describedby="myTable2_info">
+                <!-- thead -->
+                <thead>
+                  <tr role="row">
+                    <th>#</th>
+                    <th>judul</th>
+                    <th>reporter</th>
+                    <th>deskripsi</th>
+                    <th th:if="${session.role != 'Administrator'}">action</th>
+                  </tr>
+                </thead>
+                <!-- /thead -->
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
+          <div class="input-group">
+            <input id="searchKontri" type="text" class="form-control" placeholder="Search">
+            <div class="input-group-append">
+              <button id="btnSearchKontri" class="btn btn-secondary" type="button">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table id="tableKontri" class="table custom-table dt-responsive" role="grid"
+                aria-describedby="myTable2_info" style="width: 100%;">
+                <!-- thead -->
+                <thead>
+                  <tr role="row">
+                    <th>#</th>
+                    <th>judul</th>
+                    <th>reporter</th>
+                    <th>deskripsi</th>
+                    <th th:if="${session.role != 'Administrator'}">action</th>
+                  </tr>
+                </thead>
+                <!-- /thead -->
+                <tbody></tbody>
+              </table>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Footer-->
-    <footer
-      class="py-4 bg-dark fixed-bottom"
-      th:style="'background-image:url('+@{/images/images3.png}+');background-size:cover;'"
-    >
-      <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; Team IT 2022</p>
-      </div>
-    </footer>
-
-    <div class="modal fade vh-100" id="modalform" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content" >
-          <div class="modal-header">
-            <h5 class="modal-title">INPUT DATA MATERI</h5>
-            <button
-              type="button btn-close"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+  </div>
+  <div class="container my-5 vh-100" th:unless="${session.role != 'Administrator'}">
+    <div class="card">
+      <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="ex3-tab-1" data-toggle="tab" href="#ex3-tabs-1" role="tab"
+            aria-controls="ex3-tabs-1" aria-selected="true">Lihat User</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="ex3-tab-2" data-toggle="tab" href="#ex3-tabs-2" role="tab" aria-controls="ex3-tabs-2"
+            aria-selected="false">Log Aktivitas User</a>
+        </li>
+      </ul>
+      <!-- Tabs navs -->
+      <div class="card-body">
+        <div class="tab-content" id="ex2-content">
+          <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
+            <div class="table-responsive">
+              <table id="tablePerson" class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
+                role="grid" aria-describedby="myTable2_info">
+                <!-- thead -->
+                <thead>
+                  <tr role="row">
+                    <th>#</th>
+                    <th>username</th>
+                    <th>email</th>
+                  </tr>
+                </thead>
+                <!-- /thead -->
+                <tbody></tbody>
+              </table>
+            </div>
           </div>
-          <div class="modal-body">
-            <form id="formMateri" action="#" enctype="multipart/form-data">
-              <div class="card-body">
-                <div class="form-group">
-                  <label>Judul</label>
-                  <input
-                    type="text"
-                    name="judul"
-                    id="judul"
-                    class="form-control"
-                    required="true"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>No Tape</label>
-                  <input
-                    type="text"
-                    name="no_tape"
-                    id="no_tape"
-                    class="form-control"
-                    required="true"
-                    onkeypress="validate(event)"
-                  />
-                </div>
-                <div class="form-group">
-                  <label for="reporter" class="form-label">Reporter</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="reporter"
-                    name="reporter"
-                    placeholder="Nama Reporter"
-                    value=""
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Tambah tim liputan</label>
-                  <select
-                    type="text"
-                    name="role"
-                    id="role"
-                    class="form-control"
-                    required="true"
-                    placeholder="Email"
-                  >
-                    <option value="" selected disabled>--Pilih--</option>
-                    <option
-                      th:each="role : ${roles}"
-                      th:value="${role.idRole}"
-                      th:text="${role.roleName}"
-                    ></option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="lok_liputan" class="form-label"
-                    >Lokasi Liputan</label
-                  >
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lok_liputan"
-                    name="lok_liputan"
-                    placeholder="Lokasi Liputan"
-                  />
-                </div>
-                
-                <div class="form-group">
-                  <label for="file" class="form-label">Upload Files</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    name="file"
-                    id="file"
-                    accept="video/mp4,video/x-m4v,video/*"
-                    multiple
-                  />
-                </div>
+          <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
+            <div class="table-responsive">
+              <table id="tableLogAktivitas" class="table table-striped dt-responsive nowrap w-100 dataTable dtr-inline"
+                role="grid" aria-describedby="myTable2_info">
+                <!-- thead -->
+                <thead>
+                  <tr role="row">
+                    <th>#</th>
+                    <th>username</th>
+                    <th>aktivitas</th>
+                    <th>waktu aktivitas dilakukan</th>
+                  </tr>
+                </thead>
+                <!-- /thead -->
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Footer-->
+  <footer class="py-4 bg-dark fixed-bottom"
+    th:style="'background-image:url('+@{/images/images3.png}+');background-size:cover;'">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; Team IT 2022</p>
+    </div>
+  </footer>
 
-                <!-- <div class="form-group">
+  <div class="modal fade vh-100" id="modalform" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">INPUT DATA MATERI</h5>
+          <button type="button btn-close" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formMateri" action="#" enctype="multipart/form-data">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Judul</label>
+                <input type="text" name="judul" id="judul" class="form-control" required="true" />
+              </div>
+              <div class="form-group">
+                <label>No Tape</label>
+                <input type="text" name="no_tape" id="no_tape" class="form-control" required="true"
+                  onkeypress="validate(event)" />
+              </div>
+              <div class="form-group">
+                <label for="reporter" class="form-label">Reporter</label>
+                <input type="text" class="form-control" id="reporter" name="reporter" placeholder="Nama Reporter"
+                  value="" />
+              </div>
+              <div class="form-group">
+                <label>Tambah tim liputan</label>
+                <select type="text" name="role" id="role" class="form-control" required="true" placeholder="Email">
+                  <option value="" selected disabled>--Pilih--</option>
+                  <option th:each="role : ${roles}" th:value="${role.idRole}" th:text="${role.roleName}"></option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="lok_liputan" class="form-label">Lokasi Liputan</label>
+                <input type="text" class="form-control" id="lok_liputan" name="lok_liputan"
+                  placeholder="Lokasi Liputan" />
+              </div>
+
+              <div class="form-group">
+                <label for="file" class="form-label">Upload Files</label>
+                <input type="file" class="form-control" name="file" id="file" accept="video/mp4,video/x-m4v,video/*"
+                  multiple />
+              </div>
+
+              <!-- <div class="form-group">
                   <label for="deskripsi" class="form-label">Deksripsi</label>
                   <textarea
                     type="text"
@@ -322,159 +270,96 @@
                   ></textarea>
                 </div> -->
 
+              <div class="form-group">
+                <label for="deskripsi" class="form-label">Naskah</label>
+                <textarea type="text" class="form-control" id="deskripsi" name="deskripsi"
+                  placeholder="deskripsi Liputan"></textarea>
+                <span id="display_count">0</span> /
+                <span id="word_left">300</span> kata.
+              </div>
+
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="nambah" class="btn btn-primary">
+            Tambah Data
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modalManagementUser" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg vh-100">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Management User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
+            <form id="formAddPerson" action="#">
+              <div class="card-body">
                 <div class="form-group">
-                  <label for="deskripsi" class="form-label">Naskah</label>
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    id="deskripsi"
-                    name="deskripsi"
-                    placeholder="deskripsi Liputan"
-                  ></textarea>
-                  <span id="display_count">0</span> /
-                  <span id="word_left">300</span> kata.
+                  <label>Username</label>
+                  <input type="text" name="username" id="username" class="form-control" required="true"
+                    placeholder="Username" />
                 </div>
-                
+                <div class="form-group">
+                  <label>Email</label>
+                  <input type="email" name="email" id="email" class="form-control" required="true"
+                    placeholder="Email" />
+                </div>
+                <div class="form-group">
+                  <label>Password</label>
+                  <div class="input-group mb-3">
+                    <input id="password" type="password" class="form-control" placeholder="Password"
+                      aria-label="password" aria-describedby="basic-addon1" />
+                    <span toggle="#password" style="cursor: pointer" class="input-group-text toggle-password"
+                      id="basic-addon1"><i class="fa fa-eye"></i></span>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Role</label>
+                  <select type="text" name="role" id="role" class="form-control" required="true" placeholder="Email">
+                    <option value="" selected disabled>--Pilih Role--</option>
+                    <option th:each="role : ${roles}" th:value="${role.idRole}" th:text="${role.roleName}"></option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-center">
+                <button type="button" id="tambahUser" class="btn btn-primary">
+                  Tambah User
+                </button>
               </div>
             </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" id="nambah" class="btn btn-primary">
-              Tambah Data
-            </button>
-          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div
-      class="modal fade"
-      id="modalManagementUser"
-      tabindex="-1"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-lg vh-100">
-        <div class="modal-content" >
-          <div class="modal-header">
-            <h5 class="modal-title">Management User</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div
-              class="tab-pane fade show active"
-              id="ex3-tabs-1"
-              role="tabpanel"
-              aria-labelledby="ex3-tab-1"
-            >
-              <form id="formAddPerson" action="#">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label>Username</label>
-                    <input
-                      type="text"
-                      name="username"
-                      id="username"
-                      class="form-control"
-                      required="true"
-                      placeholder="Username"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label>Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      id="email"
-                      class="form-control"
-                      required="true"
-                      placeholder="Email"
-                    />
-                  </div>
-                  <div class="form-group">
-                    <label>Password</label>
-                    <div class="input-group mb-3">
-                      <input
-                        id="password"
-                        type="password"
-                        class="form-control"
-                        placeholder="Password"
-                        aria-label="password"
-                        aria-describedby="basic-addon1"
-                      />
-                      <span
-                        toggle="#password"
-                        style="cursor: pointer"
-                        class="input-group-text toggle-password"
-                        id="basic-addon1"
-                        ><i class="fa fa-eye"></i
-                      ></span>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Role</label>
-                    <select
-                      type="text"
-                      name="role"
-                      id="role"
-                      class="form-control"
-                      required="true"
-                      placeholder="Email"
-                    >
-                      <option value="" selected disabled>--Pilih Role--</option>
-                      <option
-                        th:each="role : ${roles}"
-                        th:value="${role.idRole}"
-                        th:text="${role.roleName}"
-                      ></option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="d-flex justify-content-center">
-                  <button type="button" id="tambahUser" class="btn btn-primary">
-                    Tambah User
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
+  <div class="modal fade vh-100" id="modalDetail" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg d-flex justify-content-center">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Detail Materi</h5>
+          <button type="button btn-close" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-      </div>
-    </div>
-
-    <div class="modal fade vh-100" id="modalDetail" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg d-flex justify-content-center">
-        <div class="modal-content" >
-          <div class="modal-header">
-            <h5 class="modal-title">Detail Materi</h5>
-            <button
-              type="button btn-close"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
+        <div class="modal-body">
+          <form action="#" id="modalDetailForm">
             <div class="d-flex justify-content-center">
               <video id="videoDetail" width="100%" controls>
                 <source src="" type="video/mp4" />
                 Your browser does not support HTML video.
               </video>
-              
             </div>
-            
-            
-              
-           
             <div class="form-group">
               <label for="detailJudul">Judul</label>
               <input type="text" class="form-control" id="detailJudul" />
@@ -489,67 +374,45 @@
             </div>
             <div class="form-group">
               <label for="detailLokasiLiputan">Lokasi Liputan</label>
-              <input
-                type="text"
-                class="form-control"
-                id="detailLokasiLiputan"
-              />
+              <input type="text" class="form-control" id="detailLokasiLiputan" />
             </div>
             <!-- <div class="form-group">
-              <label for="detailNoTape">No Tape</label>
-              <input type="text" class="form-control" id="detailNoTape" />
-            </div> -->
+                <label for="detailNoTape">No Tape</label>
+                <input type="text" class="form-control" id="detailNoTape" />
+              </div> -->
             <div class="form-group">
               <label for="detailDeskripsi">Deskripsi</label>
-              <textarea
-                type="text"
-                class="form-control"
-                id="detailDeskripsi"
-              ></textarea>
+              <textarea type="text" class="form-control" id="detailDeskripsi"></textarea>
             </div>
-          </div>
-          <div
-            class="modal-footer"
-            th:if="${session.role == 'Editor' or session.role == 'Library'}"
-          >
-            <button id="downloadVideo" class="btn btn-primary">
-              Download Video
-            </button>
-          </div>
+          </form>
+        </div>
+        <div class="modal-footer" th:if="${session.role == 'Editor' or session.role == 'Library'}">
+          <button id="downloadVideo" class="btn btn-primary">
+            Download Video
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <div
-      class="modal fade bd-example-modal-lg"
-      data-backdrop="static"
-      data-keyboard="false"
-      tabindex="-1"
-      id="modalLoading"
-    >
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content" style="width: 48px">
-          <span class="fa fa-spinner fa-spin fa-3x"></span>
-        </div>
+  <div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    id="modalLoading">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content" style="width: 48px">
+        <span class="fa fa-spinner fa-spin fa-3x"></span>
       </div>
     </div>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
-      integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    <!-- <script
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!-- <script
       th:src="@{/js/popper.min.js}"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
       crossorigin="anonymous"
@@ -559,338 +422,413 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script> -->
-    <script type="text/javascript" th:src="@{/js/sweetalert2.js}"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.0/axios.min.js"
-      integrity="sha512-OdkysyYNjK4CZHgB+dkw9xQp66hZ9TLqmS2vXaBrftfyJeduVhyy1cOfoxiKdi4/bfgpco6REu6Rb+V2oVIRWg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      type="text/javascript"
-      th:src="@{/js/jquery.dataTables.min.js}"
-    ></script>
-    <script type="text/javascript" th:src="@{/js/action.js}"></script>
-    <script th:inline="javascript">
-      /*<![CDATA[*/
-      $(document).ready(function () {
-        initTable();
-        setTimeout(function () {
-          autoReload();
-        }, 5000);
-      });
-      function initTable() {
-        showTableMateri();
-        showTablePerson();
-        showTableLogAktivitas();
+  <script type="text/javascript" th:src="@{/js/sweetalert2.js}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.0/axios.min.js"
+    integrity="sha512-OdkysyYNjK4CZHgB+dkw9xQp66hZ9TLqmS2vXaBrftfyJeduVhyy1cOfoxiKdi4/bfgpco6REu6Rb+V2oVIRWg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript" th:src="@{/js/jquery.dataTables.min.js}"></script>
+  <script type="text/javascript" th:src="@{/js/action.js}"></script>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $(document).ready(function () {
+      initTable();
+    });
+    function initTable() {
+      showTableIngest();
+      showTableKontri();
+      showTablePerson();
+      showTableLogAktivitas();
+    }
+    $("#deskripsi").on("keyup", function () {
+      var words = 0;
+      if (this.value.match(/\S+/g) != null) {
+        words = this.value.match(/\S+/g).length;
       }
-      function autoReload() {
-        tableMateri.ajax.reload();
-        tablePerson.ajax.reload();
-        tableLogAktivitas.ajax.reload();
-        setTimeout(function () {
-          autoReload();
-        }, 5000);
-      }
-      $("#deskripsi").on("keyup", function () {
-        var words = 0;
-
-        if (this.value.match(/\S+/g) != null) {
-          words = this.value.match(/\S+/g).length;
-        }
-        $("#display_count").text(words);
-      });
-      $(".add").click(function(){
-        $(".file_container").append("<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input type='file' name='file' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>");});
-        $('.file_container').on('click', '.delete_', function() {
-          $(this).parents('.pp').remove();});
-      $("#nambah").on("click", function () {
-        $("#modalform").modal("toggle");
-        $("#modalLoading").modal("toggle");
-        var url = `/postMateri?judul=${$("#judul").val()}&no_tape=${$(
-          "#no_tape"
-        ).val()}&reporter=${$("#reporter").val()}&tim_liputan=${$(
-          "#tim_liputan"
-        ).val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$(
-          "#deskripsi"
-        ).val()}`;
-        var bodyFormData = new FormData();
-        let photo = $("#file").prop("files");
-        // var listPhoto = [];
-        // Array.from(photo).forEach((file) => {
-        //   console.log(file);
-        //   listPhoto.push(file);
-        // });
-        bodyFormData.append("files", photo[0]);
-        axios({
-          method: "post",
-          url: url,
-          data: bodyFormData,
-          headers: { "Content-Type": "multipart/form-data" },
+      $("#display_count").text(words);
+    });
+    $(".add").click(function () {
+      $(".file_container").append("<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input type='file' name='file' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>");
+    });
+    $('.file_container').on('click', '.delete_', function () {
+      $(this).parents('.pp').remove();
+    });
+    $("#nambah").on("click", function () {
+      $("#modalform").modal("toggle");
+      $("#modalLoading").modal("toggle");
+      var url = `/postMateri?judul=${$("#judul").val()}&no_tape=${$(
+        "#no_tape"
+      ).val()}&reporter=${$("#reporter").val()}&tim_liputan=${$(
+        "#tim_liputan"
+      ).val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$(
+        "#deskripsi"
+      ).val()}`;
+      var bodyFormData = new FormData();
+      let photo = $("#file").prop("files");
+      // var listPhoto = [];
+      // Array.from(photo).forEach((file) => {
+      //   console.log(file);
+      //   listPhoto.push(file);
+      // });
+      bodyFormData.append("files", photo[0]);
+      axios({
+        method: "post",
+        url: url,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          Swal.fire({
+            position: "center",
+            icon: response.data.icon,
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then((result) => {
+            $("#modalLoading").modal("toggle");
+            tableIngest.ajax.reload();
+          });
         })
-          .then(function (response) {
-            Swal.fire({
-              position: "center",
-              icon: response.data.icon,
-              title: response.data.message,
-              showConfirmButton: false,
-              timer: 1500,
-            }).then((result) => {
-              $("#modalLoading").modal("toggle");
-              tableMateri.ajax.reload();
+        .catch(function (obj) {
+          Swal.fire({
+            position: "center",
+            icon: obj.response.data.icon,
+            title: obj.response.data.message,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then((result) => {
+            $("#modalLoading").modal("toggle");
+            tableIngest.ajax.reload();
+          });
+        });
+    });
+
+    var tableKontri;
+    function showTableKontri() {
+      tableKontri = $("#tableKontri").DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+        language: {
+          zeroRecords: "Data Tidak Ada",
+          paginate: {
+            previous: '<i class="fa fa-lg fa-angle-left"></i>',
+            next: '<i class="fa fa-lg fa-angle-right"></i>',
+          },
+        },
+        searching: false,
+        stateSave: false,
+        serverSide: true,
+        processing: true,
+        ordering: false,
+        lengthMenu: [5, 10],
+        ajax: function (data, callback, settings) {
+          var role = /*[[${session.role}]]*/ "";
+          var page = Math.ceil(
+            settings._iDisplayStart / settings._iDisplayLength
+          );
+          var url = `/findAll/kontri?start=${page}&length=${data.length}`;
+          $.get(url, function (response) {
+            var out = [];
+            response.data.content.forEach(function (materi, i) {
+              if (role != "Administrator") {
+                var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByKontriId(${materi.idKontri})">
+                    View
+                  </button>
+                  <button type="button" class="btn btn-danger del" onclick="deleteById(${materi.idKontri})" >
+                    Delete
+                  </button>`;
+                var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
+                out.push([
+                  "",
+                  materi.judul,
+                  materi.reporter,
+                  deskripsi,
+                  action,
+                ]);
+              }
             });
-          })
-          .catch(function (obj) {
-            Swal.fire({
-              position: "center",
-              icon: obj.response.data.icon,
-              title: obj.response.data.message,
-              showConfirmButton: false,
-              timer: 1500,
-            }).then((result) => {
-              $("#modalLoading").modal("toggle");
-              tableMateri.ajax.reload();
+            callback({
+              recordsTotal: response.data.totalElements,
+              recordsFiltered: response.data.totalElements,
+              data: out,
             });
           });
+        },
+        deferRender: true,
       });
-      var tableMateri;
-      function showTableMateri() {
-        tableMateri = $("#tableMateri").DataTable({
-          dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
-          language: {
-            zeroRecords: "Data Tidak Ada",
-            paginate: {
-              previous: '<i class="fa fa-lg fa-angle-left"></i>',
-              next: '<i class="fa fa-lg fa-angle-right"></i>',
-            },
+    }
+
+    var tableIngest;
+    function showTableIngest() {
+      tableIngest = $("#tableIngest").DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+        language: {
+          zeroRecords: "Data Tidak Ada",
+          paginate: {
+            previous: '<i class="fa fa-lg fa-angle-left"></i>',
+            next: '<i class="fa fa-lg fa-angle-right"></i>',
           },
-          searching: false,
-          stateSave: false,
-          serverSide: true,
-          processing: true,
-          ordering: false,
-          lengthMenu: [5, 10],
-          ajax: function (data, callback, settings) {
-            var role = /*[[${session.role}]]*/ "";
-            var page = Math.ceil(
-              settings._iDisplayStart / settings._iDisplayLength
-            );
-            var url = `/findAll?start=${page}&length=${data.length}`;
-            $.get(url, function (response) {
-              var out = [];
-              response.data.content.forEach(function (materi, i) {
-                if (role != "Administrator") {
-                  var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="getById(${materi.idIngest})">
+        },
+        searching: false,
+        stateSave: false,
+        serverSide: true,
+        processing: true,
+        ordering: false,
+        lengthMenu: [5, 10],
+        ajax: function (data, callback, settings) {
+          var role = /*[[${session.role}]]*/ "";
+          var page = Math.ceil(
+            settings._iDisplayStart / settings._iDisplayLength
+          );
+          var url = `/findAll/ingest?start=${page}&length=${data.length}`;
+          $.get(url, function (response) {
+            var out = [];
+            response.data.content.forEach(function (materi, i) {
+              if (role != "Administrator") {
+                var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByIngestId(${materi.idIngest})">
                     View
                   </button>
                   <button type="button" class="btn btn-danger del" onclick="deleteById(${materi.idIngest})" >
                     Delete
                   </button>`;
-                  out.push([
-                    "",
-                    materi.judul,
-                    materi.reporter,
-                    materi.deskripsi,
-                    action,
-                  ]);
-                }
-              });
-              callback({
-                recordsTotal: response.data.totalElements,
-                recordsFiltered: response.data.totalElements,
-                data: out,
-              });
-            });
-          },
-          deferRender: true,
-        });
-      }
-
-      function getById(id) {
-        $.get(`/find?id=${id}`, function (res) {
-          var materi = res.data;
-          var listVideo = materi.listVideo;
-          var originalExtension = listVideo[0].originalExtension;
-          var transcodeExtension = listVideo[0].transcodeExtension;
-          var video = listVideo[0].filename.replace(`.${originalExtension}`, "");
-          // var path = listVideo[0].path;
-          $("#videoDetail source").attr(
-            "src",
-            `/video/stream/${transcodeExtension}/${video}`
-          );
-          // `/video/stream/${transcodeExtension}/${encodeURI(path)}/${video}`
-          $("#videoDetail")[0].load();
-          $("#detailJudul").val(materi.judul);
-          $("#detailTimLiputan").val(materi.timLiputan);
-          $("#detailReporter").val(materi.reporter);
-          $("#detailLokasiLiputan").val(materi.lokLiputan);
-          $("#detailNoTape").val(materi.noTape);
-          $("#detailDeskripsi").text(materi.deskripsi);
-          $("#downloadVideo").val(video);
-        });
-      }
-
-      $("#downloadVideo").on("click", function () {
-        window.location.href = `/download/${this.value}`;
-      });
-
-      function deleteById(id) {
-        Swal.fire({
-          title: "Yakin ingin menghapus Materi?",
-          showCancelButton: true,
-          cancelButtonText: "Tidak",
-          confirmButtonText: "Ya",
-          confirmButtonColor: "#dc3545",
-        }).then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            $.ajax({
-              url: `/materi?id=${id}`,
-              method: "DELETE",
-              success: function (data, textStatus, jqXHR) {
-                Swal.fire({
-                  position: "center",
-                  icon: "success",
-                  title: data.message,
-                  showConfirmButton: false,
-                  timer: 1500,
-                }).then((result) => {
-                  tableMateri.ajax.reload();
-                });
-              },
-            });
-          }
-        });
-      }
-      $(".toggle-password").click(function () {
-        $(".toggle-password i").toggleClass("fa-eye fa-eye-slash");
-        var input = $($(this).attr("toggle"));
-        if (input.attr("type") === "password") {
-          input.attr("type", "text");
-        } else {
-          input.attr("type", "password");
-        }
-      });
-      $("#tambahUser").on("click", function () {
-        var user = {
-          username: $("#username").val(),
-          email: $("#email").val(),
-          password: $("#password").val(),
-          role: $("#role option:selected").val(),
-        };
-        $.ajax({
-          url: "/person/post",
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          dataType: "json",
-          data: JSON.stringify(user),
-          success: function (data, status, jqXHR) {
-            Swal.fire({
-              position: "center",
-              icon: `${data.icon}`,
-              title: `${data.message}`,
-              showConfirmButton: false,
-              timer: 1500,
-            }).then((resuult) => {
-              $("#formAddPerson").trigger("reset");
-            });
-          },
-          error: function (jqXHR, status, error) {
-            var response = jqXHR.responseJSON;
-            Swal.fire({
-              position: "center",
-              icon: `${response.icon}`,
-              title: `${response.message}`,
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          },
-        });
-      });
-      var tablePerson;
-      function showTablePerson() {
-        tablePerson = $("#tablePerson").DataTable({
-          dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
-          language: {
-            zeroRecords: "Data Tidak Ada",
-            paginate: {
-              previous: '<i class="fa fa-lg fa-angle-left"></i>',
-              next: '<i class="fa fa-lg fa-angle-right"></i>',
-            },
-          },
-          searching: false,
-          stateSave: false,
-          serverSide: true,
-          processing: true,
-          ordering: false,
-          lengthMenu: [5, 10],
-          ajax: function (data, callback, settings) {
-            var page = Math.ceil(
-              settings._iDisplayStart / settings._iDisplayLength
-            );
-            var url = `/person/paging?start=${page}&length=${data.length}`;
-            $.get(url, function (response) {
-              var out = [];
-              response.data.content.forEach(function (person, i) {
-                out.push(["", person.username, person.email]);
-              });
-              callback({
-                recordsTotal: response.data.totalElements,
-                recordsFiltered: response.data.totalElements,
-                data: out,
-              });
-            });
-          },
-          deferRender: true,
-        });
-      }
-      var tableLogAktivitas;
-      function showTableLogAktivitas() {
-        tableLogAktivitas = $("#tableLogAktivitas").DataTable({
-          dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
-          language: {
-            zeroRecords: "Data Tidak Ada",
-            paginate: {
-              previous: '<i class="fa fa-lg fa-angle-left"></i>',
-              next: '<i class="fa fa-lg fa-angle-right"></i>',
-            },
-          },
-          searching: false,
-          stateSave: false,
-          serverSide: true,
-          processing: true,
-          ordering: false,
-          lengthMenu: [5, 10],
-          ajax: function (data, callback, settings) {
-            var page = Math.ceil(
-              settings._iDisplayStart / settings._iDisplayLength
-            );
-            var url = `/log?start=${page}&length=${data.length}`;
-            $.get(url, function (response) {
-              var out = [];
-              response.data.content.forEach(function (log, i) {
+                var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
                 out.push([
                   "",
-                  log.username,
-                  log.action,
-                  log.createdAt,
-                  log.data,
+                  materi.judul,
+                  materi.reporter,
+                  deskripsi,
+                  action,
                 ]);
-              });
-              callback({
-                recordsTotal: response.data.totalElements,
-                recordsFiltered: response.data.totalElements,
-                data: out,
-              });
+              }
             });
-          },
-          deferRender: true,
-        });
+            callback({
+              recordsTotal: response.data.totalElements,
+              recordsFiltered: response.data.totalElements,
+              data: out,
+            });
+          });
+        },
+        deferRender: true,
+      });
+    }
+
+    function findByIngestId(id) {
+      $.get(`/find/ingest?id=${id}`, function (res) {
+        var materi = res.data;
+        var listVideo = materi.listVideo;
+        var originalExtension = listVideo[0].originalExtension;
+        var transcodeExtension = listVideo[0].transcodeExtension;
+        var video = listVideo[0].filename.replace(`.${originalExtension}`, "");
+        // var path = listVideo[0].path;
+        $("#videoDetail source").attr(
+          "src",
+          `/video/stream/${transcodeExtension}/${video}`
+        );
+        // `/video/stream/${transcodeExtension}/${encodeURI(path)}/${video}`
+        $("#videoDetail")[0].load();
+        $("#detailJudul").val(materi.judul);
+        $("#detailTimLiputan").val(materi.timLiputan);
+        $("#detailReporter").val(materi.reporter);
+        $("#detailLokasiLiputan").val(materi.lokLiputan);
+        $("#detailNoTape").val(materi.noTape);
+        $("#detailDeskripsi").text(materi.deskripsi);
+        $("#downloadVideo").val(video);
+      });
+    }
+
+    function findByKontriId(id) {
+      $.get(`/find/kontri?id=${id}`, function (res) {
+        var materi = res.data;
+        var listVideo = materi.listVideo;
+        var originalExtension = listVideo[0].originalExtension;
+        var transcodeExtension = listVideo[0].transcodeExtension;
+        var video = listVideo[0].filename.replace(`.${originalExtension}`, "");
+        // var path = listVideo[0].path;
+        $("#videoDetail source").attr(
+          "src",
+          `/video/stream/${transcodeExtension}/${video}`
+        );
+        // `/video/stream/${transcodeExtension}/${encodeURI(path)}/${video}`
+        $("#videoDetail")[0].load();
+        $("#detailJudul").val(materi.judul);
+        $("#detailTimLiputan").val(materi.timLiputan);
+        $("#detailReporter").val(materi.reporter);
+        $("#detailLokasiLiputan").val(materi.lokLiputan);
+        $("#detailNoTape").val(materi.noTape);
+        $("#detailDeskripsi").text(materi.deskripsi);
+        $("#downloadVideo").val(video);
+      });
+    }
+
+    $("#downloadVideo").on("click", function () {
+      window.location.href = `/download/${this.value}`;
+    });
+
+    function deleteById(id) {
+      Swal.fire({
+        title: "Yakin ingin menghapus Materi?",
+        showCancelButton: true,
+        cancelButtonText: "Tidak",
+        confirmButtonText: "Ya",
+        confirmButtonColor: "#dc3545",
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `/materi?id=${id}`,
+            method: "DELETE",
+            success: function (data, textStatus, jqXHR) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: data.message,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then((result) => {
+                tableIngest.ajax.reload();
+              });
+            },
+          });
+        }
+      });
+    }
+    $(".toggle-password").click(function () {
+      $(".toggle-password i").toggleClass("fa-eye fa-eye-slash");
+      var input = $($(this).attr("toggle"));
+      if (input.attr("type") === "password") {
+        input.attr("type", "text");
+      } else {
+        input.attr("type", "password");
       }
-      /*]]>*/
-    </script>
-  </body>
-  <!-- Core theme JS-->
+    });
+    $("#tambahUser").on("click", function () {
+      var user = {
+        username: $("#username").val(),
+        email: $("#email").val(),
+        password: $("#password").val(),
+        role: $("#role option:selected").val(),
+      };
+      $.ajax({
+        url: "/person/post",
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        dataType: "json",
+        data: JSON.stringify(user),
+        success: function (data, status, jqXHR) {
+          Swal.fire({
+            position: "center",
+            icon: `${data.icon}`,
+            title: `${data.message}`,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then((resuult) => {
+            $("#formAddPerson").trigger("reset");
+          });
+        },
+        error: function (jqXHR, status, error) {
+          var response = jqXHR.responseJSON;
+          Swal.fire({
+            position: "center",
+            icon: `${response.icon}`,
+            title: `${response.message}`,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+      });
+    });
+    var tablePerson;
+    function showTablePerson() {
+      tablePerson = $("#tablePerson").DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+        language: {
+          zeroRecords: "Data Tidak Ada",
+          paginate: {
+            previous: '<i class="fa fa-lg fa-angle-left"></i>',
+            next: '<i class="fa fa-lg fa-angle-right"></i>',
+          },
+        },
+        searching: false,
+        stateSave: false,
+        serverSide: true,
+        processing: true,
+        ordering: false,
+        lengthMenu: [5, 10],
+        ajax: function (data, callback, settings) {
+          var page = Math.ceil(
+            settings._iDisplayStart / settings._iDisplayLength
+          );
+          var url = `/person/paging?start=${page}&length=${data.length}`;
+          $.get(url, function (response) {
+            var out = [];
+            response.data.content.forEach(function (person, i) {
+              out.push(["", person.username, person.email]);
+            });
+            callback({
+              recordsTotal: response.data.totalElements,
+              recordsFiltered: response.data.totalElements,
+              data: out,
+            });
+          });
+        },
+        deferRender: true,
+      });
+    }
+    var tableLogAktivitas;
+    function showTableLogAktivitas() {
+      tableLogAktivitas = $("#tableLogAktivitas").DataTable({
+        dom: "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>\n        <'table-responsive'tr>\n        <'row align-items-center'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 d-flex justify-content-end'p>>",
+        language: {
+          zeroRecords: "Data Tidak Ada",
+          paginate: {
+            previous: '<i class="fa fa-lg fa-angle-left"></i>',
+            next: '<i class="fa fa-lg fa-angle-right"></i>',
+          },
+        },
+        searching: false,
+        stateSave: false,
+        serverSide: true,
+        processing: true,
+        ordering: false,
+        lengthMenu: [5, 10],
+        ajax: function (data, callback, settings) {
+          var page = Math.ceil(
+            settings._iDisplayStart / settings._iDisplayLength
+          );
+          var url = `/log?start=${page}&length=${data.length}`;
+          $.get(url, function (response) {
+            var out = [];
+            response.data.content.forEach(function (log, i) {
+              out.push([
+                "",
+                log.username,
+                log.action,
+                log.createdAt,
+                log.data,
+              ]);
+            });
+            callback({
+              recordsTotal: response.data.totalElements,
+              recordsFiltered: response.data.totalElements,
+              data: out,
+            });
+          });
+        },
+        deferRender: true,
+      });
+    }
+    $('#modalDetail').on('hidden.bs.modal', function (e) {
+      $("#videoDetail").get(0).pause();
+    });
+    function tabIngestClicked(){
+      tableIngest.ajax.reload();
+    }
+    function tabKontriClicked(){
+      tableKontri.ajax.reload();
+    }
+    /*]]>*/
+  </script>
+</body>
+<!-- Core theme JS-->
+
 </html>
