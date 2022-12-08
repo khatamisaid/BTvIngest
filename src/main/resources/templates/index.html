@@ -88,12 +88,12 @@
         <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
           <div class="input-group">
             <input id="searchIngest" type="text" class="form-control" placeholder="Search">
-            <!-- <select class="form-control" name="columnIngest" id="columnIngest">
+            <select class="form-control" name="columnIngest" id="columnIngest">
               <option value="" selected disabled>-- Cari Berdasarkan --</option>
               <option value="1">judul</option>
               <option value="2">reporter</option>
               <option value="3">deskripsi</option>
-            </select> -->
+            </select>
             <div class="input-group-append">
               <button id="btnSearchIngest" class="btn btn-secondary" type="button">
                 <i class="fa fa-search"></i>
@@ -123,6 +123,12 @@
         <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
           <div class="input-group">
             <input id="searchKontri" type="text" class="form-control" placeholder="Search">
+            <select class="form-control" name="columnKontri" id="columnKontri">
+              <option value="" selected disabled>-- Cari Berdasarkan --</option>
+              <option value="1">judul</option>
+              <option value="2">reporter</option>
+              <option value="3">deskripsi</option>
+            </select>
             <div class="input-group-append">
               <button id="btnSearchKontri" class="btn btn-secondary" type="button">
                 <i class="fa fa-search"></i>
@@ -524,7 +530,7 @@
           var page = Math.ceil(
             settings._iDisplayStart / settings._iDisplayLength
           );
-          var url = `/findAll/kontri?start=${page}&length=${data.length}`;
+          var url = `/findAll/kontri?search=${$("#searchKontri").val()}&by=${$("#columnKontri option:selected").val()}start=${page}&length=${data.length}`;
           $.get(url, function (response) {
             var out = [];
             response.data.content.forEach(function (materi, i) {
@@ -532,7 +538,7 @@
                 var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByKontriId(${materi.idKontri})">
                     View
                   </button>
-                  <button type="button" class="btn btn-danger del" onclick="deleteById(${materi.idKontri})" >
+                  <button type="button" class="btn btn-danger del" onclick="deleteKontriById(${materi.idKontri})" >
                     Delete
                   </button>`;
                 var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
@@ -578,7 +584,7 @@
           var page = Math.ceil(
             settings._iDisplayStart / settings._iDisplayLength
           );
-          var url = `/findAll/ingest?start=${page}&length=${data.length}`;
+          var url = `/findAll/ingest?search=${$("#searchIngest").val()}&by=${$("#columnIngest option:selected").val()}start=${page}&length=${data.length}`;
           $.get(url, function (response) {
             var out = [];
             response.data.content.forEach(function (materi, i) {
@@ -586,7 +592,7 @@
                 var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByIngestId(${materi.idIngest})">
                     View
                   </button>
-                  <button type="button" class="btn btn-danger del" onclick="deleteById(${materi.idIngest})" >
+                  <button type="button" class="btn btn-danger del" onclick="deleteIngestById(${materi.idIngest})" >
                     Delete
                   </button>`;
                 var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
@@ -662,9 +668,9 @@
       window.location.href = `/download/${this.value}`;
     });
 
-    function deleteById(id) {
+    function deleteKontriById(id) {
       Swal.fire({
-        title: "Yakin ingin menghapus Materi?",
+        title: "Yakin ingin menghapus Materi Kontri?",
         showCancelButton: true,
         cancelButtonText: "Tidak",
         confirmButtonText: "Ya",
@@ -673,7 +679,7 @@
         /* Read more about isConfirmed, isDenied below */
         if (result.isConfirmed) {
           $.ajax({
-            url: `/materi?id=${id}`,
+            url: `/materi/kontri?id=${id}`,
             method: "DELETE",
             success: function (data, textStatus, jqXHR) {
               Swal.fire({
@@ -690,6 +696,36 @@
         }
       });
     }
+
+    function deleteIngestById(id) {
+      Swal.fire({
+        title: "Yakin ingin menghapus Materi Ingest?",
+        showCancelButton: true,
+        cancelButtonText: "Tidak",
+        confirmButtonText: "Ya",
+        confirmButtonColor: "#dc3545",
+      }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `/materi/ingest?id=${id}`,
+            method: "DELETE",
+            success: function (data, textStatus, jqXHR) {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: data.message,
+                showConfirmButton: false,
+                timer: 1500,
+              }).then((result) => {
+                tableIngest.ajax.reload();
+              });
+            },
+          });
+        }
+      });
+    }
+
     $(".toggle-password").click(function () {
       $(".toggle-password i").toggleClass("fa-eye fa-eye-slash");
       var input = $($(this).attr("toggle"));
@@ -826,6 +862,12 @@
     function tabKontriClicked(){
       tableKontri.ajax.reload();
     }
+    $("#btnSearchIngest").on('click',function(){
+      tableIngest.ajax.reload();
+    });
+    $("#btnSearchKontri").on('click',function(){
+      tableKontri.ajax.reload();
+    });
     /*]]>*/
   </script>
 </body>

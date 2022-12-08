@@ -15,10 +15,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -87,15 +91,16 @@ public class MainController {
         return "index";
     }
 
-    @GetMapping(value = "/findAll/{path}")
-    public ResponseEntity<Map> findAll(@PathVariable(required = true) String path, @RequestParam(defaultValue = "0") Integer start,
+    @GetMapping(value = "/findAllSize/{path}")
+    public ResponseEntity<Map> findAllSize(@PathVariable(required = true) String path,
+            @RequestParam(defaultValue = "0") Integer start,
             @RequestParam(defaultValue = "5") Integer length) {
         Map data = new HashMap<>();
-        if(path.equalsIgnoreCase("ingest")){
+        if (path.equalsIgnoreCase("ingest")) {
             Pageable pageable = PageRequest.of(start, length);
             Page<Ingest> dataPaging = ingestRepository.findAll(pageable);
             data.put("data", dataPaging);
-        }else if(path.equalsIgnoreCase("kontri")){
+        } else if (path.equalsIgnoreCase("kontri")) {
             Pageable pageable = PageRequest.of(start, length);
             Page<Kontri> dataPaging = kontriRepository.findAll(pageable);
             data.put("data", dataPaging);
@@ -103,10 +108,54 @@ public class MainController {
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
-    @GetMapping(value = "/find/{path}")
-    public ResponseEntity<Map> find(@PathVariable(required = true) String path, @RequestParam(required = true) Integer id) throws JsonProcessingException {
+    @GetMapping(value = "/findAll/{path}")
+    public ResponseEntity<Map> findAll(@PathVariable(required = true) String path,
+    @RequestParam String search, @RequestParam String by,
+            @RequestParam(defaultValue = "0") Integer start,
+            @RequestParam(defaultValue = "5") Integer length) {
         Map data = new HashMap<>();
-        if(path.equalsIgnoreCase("ingest")){
+        Pageable pageable = PageRequest.of(start, length, Sort.by("createdAt").descending());
+        if (path.equalsIgnoreCase("ingest")) {
+            ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING).withIgnoreCase();
+            Ingest ingest = new Ingest();
+            if(by.equalsIgnoreCase("1")){
+                ingest.setJudul(search);
+            }else if(by.equalsIgnoreCase("2")){
+                ingest.setReporter(search);
+            }else if(by.equalsIgnoreCase("3")){
+                ingest.setDeskripsi(search);
+            }
+            Example<Ingest> exampleIngest = Example.of(ingest, caseInsensitiveExampleMatcher); 
+            int s = (int) pageable.getOffset();
+            List<Ingest> listIngest = ingestRepository.findAll(exampleIngest);
+            int e = Math.min((s + pageable.getPageSize()), listIngest.size());
+            Page<Ingest> dataPaging = new PageImpl<>(listIngest.subList(s, e), pageable, listIngest.size());
+            data.put("data", dataPaging);
+        } else if (path.equalsIgnoreCase("kontri")) {
+            ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING).withIgnoreCase();
+            Kontri kontri = new Kontri();
+            if(by.equalsIgnoreCase("1")){
+                kontri.setJudul(search);
+            }else if(by.equalsIgnoreCase("2")){
+                kontri.setReporter(search);
+            }else if(by.equalsIgnoreCase("3")){
+                kontri.setDeskripsi(search);
+            }
+            Example<Kontri> exampleIngest = Example.of(kontri, caseInsensitiveExampleMatcher); 
+            int s = (int) pageable.getOffset();
+            List<Kontri> listKontri = kontriRepository.findAll(exampleIngest);
+            int e = Math.min((s + pageable.getPageSize()), listKontri.size());
+            Page<Kontri> dataPaging = new PageImpl<>(listKontri.subList(s, e), pageable, listKontri.size());
+            data.put("data", dataPaging);
+        }
+        return new ResponseEntity<>(data, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/find/{path}")
+    public ResponseEntity<Map> find(@PathVariable(required = true) String path,
+            @RequestParam(required = true) Integer id) throws JsonProcessingException {
+        Map data = new HashMap<>();
+        if (path.equalsIgnoreCase("ingest")) {
             if (!ingestRepository.existsById(id)) {
                 data.put("message", "Data Tidak Ditemukan");
                 return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
@@ -117,7 +166,7 @@ public class MainController {
             logRepository
                     .save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
                             mapper.writeValueAsString(ingest.getListVideo())));
-        }else if(path.equalsIgnoreCase("kontri")){
+        } else if (path.equalsIgnoreCase("kontri")) {
             if (!kontriRepository.existsById(id)) {
                 data.put("message", "Data Tidak Ditemukan");
                 return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
@@ -150,15 +199,25 @@ public class MainController {
                 .body(fileContent);
     }
 
-    @DeleteMapping(value = "/materi")
-    public ResponseEntity<Map> deleteMateri(@RequestParam(required = true) Integer id) {
+    @DeleteMapping(value = "/materi/{path}")
+    public ResponseEntity<Map> deleteMateri(@PathVariable String path, @RequestParam(required = true) Integer id) {
         Map data = new HashMap<>();
-        if (!ingestRepository.existsById(id)) {
-            data.put("message", "Data Tidak Ditemukan");
-            return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+        if (path.equalsIgnoreCase("ingest")) {
+            if (!ingestRepository.existsById(id)) {
+                data.put("message", "Data Tidak Ditemukan");
+                return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+            }
+            ingestRepository.deleteById(id);
+            data.put("message", "Data Ingest Berhasil di hapus");
+        } else if (path.equalsIgnoreCase("kontri")) {
+            if (!kontriRepository.existsById(id)) {
+                data.put("message", "Data Tidak Ditemukan");
+                return new ResponseEntity<>(data, HttpStatus.NOT_FOUND);
+            }
+            kontriRepository.deleteById(id);
+            data.put("message", "Data Kontri Berhasil di hapus");
         }
-        ingestRepository.deleteById(id);
-        data.put("message", "Data Materi Berhasil di hapus");
+
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 
@@ -188,13 +247,14 @@ public class MainController {
             namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "_"
                     + "."
                     + originalExtension;
-            // String base64Folder = Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes())
-            //         .toString();
+            // String base64Folder =
+            // Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes())
+            // .toString();
             // String fullPathFile = env.getProperty("URL.FILE_IN") + "/"
-            //         + base64Folder;
+            // + base64Folder;
             // File dir = new File(fullPathFile);
             // if (!dir.exists())
-            //     dir.mkdirs();
+            // dir.mkdirs();
             files.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdIngest(dbIngest.getIdIngest());

@@ -1,261 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" th:href="@{/css/styles.css}" />
-    <link rel="shortcut icon" sizes="16x16" th:href="@{/images/BTV.ico}" />
-    <!-- Bootstrap 5 CSS -->
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-      crossorigin="anonymous"
-    />
-    <!-- <link
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" th:href="@{/css/styles.css}" />
+  <link rel="shortcut icon" sizes="16x16" th:href="@{/images/BTV.ico}" />
+  <!-- Bootstrap 5 CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+  <!-- <link
               rel="stylesheet"
               th:href="@{/css/bootstrap.min.css}"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               crossorigin="anonymous"
             /> -->
-    <!-- Font Awesome 5 -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-    />
-    <!-- DataTables -->
-    <link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" />
-    <style>
-      .bd-example-modal-lg .modal-dialog {
-        display: table;
-        position: relative;
-        margin: 0 auto;
-        top: calc(50% - 24px);
-      }
+  <!-- Font Awesome 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
+  <!-- DataTables -->
+  <link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" />
+  <style>
+    .bd-example-modal-lg .modal-dialog {
+      display: table;
+      position: relative;
+      margin: 0 auto;
+      top: calc(50% - 24px);
+    }
 
-      .bd-example-modal-lg .modal-dialog .modal-content {
-        background-color: transparent;
-        border: none;
-      }
-    </style>
-  </head>
+    .bd-example-modal-lg .modal-dialog .modal-content {
+      background-color: transparent;
+      border: none;
+    }
+  </style>
+</head>
 
-  <body style="background-color: #efefef">
-    <div class="container justify-content-center">
-      <div class="card kotak_tabel" style="margin: 50px auto">
-        <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link active"
-              id="ex3-tab-1"
-              data-toggle="tab"
-              href="#ex3-tabs-1"
-              role="tab"
-              aria-controls="ex3-tabs-1"
-              aria-selected="true"
-              >Upload</a
-            >
-          </li>
-          <li class="nav-item" role="presentation">
-            <a
-              class="nav-link"
-              id="ex3-tab-2"
-              data-toggle="tab"
-              href="#ex3-tabs-2"
-              role="tab"
-              aria-controls="ex3-tabs-2"
-              aria-selected="false"
-              >Log</a
-            >
-          </li>
-        </ul>
-        <div class="tab-content">
-          <div
-            class="tab-pane fade show active"
-            id="ex3-tabs-1"
-            role="tabpanel"
-            aria-labelledby="ex3-tab-1"
-          >
-            <form
-              action="#"
-              id="regForm"
-              method="post"
-              enctype="multipart/form-data"
-            >
-              <div class="card-body">
-                <div class="form-group">
-                  <label>Judul</label>
-                  <input
-                    type="text"
-                    name="judul"
-                    id="judul"
-                    class="form-control"
-                    required="true"
-                  />
-                </div>
-                <div class="form-group">
-                  <label>Reporter</label>
-                  <input
-                    type="text"
-                    name="reporter"
-                    id="reporter"
-                    class="form-control"
-                    required="true"
-                  />
-                  <div
-                    class="d-flex justify-content-end"
-                    style="margin-top: 3px"
-                  >
-                    <button class="btn btn-primary" onclick="showTimLiputan()">
-                      + Tambah Tim Liputan
-                    </button>
-                  </div>
-                </div>
-                <div
-                  class="form-group"
-                  style="display: none"
-                  id="sectionTimLiputan"
-                >
-                  <label>Tim Liputan</label>
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      aria-label="Text input with dropdown button"
-                      placeholder="Masukan nama"
-                    />
-                    <div class="input-group-append">
-                      <select
-                        class="custom-select"
-                        name="role_tim_liputan[]"
-                        id="role_tim_liputan"
-                      >
-                        <option value="1">Camera Person</option>
-                        <option value="2">VJ</option>
-                        <option value="3">Reporter</option>
-                      </select>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    class="delete_ btn btn-danger float-end"
-                    title="Delete file"
-                    style="margin-top: 3px"
-                  >
-                    <span class="glyphicon glyphicon-remove"></span> Hapus
+<body style="background-color: #efefef">
+  <div class="container justify-content-center">
+    <div class="card kotak_tabel" style="margin: 50px auto">
+      <ul class="nav nav-tabs nav-justified mb-3" id="ex1" role="tablist">
+        <li class="nav-item" role="presentation">
+          <a class="nav-link active" id="ex3-tab-1" data-toggle="tab" href="#ex3-tabs-1" role="tab"
+            aria-controls="ex3-tabs-1" aria-selected="true">Upload</a>
+        </li>
+        <li class="nav-item" role="presentation">
+          <a class="nav-link" id="ex3-tab-2" data-toggle="tab" href="#ex3-tabs-2" role="tab" aria-controls="ex3-tabs-2"
+            aria-selected="false">Log</a>
+        </li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="ex3-tabs-1" role="tabpanel" aria-labelledby="ex3-tab-1">
+          <form action="#" id="regForm" method="post" enctype="multipart/form-data">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Judul</label>
+                <input type="text" name="judul" id="judul" class="form-control" required="true" />
+              </div>
+              <div class="form-group">
+                <label>Reporter</label>
+                <input type="text" name="reporter" id="reporter" class="form-control" required="true" />
+                <div class="d-flex justify-content-end" style="margin-top: 3px">
+                  <button class="btn btn-primary" onclick="showTimLiputan()">
+                    + Tambah Tim Liputan
                   </button>
                 </div>
-
-                <div class="form-group">
-                  <label>Lokasi Liputan</label>
-                  <input
-                    type="text"
-                    name="lok_liputan"
-                    id="lok_liputan"
-                    class="form-control"
-                    required="true"
-                  />
+              </div>
+              <div class="form-group" style="display: none" id="sectionTimLiputan">
+                <label>Tim Liputan</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                    placeholder="Masukan nama" />
+                  <div class="input-group-append">
+                    <select class="custom-select" name="role_tim_liputan[]" id="role_tim_liputan">
+                      <option value="1">Camera Person</option>
+                      <option value="2">VJ</option>
+                      <option value="3">Reporter</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="form-group file_container">
-                  <label for="file" class="form-label">Upload Files</label>
-                  <input
-                    type="file"
-                    class="form-control"
-                    name="file[]"
-                    id="file"
-                    accept="video/mp4,video/x-m4v,video/*"
-                  />
-
-                  <input
-                    type="text"
-                    class="form-control"
-                    name="caption"
-                    id="caption"
-                    placeholder="caption file"
-                  />
-                  <p style="clear: both; margin-top: 3px">
-                    <button
-                      class="add btn btn-success float-end"
-                      type="button"
-                      title="Add new file"
-                    >
-                      <span class="glyphicon glyphicon-plus"></span> Add New
-                      File
-                    </button>
-                  </p>
-                </div>
-
-                <div class="form-group">
-                  <label for="deskripsi" class="form-label">Deksripsi</label>
-                  <textarea
-                    type="text"
-                    class="form-control"
-                    id="deskripsi"
-                    name="deskripsi"
-                    placeholder="deskripsi Liputan"
-                  ></textarea>
-                  <span id="display_count">0</span> /
-                  <span id="word_left">300</span> kata.
-                </div>
-                <button type="button" id="nambah" class="btn btn-primary w-100">
-                  Tambah Data
+                <button type="button" class="delete_ btn btn-danger float-end" title="Delete file"
+                  style="margin-top: 3px">
+                  <span class="glyphicon glyphicon-remove"></span> Hapus
                 </button>
-                <!-- Lorem 300Kata buat contoh
+              </div>
+
+              <div class="form-group">
+                <label>Lokasi Liputan</label>
+                <input type="text" name="lok_liputan" id="lok_liputan" class="form-control" required="true" />
+              </div>
+              <div class="form-group file_container">
+                <label for="file" class="form-label">Upload Files</label>
+                <input type="file" class="form-control" name="file[]" id="file"
+                  accept="video/mp4,video/x-m4v,video/*" />
+
+                <input type="text" class="form-control" name="caption" id="caption" placeholder="caption file" />
+                <p style="clear: both; margin-top: 3px">
+                  <button class="add btn btn-success float-end" type="button" title="Add new file">
+                    <span class="glyphicon glyphicon-plus"></span> Add New
+                    File
+                  </button>
+                </p>
+              </div>
+
+              <div class="form-group">
+                <label for="deskripsi" class="form-label">Deksripsi</label>
+                <textarea type="text" class="form-control" id="deskripsi" name="deskripsi"
+                  placeholder="deskripsi Liputan"></textarea>
+                <span id="display_count">0</span> /
+                <span id="word_left">300</span> kata.
+              </div>
+              <button type="button" id="nambah" class="btn btn-primary w-100">
+                Tambah Data
+              </button>
+              <!-- Lorem 300Kata buat contoh
                     <div>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Odit nulla minus eligendi! Facere dicta iure enim ut voluptatem natus recusandae, odio corrupti. Itaque delectus eveniet eius blanditiis consectetur ratione deleniti temporibus molestiae, quam in saepe sequi, alias enim. Doloremque enim amet dolore molestias deleniti vitae accusantium voluptate sunt odio. Adipisci soluta id, et fuga illo ipsum quod voluptate nobis dolorem accusamus aliquid, ipsam nam hic alias omnis! Porro, id consectetur, asperiores laborum nostrum doloremque vitae neque ipsam voluptates beatae magnam. Repellat quasi veniam maxime ullam impedit necessitatibus dignissimos praesentium nisi, nulla alias consequuntur animi minima optio eligendi, quisquam error. Veritatis, laboriosam corporis exercitationem nesciunt, tempora quibusdam tempore aut quidem dignissimos laborum temporibus laudantium perspiciatis voluptatum. Tempore voluptatum quo officiis doloribus, ipsa culpa nemo temporibus esse cum, consectetur, voluptates aperiam amet architecto eum earum velit pariatur. Debitis molestiae recusandae vitae alias laboriosam, vel nostrum cupiditate consequatur et quaerat pariatur ducimus esse delectus vero nulla, dignissimos quod sequi, tempora libero quidem incidunt consequuntur! Tempora, suscipit neque dolores accusamus quos modi fuga ut voluptatum maiores quasi. Quaerat ex molestiae maxime quidem eius? Quod, sapiente. Cupiditate ad exercitationem placeat consequuntur nihil explicabo deserunt ex quia eum veniam nobis inventore illum eveniet autem velit, recusandae molestias minus cum non iusto delectus? Eveniet rerum nihil nesciunt quisquam eligendi sint consectetur tempore odio. Aliquam minima laboriosam commodi, quaerat et aut autem soluta eius quae architecto voluptates, sapiente accusamus, non distinctio dolore id est quo. Aperiam aspernatur libero inventore et ut adipisci culpa fugiat tenetur iste, fugit ad, ipsam earum sunt nisi, ducimus asperiores commodi repellendus magnam eos ullam itaque quae iusto! Ut optio repellendus eius facere labore earum. Minus molestiae sit vitae numquam doloribus? Alias explicabo magni nesciunt debitis amet voluptate molestias a praesentium, fugit animi consequatur quibusdam vitae qui asperiores, similique eaque ea dolore. Vitae, dolore!</div> 
                 -->
-              </div>
-            </form>
-          </div>
+            </div>
+          </form>
+        </div>
 
-          <div
-            class="tab-pane fade"
-            id="ex3-tabs-2"
-            role="tabpanel"
-            aria-labelledby="ex3-tab-2"
-          >
-            <form
-              action=""
-              id="logForm"
-              method="post"
-              enctype="multipart/form-data"
-            >
-              <div class="card-body">TEST</div>
-            </form>
-          </div>
+        <div class="tab-pane fade" id="ex3-tabs-2" role="tabpanel" aria-labelledby="ex3-tab-2">
+          <form action="" id="logForm" method="post" enctype="multipart/form-data">
+            <div class="card-body">TEST</div>
+          </form>
         </div>
       </div>
     </div>
-    <div
-      class="modal fade bd-example-modal-lg"
-      data-backdrop="static"
-      data-keyboard="false"
-      tabindex="-1"
-      id="modalLoading"
-    >
-      <div class="modal-dialog modal-sm">
-        <div class="modal-content" style="width: 48px">
-          <span class="fa fa-spinner fa-spin fa-3x"></span>
-        </div>
+  </div>
+  <div class="modal fade bd-example-modal-lg" data-backdrop="static" data-keyboard="false" tabindex="-1"
+    id="modalLoading">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content" style="width: 48px">
+        <span class="fa fa-spinner fa-spin fa-3x"></span>
       </div>
     </div>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
-      integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-      crossorigin="anonymous"
-    ></script>
-    <!-- <script
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"
+    integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <!-- <script
       th:src="@{/js/popper.min.js}"
       integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
       crossorigin="anonymous"
@@ -265,104 +154,102 @@
       integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
       crossorigin="anonymous"
     ></script> -->
-    <script type="text/javascript" th:src="@{/js/sweetalert2.js}"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.0/axios.min.js"
-      integrity="sha512-OdkysyYNjK4CZHgB+dkw9xQp66hZ9TLqmS2vXaBrftfyJeduVhyy1cOfoxiKdi4/bfgpco6REu6Rb+V2oVIRWg=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script th:inline="javascript">
-      /*<![CDATA[*/
-      $("#deskripsi").on("keyup", function () {
-        var words = 0;
-        if (this.value.match(/\S+/g) != null) {
-          words = this.value.match(/\S+/g).length;
-        }
-        $("#display_count").text(words);
-      });
-      function reset() {
-        $("#judul").val('');
-        $("#reporter").val('');
-        $("#lok_liputan").val('');
-        // Yang files belum bisa reset
-        $("#sectionTimLiputan").val('');
-        $("#caption").val('');
-        $("#deskripsi").val('');
+  <script type="text/javascript" th:src="@{/js/sweetalert2.js}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.0/axios.min.js"
+    integrity="sha512-OdkysyYNjK4CZHgB+dkw9xQp66hZ9TLqmS2vXaBrftfyJeduVhyy1cOfoxiKdi4/bfgpco6REu6Rb+V2oVIRWg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script th:inline="javascript">
+    /*<![CDATA[*/
+    $("#deskripsi").on("keyup", function () {
+      var words = 0;
+      if (this.value.match(/\S+/g) != null) {
+        words = this.value.match(/\S+/g).length;
+      }
+      $("#display_count").text(words);
+    });
+    function reset() {
+      $("#judul").val('');
+      $("#reporter").val('');
+      $("#lok_liputan").val('');
+      // Yang files belum bisa reset
+      $("#sectionTimLiputan").val('');
+      $("#caption").val('');
+      $("#deskripsi").val('');
     }
-      $(".add").click(function () {
-        $(".file_container").append(
-          "<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input accept='video/mp4,video/x-m4v,video/*' type='file' name='file[]' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>"
-        );
+    $(".add").click(function () {
+      $(".file_container").append(
+        "<div class='form-group pp'><label for='file' class='form-label'>Upload Files</label> <input accept='video/mp4,video/x-m4v,video/*' type='file' name='file[]' class='form-control mt-mb-3' id='file' /> <input type='text' class='form-control mt-mb-3' name='caption' id='caption' placeholder='caption file'/> <button type='button' class='delete_ btn btn-danger float-end' title='Delete file' style='margin-top:3px;'><span class='glyphicon glyphicon-remove'></span> Delete file</button> </div>"
+      );
+    });
+    $(".file_container").on("click", ".delete_", function () {
+      $(this).parents(".pp").remove();
+    });
+    $("#nambah").on("click", function () {
+      var inputFile = document.getElementsByName("file[]");
+      listVideo = [];
+      for (var i = 0; i < inputFile.length; i++) {
+        var a = inputFile[i].files[0];
+        listVideo.push(a);
+      }
+      $("#modalform").modal("toggle");
+      $("#modalLoading").modal("toggle");
+      // var url = `/kontri/postVideo`;
+      var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$("#reporter").val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$("#deskripsi").val()}`;
+      // var body = {
+      //   judul: $("#judul").val(),
+      //   reporter: $("#reporter").val(),
+      //   lok_liputan: $("#lok_liputan").val(),
+      //   deskripsi: $("#deskripsi").val(),
+      // };
+      var bodyFormData = new FormData();
+      listVideo.forEach(video => {
+        bodyFormData.append("files", video);
       });
-      $(".file_container").on("click", ".delete_", function () {
-        $(this).parents(".pp").remove();
-      });
-      $("#nambah").on("click", function () {
-        var inputFile = document.getElementsByName("file[]");
-        listVideo = [];
-        for (var i = 0; i < inputFile.length; i++) {
-          var a = inputFile[i].files[0];
-          listVideo.push(a);
-        }
-        $("#modalform").modal("toggle");
-        $("#modalLoading").modal("toggle");
-        // var url = `/kontri/postVideo`;
-        var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$("#reporter").val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$("#deskripsi").val()}`;
-        // var body = {
-        //   judul: $("#judul").val(),
-        //   reporter: $("#reporter").val(),
-        //   lok_liputan: $("#lok_liputan").val(),
-        //   deskripsi: $("#deskripsi").val(),
-        // };
-        var bodyFormData = new FormData();
-        listVideo.forEach(video => {
-          bodyFormData.append("files", video);
-        });
-        // bodyFormData.append("files", listVideo);
-        // bodyFormData.append("request", body);
-        axios({
-          method: "post",
-          url: url,
-          data: bodyFormData,
-          headers: { "Content-Type": "multipart/form-data" },
-        })
-          .then(function (response) {
-            Swal.fire({
-              position: "center",
-              icon: response.data.icon,
-              title: response.data.message,
-              showConfirmButton: false,
-              timer: 1500,
-            }).then((result) => {
-              $("#modalLoading").modal("toggle");
-              //   tableMateri.ajax.reload();
-            });
-          })
-          .catch(function (obj) {
-            Swal.fire({
-              position: "center",
-              icon: obj.response.data.icon,
-              title: obj.response.data.message,
-              showConfirmButton: false,
-              timer: 1500,
-            }).then((result) => {
-              $("#modalLoading").modal("toggle");
-              //   tableMateri.ajax.reload();
-            });
+      // bodyFormData.append("files", listVideo);
+      // bodyFormData.append("request", body);
+      axios({
+        method: "post",
+        url: url,
+        data: bodyFormData,
+        headers: { "Content-Type": "multipart/form-data" },
+      })
+        .then(function (response) {
+          Swal.fire({
+            position: "center",
+            icon: response.data.icon,
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then((result) => {
+            $("#modalLoading").modal("toggle");
+            //   tableMateri.ajax.reload();
           });
-          reset();
-      });
-      function showTimLiputan() {
-        if ($("#sectionTimLiputan").css("display") == "none") {
-          console.log("hidden");
-          $("#sectionTimLiputan").show();
-          return;
-        }
-        console.log("show");
+        })
+        .catch(function (obj) {
+          Swal.fire({
+            position: "center",
+            icon: obj.response.data.icon,
+            title: obj.response.data.message,
+            showConfirmButton: false,
+            timer: 1500,
+          }).then((result) => {
+            $("#modalLoading").modal("toggle");
+            //   tableMateri.ajax.reload();
+          });
+        });
+      reset();
+    });
+    function showTimLiputan() {
+      if ($("#sectionTimLiputan").css("display") == "none") {
+        console.log("hidden");
+        $("#sectionTimLiputan").show();
         return;
       }
+      console.log("show");
+      return;
+    }
       /*]]>*/
-    </script>
-  </body>
+  </script>
+</body>
+
 </html>
