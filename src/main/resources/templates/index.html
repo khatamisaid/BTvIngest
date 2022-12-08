@@ -530,7 +530,7 @@
           var page = Math.ceil(
             settings._iDisplayStart / settings._iDisplayLength
           );
-          var url = `/findAll/kontri?search=${$("#searchKontri").val()}&by=${$("#columnKontri option:selected").val()}start=${page}&length=${data.length}`;
+          var url = `/findAll/kontri?search=${$("#searchKontri").val()}&by=${$("#columnKontri option:selected").text()}&start=${page}&length=${data.length}`;
           $.get(url, function (response) {
             var out = [];
             response.data.content.forEach(function (materi, i) {
@@ -584,7 +584,7 @@
           var page = Math.ceil(
             settings._iDisplayStart / settings._iDisplayLength
           );
-          var url = `/findAll/ingest?search=${$("#searchIngest").val()}&by=${$("#columnIngest option:selected").val()}start=${page}&length=${data.length}`;
+          var url = `/findAll/ingest?search=${$("#searchIngest").val()}&by=${$("#columnIngest option:selected").text()}&start=${page}&length=${data.length}`;
           $.get(url, function (response) {
             var out = [];
             response.data.content.forEach(function (materi, i) {

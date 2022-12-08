@@ -22,6 +22,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers;
 import org.springframework.data.domain.ExampleMatcher.StringMatcher;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -116,13 +117,13 @@ public class MainController {
         Map data = new HashMap<>();
         Pageable pageable = PageRequest.of(start, length, Sort.by("createdAt").descending());
         if (path.equalsIgnoreCase("ingest")) {
-            ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING).withIgnoreCase();
+            ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matching().withMatcher(by, GenericPropertyMatchers.startsWith()).withIgnoreCase();
             Ingest ingest = new Ingest();
-            if(by.equalsIgnoreCase("1")){
+            if(by.equalsIgnoreCase("judul")){
                 ingest.setJudul(search);
-            }else if(by.equalsIgnoreCase("2")){
+            }else if(by.equalsIgnoreCase("reporter")){
                 ingest.setReporter(search);
-            }else if(by.equalsIgnoreCase("3")){
+            }else if(by.equalsIgnoreCase("deskripsi")){
                 ingest.setDeskripsi(search);
             }
             Example<Ingest> exampleIngest = Example.of(ingest, caseInsensitiveExampleMatcher); 
@@ -132,13 +133,13 @@ public class MainController {
             Page<Ingest> dataPaging = new PageImpl<>(listIngest.subList(s, e), pageable, listIngest.size());
             data.put("data", dataPaging);
         } else if (path.equalsIgnoreCase("kontri")) {
-            ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matching().withStringMatcher(StringMatcher.CONTAINING).withIgnoreCase();
+            ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matching().withMatcher(by, GenericPropertyMatchers.startsWith()).withIgnoreCase();
             Kontri kontri = new Kontri();
-            if(by.equalsIgnoreCase("1")){
+            if(by.equalsIgnoreCase("judul")){
                 kontri.setJudul(search);
-            }else if(by.equalsIgnoreCase("2")){
+            }else if(by.equalsIgnoreCase("reporter")){
                 kontri.setReporter(search);
-            }else if(by.equalsIgnoreCase("3")){
+            }else if(by.equalsIgnoreCase("deskripsi")){
                 kontri.setDeskripsi(search);
             }
             Example<Kontri> exampleIngest = Example.of(kontri, caseInsensitiveExampleMatcher); 
