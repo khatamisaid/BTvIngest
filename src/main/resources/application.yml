@@ -119,13 +119,13 @@ URL:
   DOWNLOAD_HI_RES: C:\\video
   DOWNLOAD_LOW_RES: C:\\video
 # URL:
-#   FILE_IN: \\192.168.6.30\\media_in\\inbox
+#   FILE_IN: Z:\\
 #   FILE_PRIEVIEW: \\192.168.6.30\\h264_out
 #   DOWNLOAD_HI_RES: \\192.168.6.30\\media_out
 #   DOWNLOAD_LOW_RES: \\192.168.6.30\\media_out
 EXTENSION:
   FILE_DOWNLOAD: .mxf
 FTP:
-  REMOTE_HOST: 192.168.6.30
+  REMOTE_HOST: 192.168.10.243
   USERNAME: reporter
   PASSWORD: reporter123

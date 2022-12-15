@@ -234,12 +234,12 @@
             <div class="card-body">
               <div class="form-group">
                 <label>Judul</label>
-                <input type="text" name="judul" id="judul" class="form-control" required="true" />
+                <input type="text" name="judul" id="judul" class="form-control" required="true" placeholder="Judul" />
               </div>
-              <div class="form-group">
-                <label>No Tape</label>
-                <input type="text" name="no_tape" id="no_tape" class="form-control" required="true"
-                  onkeypress="validate(event)" />
+              <div class="form-group hidden">
+                <label hidden>No Tape</label>
+                <input type="text" name="no_tape" id="no_tape" class="form-control" value="11"
+                  onkeypress="validate(event)" hidden />
               </div>
               <div class="form-group">
                 <label for="reporter" class="form-label">Reporter</label>
@@ -247,11 +247,15 @@
                   value="" />
               </div>
               <div class="form-group">
-                <label>Tambah tim liputan</label>
-                <select type="text" name="role" id="role" class="form-control" required="true" placeholder="Email">
-                  <option value="" selected disabled>--Pilih--</option>
-                  <option th:each="role : ${roles}" th:value="${role.idRole}" th:text="${role.roleName}"></option>
-                </select>
+                <label for="tim_liputan" class="form-label">Tim Liputan</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tim_liputan"
+                  name="tim_liputan"
+                  placeholder="Tim Liputan"
+                  value=""
+                />
               </div>
               <div class="form-group">
                 <label for="lok_liputan" class="form-label">Lokasi Liputan</label>
@@ -279,7 +283,7 @@
               <div class="form-group">
                 <label for="deskripsi" class="form-label">Naskah</label>
                 <textarea type="text" class="form-control" id="deskripsi" name="deskripsi"
-                  placeholder="deskripsi Liputan"></textarea>
+                  placeholder="Deskripsi Liputan"></textarea>
                 <span id="display_count">0</span> /
                 <span id="word_left">300</span> kata.
               </div>

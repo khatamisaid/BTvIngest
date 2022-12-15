@@ -102,7 +102,7 @@ public class KontriController {
             file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdKontri(kontri.getIdKontri());
-            video.setIpLocation(env.getProperty("FTP.REMOTE_HOST"));
+           // video.setIpLocation(env.getProperty("FTP.REMOTE_HOST"));
             video.setFilename(namafile);
             video.setOriginalExtension(originalExtension);
             video.setTranscodeExtension("mp4");
@@ -125,6 +125,7 @@ public class KontriController {
         kontri.setJudul(judul);
         kontri.setLokLiputan(lok_liputan);
         kontri.setReporter(reporter);
+        //tambahin tim liputan
         kontriRepository.save(kontri);
         try {
             Arrays.asList(files)

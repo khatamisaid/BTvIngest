@@ -259,7 +259,7 @@ public class MainController {
             files.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdIngest(dbIngest.getIdIngest());
-            video.setIpLocation("192.168.100.90");
+            //video.setIpLocation("192.168.100.90");
             video.setFilename(namafile);
             video.setFoldername(null);
             video.setOriginalExtension(originalExtension);

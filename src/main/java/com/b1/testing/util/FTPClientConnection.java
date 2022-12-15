@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class FTPClientConnection {
 
     public void uploadFile(MultipartFile file, String pathWithFileName) {
-        String server = "192.168.6.30";
+        String server = "192.168.10.243\\ftp\\REPORTER\\media_in";
         int port = 21;
         String user = "reporter";
         String pass = "reporter123";

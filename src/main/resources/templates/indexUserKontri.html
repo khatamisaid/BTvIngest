@@ -54,18 +54,26 @@
             <div class="card-body">
               <div class="form-group">
                 <label>Judul</label>
-                <input type="text" name="judul" id="judul" class="form-control" required="true" />
+                <input type="text" name="judul" id="judul" class="form-control" required="true" placeholder="Judul"/>
               </div>
               <div class="form-group">
                 <label>Reporter</label>
-                <input type="text" name="reporter" id="reporter" class="form-control" required="true" />
-                <div class="d-flex justify-content-end" style="margin-top: 3px">
-                  <button class="btn btn-primary" onclick="showTimLiputan()">
-                    + Tambah Tim Liputan
-                  </button>
-                </div>
+                <input type="text" name="reporter" id="reporter" class="form-control" required="true" placeholder="Reporter"/>
+                
               </div>
-              <div class="form-group" style="display: none" id="sectionTimLiputan">
+
+              <div class="form-group">
+                <label for="tim_liputan" class="form-label">Tim Liputan</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="tim_liputan"
+                  name="tim_liputan"
+                  placeholder="Tim Liputan"
+                  value=""
+                />
+              </div>
+              <!-- <div class="form-group" style="display: none" id="sectionTimLiputan">
                 <label>Tim Liputan</label>
                 <div class="input-group">
                   <input type="text" class="form-control" aria-label="Text input with dropdown button"
@@ -82,11 +90,11 @@
                   style="margin-top: 3px">
                   <span class="glyphicon glyphicon-remove"></span> Hapus
                 </button>
-              </div>
+              </div> -->
 
               <div class="form-group">
                 <label>Lokasi Liputan</label>
-                <input type="text" name="lok_liputan" id="lok_liputan" class="form-control" required="true" />
+                <input type="text" name="lok_liputan" id="lok_liputan" class="form-control" required="true" placeholder="Lokasi Liputan" />
               </div>
               <div class="form-group file_container">
                 <label for="file" class="form-label">Upload Files</label>
@@ -103,9 +111,9 @@
               </div>
 
               <div class="form-group">
-                <label for="deskripsi" class="form-label">Deksripsi</label>
+                <label for="deskripsi" class="form-label">Naskah</label>
                 <textarea type="text" class="form-control" id="deskripsi" name="deskripsi"
-                  placeholder="deskripsi Liputan"></textarea>
+                  placeholder="Deskripsi Liputan"></textarea>
                 <span id="display_count">0</span> /
                 <span id="word_left">300</span> kata.
               </div>
