@@ -43,6 +43,9 @@ public class Kontri extends DateAudit{
     @Column(name = "tim_liputan")
     private String timLiputan;
 
+    @Column(name = "caption")
+    private String caption;
+    
     @Column(name = "reporter")
     private String reporter;
 

@@ -179,8 +179,8 @@
       $("#judul").val('');
       $("#reporter").val('');
       $("#lok_liputan").val('');
-      // Yang files belum bisa reset
-      $("#sectionTimLiputan").val('');
+      $('input[id=file').val('');
+      $("#tim_liputan").val('');
       $("#caption").val('');
       $("#deskripsi").val('');
     }
@@ -202,7 +202,7 @@
       $("#modalform").modal("toggle");
       $("#modalLoading").modal("toggle");
       // var url = `/kontri/postVideo`;
-      var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$("#reporter").val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$("#deskripsi").val()}`;
+      var url = `/kontri/post?judul=${$("#judul").val()}&reporter=${$("#reporter").val()}&caption=${$("#caption").val()}&tim_liputan=${$("#tim_liputan").val()}&lok_liputan=${$("#lok_liputan").val()}&deskripsi=${$("#deskripsi").val()}`;
       // var body = {
       //   judul: $("#judul").val(),
       //   reporter: $("#reporter").val(),

@@ -93,16 +93,16 @@ public class KontriController {
         String originalExtension = "";
         String arrSplit[] = file.getOriginalFilename().split("\\.");
         originalExtension = arrSplit[arrSplit.length - 1];
-        namafile = ddMMyyyy + "_" + kontri.getJudul() + "_" + kontri.getReporter() + "_" + kontri.getLokLiputan() + "_"
+        namafile = ddMMyyyy + "_" + kontri.getJudul() + "_" + kontri.getReporter() + "_" + kontri.getLokLiputan() + "_" + kontri.getTimLiputan() + "_"
                 + (new Random().nextInt(99999))
                 + "."
                 + originalExtension;
         try {
-            // ftpClientConnection.uploadFile(file, namafile);
+            ftpClientConnection.uploadFile(file, namafile);
             file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdKontri(kontri.getIdKontri());
-           // video.setIpLocation(env.getProperty("FTP.REMOTE_HOST"));
+            video.setIpLocation(env.getProperty("FTP.REMOTE_HOST"));
             video.setFilename(namafile);
             video.setOriginalExtension(originalExtension);
             video.setTranscodeExtension("mp4");
@@ -116,7 +116,8 @@ public class KontriController {
             MediaType.MULTIPART_FORM_DATA_VALUE }, produces = APPLICATION_JSON_VALUE, method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Map> postMateri(@RequestParam String judul,
-            @RequestParam String reporter, @RequestParam String lok_liputan,
+            @RequestParam String reporter, @RequestParam String lok_liputan, 
+            @RequestParam String tim_liputan, @RequestParam String caption,
             @RequestParam String deskripsi, @RequestPart("files") MultipartFile[] files)
             throws IllegalStateException {
         Map data = new HashMap<>();
@@ -125,7 +126,8 @@ public class KontriController {
         kontri.setJudul(judul);
         kontri.setLokLiputan(lok_liputan);
         kontri.setReporter(reporter);
-        //tambahin tim liputan
+        kontri.setTimLiputan(tim_liputan);
+        kontri.setCaption(caption);
         kontriRepository.save(kontri);
         try {
             Arrays.asList(files)
@@ -141,6 +143,7 @@ public class KontriController {
         //  mapper.writeValueAsString(kontri.getListVideo())));
         data.put("icon", "success");
         data.put("message", "data berhasil di insert");
+        // tambahin refresh page
         return new ResponseEntity<>(data, HttpStatus.OK);
     }
 }

@@ -164,8 +164,7 @@ public class MainController {
             Ingest ingest = ingestRepository.findById(id).get();
             data.put("data", ingest);
             ObjectMapper mapper = new ObjectMapper();
-            logRepository
-                    .save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
+            logRepository.save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
                             mapper.writeValueAsString(ingest.getListVideo())));
         } else if (path.equalsIgnoreCase("kontri")) {
             if (!kontriRepository.existsById(id)) {
@@ -175,8 +174,7 @@ public class MainController {
             Kontri kontri = kontriRepository.findById(id).get();
             data.put("data", kontri);
             ObjectMapper mapper = new ObjectMapper();
-            logRepository
-                    .save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
+            logRepository.save(new Log(null, "priview", httpSession.getAttribute("username").toString(),
                             mapper.writeValueAsString(kontri.getListVideo())));
         }
         return new ResponseEntity<>(data, HttpStatus.OK);
@@ -193,8 +191,7 @@ public class MainController {
         } catch (IOException e) {
             throw new IOException(e.getMessage());
         }
-        logRepository
-                .save(new Log(null, "download", httpSession.getAttribute("username").toString(), fileName));
+        logRepository.save(new Log(null, "download", httpSession.getAttribute("username").toString(), fileName));
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
                 .body(fileContent);
@@ -245,9 +242,7 @@ public class MainController {
         try {
             String[] arrSplit = files.getOriginalFilename().split("\\.");
             originalExtension = arrSplit[arrSplit.length - 1];
-            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "_"
-                    + "."
-                    + originalExtension;
+            namafile = ddMMyyyy + "_" + judul + "_" + reporter + "_" + tim_liputan + "_" + lok_liputan + "." + originalExtension;
             // String base64Folder =
             // Base64.encodeBase64(httpSession.getAttribute("username").toString().getBytes())
             // .toString();
