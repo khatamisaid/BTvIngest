@@ -396,7 +396,7 @@
             </div>
           </form>
         </div>
-        <div class="modal-footer" th:if="${session.role == 'Editor' or session.role == 'Library'}">
+        <div class="modal-footer" th:unless="${session.role == 'Editor' or session.role == 'Library'}">
           <button id="downloadVideo" class="btn btn-primary">
             Download Video
           </button>
@@ -462,6 +462,15 @@
     $('.file_container').on('click', '.delete_', function () {
       $(this).parents('.pp').remove();
     });
+    function reset() {
+      $("#judul").val('');
+      $("#reporter").val('');
+      $("#lok_liputan").val('');
+      $('input[id=file').val('');
+      $("#tim_liputan").val('');
+      $("#caption").val('');
+      $("#deskripsi").val('');
+    }
     $("#nambah").on("click", function () {
       $("#modalform").modal("toggle");
       $("#modalLoading").modal("toggle");
@@ -510,6 +519,7 @@
             tableIngest.ajax.reload();
           });
         });
+        reset();
     });
 
     var tableKontri;
@@ -528,7 +538,7 @@
         serverSide: true,
         processing: true,
         ordering: false,
-        lengthMenu: [5, 10],
+        lengthMenu: [5, 10, 20],
         ajax: function (data, callback, settings) {
           var role = /*[[${session.role}]]*/ "";
           var page = Math.ceil(
@@ -538,13 +548,14 @@
           $.get(url, function (response) {
             var out = [];
             response.data.content.forEach(function (materi, i) {
-              if (role != "Administrator") {
+              if (role != "Library" || "Editor" ) {
                 var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByKontriId(${materi.idKontri})">
                     View
                   </button>
                   <button type="button" class="btn btn-danger del" onclick="deleteKontriById(${materi.idKontri})" >
                     Delete
                   </button>`;
+                  
                 var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
                 out.push([
                   "",
@@ -592,13 +603,14 @@
           $.get(url, function (response) {
             var out = [];
             response.data.content.forEach(function (materi, i) {
-              if (role != "Administrator") {
+              if (role != "Library" ) {
                 var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByIngestId(${materi.idIngest})">
                     View
                   </button>
                   <button type="button" class="btn btn-danger del" onclick="deleteIngestById(${materi.idIngest})" >
                     Delete
                   </button>`;
+                  
                 var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
                 out.push([
                   "",

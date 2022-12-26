@@ -127,5 +127,5 @@ EXTENSION:
   FILE_DOWNLOAD: .mov
 FTP:
   REMOTE_HOST: 192.168.10.243
-  USERNAME: reporter
-  PASSWORD: reporter123
+  USERNAME: amberfin
+  PASSWORD: 123amberfin

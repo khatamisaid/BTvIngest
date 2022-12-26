@@ -97,8 +97,9 @@ public class KontriController {
                 + (new Random().nextInt(99999))
                 + "."
                 + originalExtension;
+        ftpClientConnection.uploadFile(file, namafile);
         try {
-            ftpClientConnection.uploadFile(file, namafile);
+            
             file.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdKontri(kontri.getIdKontri());

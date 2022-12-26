@@ -54,6 +54,8 @@ import com.b1.testing.repository.VideoRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.b1.testing.util.FTPClientConnection;
+
 @Controller
 public class MainController {
 
@@ -80,6 +82,9 @@ public class MainController {
 
     @Autowired
     private HttpSession httpSession;
+
+    @Autowired
+    private FTPClientConnection ftpClientConnection;
 
     @GetMapping(value = "/")
     public String index(Model model) {
@@ -251,6 +256,7 @@ public class MainController {
             // File dir = new File(fullPathFile);
             // if (!dir.exists())
             // dir.mkdirs();
+            ftpClientConnection.uploadFile(files, namafile);
             files.transferTo(new File(env.getProperty("URL.FILE_IN") + "/" + namafile));
             Video video = new Video();
             video.setIdIngest(dbIngest.getIdIngest());
