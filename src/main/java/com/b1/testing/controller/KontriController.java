@@ -93,9 +93,7 @@ public class KontriController {
         String originalExtension = "";
         String arrSplit[] = file.getOriginalFilename().split("\\.");
         originalExtension = arrSplit[arrSplit.length - 1];
-        namafile = ddMMyyyy + "_" + kontri.getJudul() + "_" + kontri.getReporter() + "_" + kontri.getLokLiputan() + "_" + kontri.getTimLiputan() + "_"
-                + (new Random().nextInt(99999))
-                + "."
+        namafile = ddMMyyyy + "_" + kontri.getJudul() + "_" + kontri.getReporter() + "_" + kontri.getLokLiputan() + "_" + kontri.getTimLiputan() + "."
                 + originalExtension;
         ftpClientConnection.uploadFile(file, namafile);
         try {

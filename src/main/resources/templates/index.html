@@ -16,6 +16,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" />
   <!-- DataTables -->
   <link rel="stylesheet" th:href="@{/css/jquery.dataTables.min.css}" />
+
+  <link rel="stylesheet" href="https://vjs.zencdn.net/7.20.3/video-js.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/@videojs/themes@1/dist/city/index.css"/>
   <style>
     .bd-example-modal-lg .modal-dialog {
       display: table;
@@ -365,7 +368,12 @@
         <div class="modal-body">
           <form action="#" id="modalDetailForm">
             <div class="d-flex justify-content-center">
-              <video id="videoDetail" width="100%" controls>
+              <video 
+              class="videoDetail vjs-theme-city" 
+              id="videoDetail" 
+              width="100%" 
+              preload="auto"
+              controls>
                 <source src="" type="video/mp4" />
                 Your browser does not support HTML video.
               </video>
@@ -396,7 +404,7 @@
             </div>
           </form>
         </div>
-        <div class="modal-footer" th:unless="${session.role == 'Editor' or session.role == 'Library'}">
+        <div class="modal-footer" th:unless="${session.role != 'Editor' }">
           <button id="downloadVideo" class="btn btn-primary">
             Download Video
           </button>
@@ -433,6 +441,7 @@
       crossorigin="anonymous"
     ></script> -->
   <script type="text/javascript" th:src="@{/js/sweetalert2.js}"></script>
+  <script src="https://vjs.zencdn.net/7.20.3/video.min.js" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.0/axios.min.js"
     integrity="sha512-OdkysyYNjK4CZHgB+dkw9xQp66hZ9TLqmS2vXaBrftfyJeduVhyy1cOfoxiKdi4/bfgpco6REu6Rb+V2oVIRWg=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -548,12 +557,9 @@
           $.get(url, function (response) {
             var out = [];
             response.data.content.forEach(function (materi, i) {
-              if (role != "Library" || "Editor" ) {
+              if (role != "Library" ) {
                 var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByKontriId(${materi.idKontri})">
                     View
-                  </button>
-                  <button type="button" class="btn btn-danger del" onclick="deleteKontriById(${materi.idKontri})" >
-                    Delete
                   </button>`;
                   
                 var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
@@ -563,6 +569,22 @@
                   materi.reporter,
                   deskripsi,
                   action,
+                ]);
+              }else if (role == "Library" ){
+                var action1 = `
+                <button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByIngestId(${materi.idKontri})">
+                    View
+                  </button>
+                  <button type="button" class="btn btn-danger del" onclick="deleteKontriById(${materi.idKontri})" >
+                    Delete
+                  </button>`;
+                  var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
+                  out.push([
+                  "",
+                  materi.judul,
+                  materi.reporter,
+                  deskripsi,
+                  action1,
                 ]);
               }
             });
@@ -606,9 +628,6 @@
               if (role != "Library" ) {
                 var action = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByIngestId(${materi.idIngest})">
                     View
-                  </button>
-                  <button type="button" class="btn btn-danger del" onclick="deleteIngestById(${materi.idIngest})" >
-                    Delete
                   </button>`;
                   
                 var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
@@ -620,6 +639,43 @@
                   action,
                 ]);
               }
+              
+              else if (role == "Library" ){
+              //   var thumbnail = `
+              //     <video
+              // id="videoDetail" 
+              // width="100%">
+              //   <source src="" type="video/mp4" />
+              //   Your browser does not support HTML video.
+              // </video>`;
+                var action1 = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByIngestId(${materi.idIngest})">
+                    View
+                  </button>
+                  <button type="button" class="btn btn-danger del" onclick="deleteIngestById(${materi.idIngest})" >
+                    Delete
+                  </button>`;
+                  var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
+                  out.push([
+                  "",
+                  materi.judul,
+                  materi.reporter,
+                  deskripsi,
+                  action1,
+                ]);
+              }
+              // else if (role == "Uploader" ){
+              //   var action1 = `<button type="button" class="btn btn-success del" data-toggle="modal" data-target="#modalDetail" onclick="findByIngestId(${materi.idIngest})">
+              //       View
+              //     </button>`;
+              //     var deskripsi = `<p style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 400px">${materi.deskripsi}</p>`
+              //     out.push([
+              //     "",
+              //     materi.judul,
+              //     materi.reporter,
+              //     deskripsi,
+              //     action1,
+              //   ]);
+              // }
             });
             callback({
               recordsTotal: response.data.totalElements,
